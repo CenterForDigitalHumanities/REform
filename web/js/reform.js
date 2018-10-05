@@ -2203,16 +2203,39 @@ var annotationLists = [
   //Everything above this fits into the January leaf (and its canvases.)
         }]; // end lists;
 
-//    function getManifest(){
-//        var url="http://brokenbooks.org/brokenBooks/getManifest";
-//        $.post(url, function(data){
-//            //console.log(data);
-//            data=JSON.parse(data);
-//            rangeCollection = data.structures;
-//            manifestCanvases = data.sequences[0];
-//            getAllAnnotations();
-//        });
-//    }
+    function getManifest(url){
+        //We can't be certain whether it was a line or a list that was updated.  Don't handle putting the return
+        //into local memory here, as it is important whether we are altering the list or just a line in the list. 
+        var manifestDef = jQuery.Deferred();
+        $.ajax({
+            url: url,
+            type:"GET",
+            dataType: "json",
+            success: function(data, status, jqxhr){
+                manifestDef.resolve(data, status, jqxhr);
+            },
+            error: function(data, status, jqxhr){
+                console.warn("uCould not get manifest object");
+                manifestDef.reject(data, status, jqxhr);
+            }
+            
+        });
+        return manifestDef.promise();
+    }
+    
+    function loadInterface(manifestURL){
+        getManifest(manifestURL)
+        .then(function(responseData, status, jqXHR){
+            rangeCollection = responseData.structures;
+            manifestCanvases = responseData.sequences[0];
+            organizeRanges();
+        })
+        .fail(function(responseData, status, jqXHR){
+            console.log("Could not get manifest, cannot load interface.");
+            //Do we need to fire this here??  This means we could not update the list even though all line actions were successful.
+        });
+    }
+
     
 /* 
  * For now, any of the BB pages should tell you what user you are.  This is a helper function to get the manifest ID for what user you are to use in the update functions
@@ -6882,5 +6905,62 @@ function highlighLocks(where, why){
     }
 }
 
+function getURLVariable(variable){
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
 
+function updateURL(piece, classic){
+    var toAddressBar = document.location.href;
+    //If nothing is passed in, just ensure the projectID is there.
+    //console.log("does URL contain projectID?        "+getURLVariable("projectID"));
+    if(!getURLVariable("projectID")){
+        toAddressBar = "?projectID="+tpen.project.id;
+    }
+    //Any other variable will need to be replaced with its new value
+    if(piece === "p"){
+        if(!getURLVariable("p")){
+            toAddressBar += "&p=" + tpen.project.folios[tpen.screen.currentFolio].folioNumber;
+        }
+        else{
+            toAddressBar = replaceURLVariable("p", tpen.project.folios[tpen.screen.currentFolio].folioNumber);
+        }
+        var relocator = "buttons.jsp?p="+tpen.project.folios[tpen.screen.currentFolio].folioNumber+"&projectID="+tpen.project.id;
+        $(".editButtons").attr("href", relocator);
+    }
+    else if (piece === "attempts"){
+        if(!getURLVariable("attempts")){
+            toAddressBar += "&attempts=1";
+        }
+        else{
+            var currentAttempt = getURLVariable("attempts");
+            currentAttempt = parseInt(currentAttempt) + 1;
+            toAddressBar = replaceURLVariable("attempts", currentAttempt);
+        }
+    }
+    window.history.pushState("", "T&#8209;PEN 2.8 Transcription", toAddressBar);
+}
+
+function replaceURLVariable(variable, value){
+       var query = window.location.search.substring(1);
+       var location = window.location.origin + window.location.pathname;
+       var vars = query.split("&");
+       var variables = "";
+       for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){
+            var newVar = pair[0]+"="+value;
+            vars[i] = newVar;
+            break;
+        }
+       }
+       variables = vars.toString();
+       variables = variables.replace(/,/g, "&");
+       return(location + "?"+variables);
+}
 

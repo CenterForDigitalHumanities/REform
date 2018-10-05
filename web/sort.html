@@ -537,118 +537,31 @@ and open the template in the editor.
     
         $(function(){
             //NOTE: THIS SHOULD ONLY WORK FOR ADMINS
-            var usr = "";
-            if(windowURL.indexOf("LFD") > -1){
-                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?LFD');");
-                $(".sortTitle").html("Beauvais Missal Structure");
-                usr="lisa";
-            }
-            else if(windowURL.indexOf("DTC") > -1){
-                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?DTC');");
-                $(".sortTitle").html("The Llangattock Breviary Structure");
-                usr="debra";
-            }
-            else if(windowURL.indexOf("KW") > -1){
-                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?KW');");
-                $(".sortTitle").html("Karen's Project Structure");
-                usr="karen";
-            }
-            else if(windowURL.indexOf("demo=1")>-1){
+//            if(windowURL.indexOf("LFD") > -1){
+//                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?LFD');");
+//                $(".sortTitle").html("Beauvais Missal Structure");
+//                usr="lisa";
+//            }
+//            else if(windowURL.indexOf("DTC") > -1){
+//                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?DTC');");
+//                $(".sortTitle").html("The Llangattock Breviary Structure");
+//                usr="debra";
+//            }
+//            else if(windowURL.indexOf("KW") > -1){
+//                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?KW');");
+//                $(".sortTitle").html("Karen's Project Structure");
+//                usr="karen";
+//            }
+            if(windowURL.indexOf("demo=1")>-1){
                 $("#gotoMirador").hide();
                 $(".sortTitle").html("Demo Editable Structure");
             }
             else{
-                //Debra should not be the default user, I think this is fixed in the projAndUser branch.
-                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?UNKNOWN');");
-                usr="unknown";
+                //This can be like a preview now.  What should this button be for reform?
+                $("#gotoMirador").attr("onclick", "");
             }
-            if(windowURL.indexOf("home.html") < 0){
-                $(".leafPopover").load("../brokenBooks/leafPopover.html", function(){
-                    $(".leaf").load("../brokenBooks/leafInformation.html", function(){
-                            console.log("SET TABS");
-                            $("#formTabs").tabs({
-                                activate: function(event ,ui){
-                                //console.log(event);
-                                if(ui.newTab.index() === 4){ //check for the selection of the arrante tab to change the side bar
-                                    $(".sideBarInfo").hide();
-                                    $("#sideBarArrange").show();
-                                }
-                                else{
-                                    $(".sideBarInfo").show();
-                                    $("#sideBarArrange").hide();
-                                }
-                            }
-                            });
-                            $('.canvasImageFile').on("change", function(event){
-                                var target = event.target;
-                                var rv = $(this).attr("rv"); //This is so we know whether it was the recto or verso one.  
-                                var files = !!this.files ? this.files : [];
-                                var canvasURI = $(this).parent().parent().attr("canvas"); 
-                                if (!files.length || !window.FileReader) return 0; // no file selected, or no FileReader support
-
-                                if (/^image/.test( files[0].type)){ // only image file
-                                    var filename = files[0].name; //get the file name so we can pass it through the interfact for the user if we want.
-                                    var reader = new FileReader(); // instance of the FileReader
-                                    reader.readAsDataURL(files[0]); // read the local file
-                                    reader.onloadend = function(){ // set image data as background of div
-                                        if(this.result.indexOf(".jpg")===-1 && this.result.indexOf(".JPG")===-1){
-                                            alert("Our viewer only supports direct links to .jpg or .JPG file formats. If the image URL being submitted does not\n\
-                                            contain the .jpg file format, it is unsupported.  If your link resolves to a hosted .jpg image, resolve the link and get\n\
-                                            the URL that contains the .jpg format and submit that instead.");
-                                        }
-                                        else{
-                                            $("."+rv+"Img").attr("src", this.result).show("explode", "500ms");
-                                            $("."+rv+"Img").css("background-image", "none");
-                                            $("."+rv+"Canvas").find(".imgCatalogueInfo").show("explode", "500ms");
-                                            //$("textarea[rv='"+rv+"']").html(filename +" Uploaded!").attr("disabled", "disabled");
-                                             var annotationObject = {
-                                                "format":"image/jpg",
-                                                "@type":"dctypes:Image",
-                                                "resource":
-                                                {
-                                                    "@id": this.result,
-                                                    "service":
-                                                        {                                       
-                                                            "@context": "http://iiif.io/api/image/2/context.json",
-                                                            "profile":"http://iiif.io/api/image/2/profiles/level2.json",
-                                                            "@id" : this.result
-                                                        },
-                                                    "width": 667, //how should I set these?
-                                                    "height":1000 //how should I set these?
-                                                },
-                                                "on" : canvasURI
-                                            };
-                                                            //$("#catalogueInfoFor").val(canvasURI);
-                                            //(annotationObject, canvasURI); // local
-                                            addImage(annotationObject, canvasURI); // live\
-                                            target.parentNode.childNodes[1].onclick=""; //Take the onclick away that fires upload image.
-                                            target.parentNode.ondblclick=function(){ //Now it has to be double clicked to fire upload image. 
-                                                target.click();
-                                            }; 
-                                        }
-                                    };
-                                }
-                            });
-                            //gatherRangesForArrange(1); //populate the popover.  It cannot be altered on this page, so do not populate it.
-                            $("#folioSide1").attr("onclick","enterCatalogueInfo('http://www.example.org/iiif/LlangBrev/canvases/demo1', 'recto');"); //local
-                            $("#folioSide1").attr("canvas","http://www.example.org/iiif/LlangBrev/canvases/demo1"); //local
-                            $("#folioSide2").attr("onclick","enterCatalogueInfo('http://www.example.org/iiif/LlangBrev/canvases/demo2', 'verso');"); //local
-                            $("#folioSide2").attr("canvas","http://www.example.org/iiif/LlangBrev/canvases/demo2"); //local
-                            $("#folioSide1").click();
-                        });
-                });
-            }
-            
-            gatherRangesForArrange(2,usr); //populate the admin interface
-//            $(window).on("beforeunload", function(event){
-//                var returnString = "The manifest will be published before exiting the page.";
-//                event.returnValue = returnString;
-//                publish();
-//                return returnString;
-//            });
-            
-        });
-        
-    
+            var manifestURL = getURLVariable("manifest");
+            loadInterface(manifestURL);    
+        });         
     </script>
 </html>

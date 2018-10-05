@@ -6,11 +6,32 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>REFORM</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div> 
+            Enter a manifest URL to create a table of contents for the canvases contained within it. 
+            <input type="text" id="manifestURL" />
+            <input type="button" value="Let's Go Reform" onclick="goReform(event);" />
+        </div>
+        <div> If there are existing table of contents for the manifest, we will offer the chance to load them for editing. </div>
+        <div> In general, this will create a new Range for your Manifest, but the Manifest will not be updated with the range.  Have it check RERUM inbox. </div>
     </body>
+    <script>
+        /**
+         * Take the user supplied manifest URL into the table of contents interface.
+         * @param {type} e The event from submitting.
+         *
+         */
+        function goReform(e){
+            var manifest = $("#manifestURL").val();
+            document.location.href = "/sort.html?manifest="+manifest;
+        }
+
+    </script>
 </html>
