@@ -5710,338 +5710,6 @@ function cancelNewGroupForm(){
   $("#groupTitle").val("");
 }
 
-function existing(leaf, leafIsIn){
-    var windowURL = document.location.href;
-    var alphaCanvasURI = "http://www.example.org/reform/canvas/1";
-    var betaCanvasURI = "http://www.example.org/reform/canvas/2";
-    var alphaCanvasObj = {};
-    var betaCanvasObj = {};
-    var alphaImage  = "http://brokenbooks.org/brokenBooks/images/addImg.jpg";
-    var betaImage = "http://brokenbooks.org/brokenBooks/images/addImg.jpg";
-    var alphaLabel = "Folio Side A Label";
-    var betaLabel = "Folio Side B Label";
-    var leafLabel = "Leaf Label";
-    $("#createMini").hide();
-    $("#createMini").parent().children(".mainBlockCover").hide();
-    $("#ordering").children(".mainBlock").children(".mainBlockCover").hide();
-        //var leaf = "http://localhost:8080/v1/id/554ce6d0e4b0f1c678d2a549";
-    if(leaf !== undefined){
-        var leafObject = undefined;
-        currentLeafServerID = leaf;
-        $.each(rangeCollection, function(){
-            //For the demo, you can cheat and not make the calls by making a mock list above and using it.  
-            if(this["@id"] == leaf){
-                leafObject = this;
-                alphaCanvasURI = this.canvases[0];
-                if(this.label !== ""){
-                  leafLabel = this.label;
-                }
-                var leafAnnoList = ""; //anno list URIS
-                if(this.otherContent && this.otherContent[0] && this.otherContent[0]["@id"]!==undefined && this.otherContent[0]["@id"]!=="" && this.otherContent[0]["@id"].indexOf("LlangBrev")===-1){
-                    leafAnnoList = this.otherContent[0]["@id"];
-                    $.ajax({
-                        "url":leafAnnoList,
-                        success: function(annoList3){
-                            if(typeof annoList3 !== "object"){
-                                annoList3 = JSON.parse(annoList3);
-                            }
-                            var tmpResources = annoList3.resources;
-                            if(typeof tmpResources !== "object"){
-                                tmpResources = tmpResources.replace('\"', '"');
-                                tmpResources = JSON.parse(tmpResources);
-                            }
-                            annoList3.resources = tmpResources;
-                            annoListCollection[2] = annoList3;
-                        }
-                    });//live
-                }
-                else{
-                    leafAnnoList = "";
-                    //leafAnnoList = "http://www.example.org/reform/annoList/empty";
-                    annoListCollection[2] = {"@id":"empty","resources":[]};
-                    
-                }
-                
-                $("#oneAndtwo").attr("canvas", leaf);
-                $("#oneAndtwo").attr("onclick","enterCatalogueInfo('leaf');"); ;
-                $("#leafLabel").val(leafLabel);
-                $("#oneAndtwoLabel").val(leafLabel);
-                var alphaAnnoList = "";
-                var betaAnnoList = "";
-                var leafAnnoList = "";
-                if(windowURL.indexOf("demo=1") > -1){
-                    $.each(manifestCanvases, function(){
-                      if(this["@id"] == alphaCanvasURI){
-                        if(this.otherContent && this.otherContent[0]){
-                             alphaAnnoList = this.otherContent[0]["@id"];
-                        }
-                        else{
-                            alphaAnnoList = "";
-                            annoListCollection[0] = {"@id":"empty","resources":[]};
-                            //alphaAnnoList = "http://www.example.org/reform/annoList/empty";
-                            //annoListCollection[0] = [];
-                        }
-                        if(this.label !== ""){
-                          alphaLabel = this.label;
-                        }
-                        //console.log("checking for alpha image");
-                        
-                        if(this.images && this.images.length > 0){
-                            if(this.images[0].resource["@id"].indexOf("imgNotFound") > -1){
-                                
-                            }
-                            else if (this.images[0].resource["@id"] === ""){
-                                
-                            }
-                            else{
-                                //console.log("FOUND ALPHA");
-                                alphaImage = this.images[0].resource["@id"];
-                            }
-                            if(alphaImage.indexOf("addImg") > -1 || alphaImage.indexOf("imgNotFound") > -1){
-                                $("#oneAndtwo").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                                $("#leafTmp").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                                $("#folioSide1").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
-                            }
-                            else{
-                                $(".rectoImg").attr("src", alphaImage);
-                            }
-                        }
-                            $("#folioSide1").attr("onclick","enterCatalogueInfo('"+alphaCanvasURI+"', 'recto');"); 
-                            $("#folioSide1").attr("canvas", alphaCanvasURI);
-                            $("#folioSide1").click();
-                        
-                      }
-                    });
-                }
-                else{
-                    //get the canvas information
-                    $.ajax({
-                    "url":alphaCanvasURI,
-                    success: function(alphaCanvasData){
-                        if(typeof alphaCanvasData!== "object"){
-                            alphaCanvasData = JSON.parse(alphaCanvasData);
-                        }
-                        alphaCanvasObj = alphaCanvasData;
-                        if(alphaCanvasData.otherContent && alphaCanvasData.otherContent[0]){
-                             alphaAnnoList = alphaCanvasData.otherContent[0]["@id"];
-                        }
-                        else{
-                            alphaAnnoList = "";
-                        }
-                        if(alphaCanvasData.label !== undefined && alphaCanvasData.label !== ""){
-                          alphaLabel = alphaCanvasData.label;
-                        }
-                        if(alphaCanvasData.images && alphaCanvasData.images.length > 0){
-                            if(alphaCanvasData.images[0].resource["@id"].indexOf("imgNotFound") > -1){
-                                
-                            }
-                            else if (alphaCanvasData.images[0].resource["@id"] === ""){
-                                
-                            }
-                            else{
-                                alphaImage = alphaCanvasData.images[0].resource["@id"];
-                            }
-                        }
-                        $.ajax({
-                            "url":alphaAnnoList,
-                            success: function(annoList1){
-                                if(typeof annoList1!== "object"){
-                                    annoList1 = JSON.parse(annoList1);
-                                }
-                                var tmpResources = annoList1.resources;
-                                if(typeof tmpResources !== "object"){
-                                    tmpResources = tmpResources.replace('\"', '"');
-                                    tmpResources = JSON.parse(tmpResources);
-                                }
-                                annoList1.resources = tmpResources;
-                                annoListCollection[0] = annoList1;
-                                $("#folioSide1").attr("onclick","enterCatalogueInfo('"+alphaCanvasURI+"', 'recto');"); 
-                                $("#folioSide1").attr("canvas", alphaCanvasURI);
-                                $("#folioSide1").click();
-                                //console.log("populate from existing");
-                                populateAnnoForms();
-                            }
-                        }); //live
-                        if(alphaImage.indexOf("addImg") > -1 || alphaImage.indexOf("imgNotFound") > -1){
-                            $("#oneAndtwo").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                            $("#leafTmp").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                            $("#folioSide1").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
-                        }
-                        else{
-                            $(".rectoImg").attr("src", alphaImage);
-                        }
-                        //$("#folioSide1").addClass("selectedFolio");
-                        $("#folio1Label").val(alphaLabel);
-                        
-                    }
-                    }); //live
-                }
-                betaCanvasURI = this.canvases[1];
-                if(windowURL.indexOf("demo=1") > -1){
-                    $.each(manifestCanvases, function(){
-                      if(this["@id"] == betaCanvasURI){
-                        if(this.otherContent && this.otherContent[0]){
-                            betaAnnoList = this.otherContent[0];
-                        }
-                        else{
-                            betaAnnoList = "";
-                            //betaAnnoList = "http://www.example.org/reform/annoList/empty";
-                            annoListCollection[1] = {"@id":"empty","resources":[]};
-                        }
-                        if(this.label!== ""){
-                          betaLabel = this.label;
-                        }
-                        //console.log("lloking for beta image");
-                        if(this.images && this.images.length > 0){
-                            if(this.images[0].resource["@id"].indexOf("imgNotFound") > -1){
-                                
-                            }
-                            else if (this.images[0].resource["@id"] === ""){
-                                
-                            }
-                            else{
-                                //console.log("BETA IMAGE FOUND");
-                                betaImage = this.images[0].resource["@id"];
-                                if(betaImage.indexOf("addImg") > -1 || betaImage.indexOf("imgNotFound") > -1){
-                                    $("#oneAndtwo").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                                    $("#leafTmp").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                                    $("#folioSide1").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
-                                }
-                                else{
-                                    $(".versoImg").attr("src", betaImage);
-                                }
-                            }
-                        }
-                         $("#folioSide2").attr("onclick","enterCatalogueInfo('"+betaCanvasURI+"', 'verso');"); 
-                         $("#folioSide2").attr("canvas", betaCanvasURI); 
-                      }
-                    });
-                }
-                else{
-                    $.ajax({
-                    "url":betaCanvasURI,
-                    success: function(betaCanvasData){
-                        race2 = true;
-                        if(typeof betaCanvasData!== "object"){
-                            betaCanvasData = JSON.parse(betaCanvasData);
-                        }
-                        betaCanvasObj = betaCanvasData;
-                        if(betaCanvasData.otherContent && betaCanvasData.otherContent[0]){
-                             betaAnnoList = betaCanvasData.otherContent[0]["@id"];
-                        }
-                        else{
-                            betaAnnoList = "";
-                        }
-                        if(betaCanvasData.label !== undefined && betaCanvasData.label !== ""){
-                          betaLabel = betaCanvasData.label;
-                        }
-                        if(betaCanvasData.images && betaCanvasData.images.length > 0){
-                            if(betaCanvasData.images[0].resource["@id"].indexOf("imgNotFound") > -1){
-                                
-                            }
-                            else if (betaCanvasData.images[0].resource["@id"] === ""){
-                                
-                            }
-                            else{
-                                betaImage = betaCanvasData.images[0].resource["@id"];
-                            }
-                        }
-                        $.ajax({
-                            "url":betaAnnoList,
-                            success: function(annoList2){
-                                if(typeof annoList2 !== "object"){
-                                    annoList2 = JSON.parse(annoList2);
-                                }
-                                var tmpResources = annoList2.resources;
-                               
-                                if(typeof tmpResources !== "object"){
-                                    tmpResources = tmpResources.replace('\"', '"');
-                                    tmpResources = JSON.parse(tmpResources);
-                                }
-                                annoList2.resources = tmpResources;
-                                annoListCollection[1] = annoList2;
-                            }
-                        });//live
-                        $("#folioSide2").attr("onclick","enterCatalogueInfo('"+betaCanvasURI+"', 'verso');"); 
-                        $("#folioSide2").attr("canvas", betaCanvasURI); 
-                        if(betaImage.indexOf("addImg") > -1 || betaImage.indexOf("imgNotFound") > -1){
-                            $("#oneAndtwo").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                            $("#leafTmp").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
-                            $("#folioSide1").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
-                        }
-                        else{
-                            $(".versoImg").attr("src", betaImage);
-                        }
-                        $("#folio2Label").val(betaLabel);
-                        $("#saveCover").hide();
-                        $("#saveText").html("Saving...");
-                    }
-                    }); //live
-                }
-//                console.log("here are the anno lists");
-//                console.log(annotationLists);
-//                console.log(alphaAnnoList);
-//                console.log(betaAnnoList);
-                if(windowURL.indexOf("demo=1") > -1){
-                    //error from demo when clicking blue i
-                    $.each(annotationLists, function(){
-                      if(this["@id"]!==undefined && this["@id"] === alphaAnnoList){
-                        annoListCollection[0] = this;
-                      }
-                    });
-                    $.each(annotationLists, function(){
-                      if(this["@id"]!==undefined&&this["@id"] === betaAnnoList){
-                        annoListCollection[1] = this;
-                      }
-                    });
-
-                     $.each(annotationLists, function(){
-                      if(this["@id"]!==undefined&&this["@id"] === leafAnnoList){
-                        annoListCollection[2] = this;
-                      }
-                    });
-                }
-
-            }
-        });
-        
-    }
-
-    $(".leafPopover").show();
-    var buttonToClose = $("<div onclick='closeLeafPopover();' class='leafPopClose'></div>");
-    var arrangeAreaCover = $("<div class='arrangeAreaCover'></div>");
-    $(".imgAdditionArea").show();
-    if($(".imgAdditionArea").children(".leafPopClose").length == 0){
-      $(".imgAdditionArea").append(buttonToClose);
-    }
-    //If admins can see this area, then the following doesn't have to be hidden.
-    $("#placement").children("input[type='button']").hide();
-   
-    $("#placement").children("p:first").html("This area shows where the leaf is positioned in the structure.  This cannot be altered here.  If you want to move your leaf to a new section \n\
-      close this and use the drag and drop interface.");
-
-    submitIntro('testEdit');
-    alpha = true;
-    beta = false;
-    zeta = false;
-    //$(".popoverTrail").find(".selectedSection:first").click(); //collapse the tree
-    selectInTree(leafIsIn); 
-    //console.log("Click folio side 1, hide saveCover, change saveText");
-    
-    //$("#folioSide1").addClass("selectedSection");
-    if(windowURL.indexOf("demo=1")>-1){
-        //console.log("demo, populate anno forms with annos:");
-        //console.log(annoListCollection);
-        $("#folioSide1").addClass("selectedSection");
-        populateAnnoForms();
-        $("#saveCover").hide();
-        $("#saveText").html("Updating...");
-    }
-    
-    $(".popoverTrail").children(".rangeArrangementArea").append(arrangeAreaCover);
-
-}
-
 function selectInTree(child){
     var depth = $(".popoverTrail").find(".rangeArrangementArea").length;
     var lastArrangeArea = $(".popoverTrail").find('.rangeArrangementArea[depth="'+depth+'"]');
@@ -6355,7 +6023,13 @@ function replaceURLVariable(variable, value){
        return(location + "?"+variables);
 }
 
-/** This stuff is deprecated out of BB */
+/** This stuff is deprecated out of BB logic */
+
+
+
+
+
+
 
 function detectWho(){
     var windowURL = document.location.href;
@@ -6908,6 +6582,333 @@ function getManifestID(){
         });
     }
     
+}
+
+function existing(leaf, leafIsIn){
+    var windowURL = document.location.href;
+    var alphaCanvasURI = "http://www.example.org/reform/canvas/1";
+    var betaCanvasURI = "http://www.example.org/reform/canvas/2";
+    var alphaCanvasObj = {};
+    var betaCanvasObj = {};
+    var alphaImage  = "http://brokenbooks.org/brokenBooks/images/addImg.jpg";
+    var betaImage = "http://brokenbooks.org/brokenBooks/images/addImg.jpg";
+    var alphaLabel = "Folio Side A Label";
+    var betaLabel = "Folio Side B Label";
+    var leafLabel = "Leaf Label";
+    $("#createMini").hide();
+    $("#createMini").parent().children(".mainBlockCover").hide();
+    $("#ordering").children(".mainBlock").children(".mainBlockCover").hide();
+        //var leaf = "http://localhost:8080/v1/id/554ce6d0e4b0f1c678d2a549";
+    if(leaf !== undefined){
+        var leafObject = undefined;
+        currentLeafServerID = leaf;
+        $.each(rangeCollection, function(){
+            //For the demo, you can cheat and not make the calls by making a mock list above and using it.  
+            if(this["@id"] == leaf){
+                leafObject = this;
+                alphaCanvasURI = this.canvases[0];
+                if(this.label !== ""){
+                  leafLabel = this.label;
+                }
+                var leafAnnoList = ""; //anno list URIS
+                if(this.otherContent && this.otherContent[0] && this.otherContent[0]["@id"]!==undefined && this.otherContent[0]["@id"]!=="" && this.otherContent[0]["@id"].indexOf("LlangBrev")===-1){
+                    leafAnnoList = this.otherContent[0]["@id"];
+                    $.ajax({
+                        "url":leafAnnoList,
+                        success: function(annoList3){
+                            if(typeof annoList3 !== "object"){
+                                annoList3 = JSON.parse(annoList3);
+                            }
+                            var tmpResources = annoList3.resources;
+                            if(typeof tmpResources !== "object"){
+                                tmpResources = tmpResources.replace('\"', '"');
+                                tmpResources = JSON.parse(tmpResources);
+                            }
+                            annoList3.resources = tmpResources;
+                            annoListCollection[2] = annoList3;
+                        }
+                    });//live
+                }
+                else{
+                    leafAnnoList = "";
+                    //leafAnnoList = "http://www.example.org/reform/annoList/empty";
+                    annoListCollection[2] = {"@id":"empty","resources":[]};
+                    
+                }
+                
+                $("#oneAndtwo").attr("canvas", leaf);
+                $("#oneAndtwo").attr("onclick","enterCatalogueInfo('leaf');"); ;
+                $("#leafLabel").val(leafLabel);
+                $("#oneAndtwoLabel").val(leafLabel);
+                var alphaAnnoList = "";
+                var betaAnnoList = "";
+                var leafAnnoList = "";
+                if(windowURL.indexOf("demo=1") > -1){
+                    $.each(manifestCanvases, function(){
+                      if(this["@id"] == alphaCanvasURI){
+                        if(this.otherContent && this.otherContent[0]){
+                             alphaAnnoList = this.otherContent[0]["@id"];
+                        }
+                        else{
+                            alphaAnnoList = "";
+                            annoListCollection[0] = {"@id":"empty","resources":[]};
+                            //alphaAnnoList = "http://www.example.org/reform/annoList/empty";
+                            //annoListCollection[0] = [];
+                        }
+                        if(this.label !== ""){
+                          alphaLabel = this.label;
+                        }
+                        //console.log("checking for alpha image");
+                        
+                        if(this.images && this.images.length > 0){
+                            if(this.images[0].resource["@id"].indexOf("imgNotFound") > -1){
+                                
+                            }
+                            else if (this.images[0].resource["@id"] === ""){
+                                
+                            }
+                            else{
+                                //console.log("FOUND ALPHA");
+                                alphaImage = this.images[0].resource["@id"];
+                            }
+                            if(alphaImage.indexOf("addImg") > -1 || alphaImage.indexOf("imgNotFound") > -1){
+                                $("#oneAndtwo").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                                $("#leafTmp").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                                $("#folioSide1").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
+                            }
+                            else{
+                                $(".rectoImg").attr("src", alphaImage);
+                            }
+                        }
+                            $("#folioSide1").attr("onclick","enterCatalogueInfo('"+alphaCanvasURI+"', 'recto');"); 
+                            $("#folioSide1").attr("canvas", alphaCanvasURI);
+                            $("#folioSide1").click();
+                        
+                      }
+                    });
+                }
+                else{
+                    //get the canvas information
+                    $.ajax({
+                    "url":alphaCanvasURI,
+                    success: function(alphaCanvasData){
+                        if(typeof alphaCanvasData!== "object"){
+                            alphaCanvasData = JSON.parse(alphaCanvasData);
+                        }
+                        alphaCanvasObj = alphaCanvasData;
+                        if(alphaCanvasData.otherContent && alphaCanvasData.otherContent[0]){
+                             alphaAnnoList = alphaCanvasData.otherContent[0]["@id"];
+                        }
+                        else{
+                            alphaAnnoList = "";
+                        }
+                        if(alphaCanvasData.label !== undefined && alphaCanvasData.label !== ""){
+                          alphaLabel = alphaCanvasData.label;
+                        }
+                        if(alphaCanvasData.images && alphaCanvasData.images.length > 0){
+                            if(alphaCanvasData.images[0].resource["@id"].indexOf("imgNotFound") > -1){
+                                
+                            }
+                            else if (alphaCanvasData.images[0].resource["@id"] === ""){
+                                
+                            }
+                            else{
+                                alphaImage = alphaCanvasData.images[0].resource["@id"];
+                            }
+                        }
+                        $.ajax({
+                            "url":alphaAnnoList,
+                            success: function(annoList1){
+                                if(typeof annoList1!== "object"){
+                                    annoList1 = JSON.parse(annoList1);
+                                }
+                                var tmpResources = annoList1.resources;
+                                if(typeof tmpResources !== "object"){
+                                    tmpResources = tmpResources.replace('\"', '"');
+                                    tmpResources = JSON.parse(tmpResources);
+                                }
+                                annoList1.resources = tmpResources;
+                                annoListCollection[0] = annoList1;
+                                $("#folioSide1").attr("onclick","enterCatalogueInfo('"+alphaCanvasURI+"', 'recto');"); 
+                                $("#folioSide1").attr("canvas", alphaCanvasURI);
+                                $("#folioSide1").click();
+                                //console.log("populate from existing");
+                                populateAnnoForms();
+                            }
+                        }); //live
+                        if(alphaImage.indexOf("addImg") > -1 || alphaImage.indexOf("imgNotFound") > -1){
+                            $("#oneAndtwo").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                            $("#leafTmp").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                            $("#folioSide1").find(".rectoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
+                        }
+                        else{
+                            $(".rectoImg").attr("src", alphaImage);
+                        }
+                        //$("#folioSide1").addClass("selectedFolio");
+                        $("#folio1Label").val(alphaLabel);
+                    }
+                    }); //live
+                }
+                betaCanvasURI = this.canvases[1];
+                if(windowURL.indexOf("demo=1") > -1){
+                    $.each(manifestCanvases, function(){
+                      if(this["@id"] == betaCanvasURI){
+                        if(this.otherContent && this.otherContent[0]){
+                            betaAnnoList = this.otherContent[0];
+                        }
+                        else{
+                            betaAnnoList = "";
+                            //betaAnnoList = "http://www.example.org/reform/annoList/empty";
+                            annoListCollection[1] = {"@id":"empty","resources":[]};
+                        }
+                        if(this.label!== ""){
+                          betaLabel = this.label;
+                        }
+                        //console.log("lloking for beta image");
+                        if(this.images && this.images.length > 0){
+                            if(this.images[0].resource["@id"].indexOf("imgNotFound") > -1){
+                                
+                            }
+                            else if (this.images[0].resource["@id"] === ""){
+                                
+                            }
+                            else{
+                                //console.log("BETA IMAGE FOUND");
+                                betaImage = this.images[0].resource["@id"];
+                                if(betaImage.indexOf("addImg") > -1 || betaImage.indexOf("imgNotFound") > -1){
+                                    $("#oneAndtwo").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                                    $("#leafTmp").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                                    $("#folioSide1").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
+                                }
+                                else{
+                                    $(".versoImg").attr("src", betaImage);
+                                }
+                            }
+                        }
+                         $("#folioSide2").attr("onclick","enterCatalogueInfo('"+betaCanvasURI+"', 'verso');"); 
+                         $("#folioSide2").attr("canvas", betaCanvasURI); 
+                      }
+                    });
+                }
+                else{
+                    $.ajax({
+                    "url":betaCanvasURI,
+                    success: function(betaCanvasData){
+                        race2 = true;
+                        if(typeof betaCanvasData!== "object"){
+                            betaCanvasData = JSON.parse(betaCanvasData);
+                        }
+                        betaCanvasObj = betaCanvasData;
+                        if(betaCanvasData.otherContent && betaCanvasData.otherContent[0]){
+                             betaAnnoList = betaCanvasData.otherContent[0]["@id"];
+                        }
+                        else{
+                            betaAnnoList = "";
+                        }
+                        if(betaCanvasData.label !== undefined && betaCanvasData.label !== ""){
+                          betaLabel = betaCanvasData.label;
+                        }
+                        if(betaCanvasData.images && betaCanvasData.images.length > 0){
+                            if(betaCanvasData.images[0].resource["@id"].indexOf("imgNotFound") > -1){
+                                
+                            }
+                            else if (betaCanvasData.images[0].resource["@id"] === ""){
+                                
+                            }
+                            else{
+                                betaImage = betaCanvasData.images[0].resource["@id"];
+                            }
+                        }
+                        $.ajax({
+                            "url":betaAnnoList,
+                            success: function(annoList2){
+                                if(typeof annoList2 !== "object"){
+                                    annoList2 = JSON.parse(annoList2);
+                                }
+                                var tmpResources = annoList2.resources;
+                               
+                                if(typeof tmpResources !== "object"){
+                                    tmpResources = tmpResources.replace('\"', '"');
+                                    tmpResources = JSON.parse(tmpResources);
+                                }
+                                annoList2.resources = tmpResources;
+                                annoListCollection[1] = annoList2;
+                            }
+                        });//live
+                        $("#folioSide2").attr("onclick","enterCatalogueInfo('"+betaCanvasURI+"', 'verso');"); 
+                        $("#folioSide2").attr("canvas", betaCanvasURI); 
+                        if(betaImage.indexOf("addImg") > -1 || betaImage.indexOf("imgNotFound") > -1){
+                            $("#oneAndtwo").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                            $("#leafTmp").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/imgNotFound.png");
+                            $("#folioSide1").find(".versoImg").attr("src","http://brokenbooks.org/brokenBooks/images/addImg.jpg");
+                        }
+                        else{
+                            $(".versoImg").attr("src", betaImage);
+                        }
+                        $("#folio2Label").val(betaLabel);
+                        $("#saveCover").hide();
+                        $("#saveText").html("Saving...");
+                    }
+                    }); //live
+                }
+//                console.log("here are the anno lists");
+//                console.log(annotationLists);
+//                console.log(alphaAnnoList);
+//                console.log(betaAnnoList);
+                if(windowURL.indexOf("demo=1") > -1){
+                    //error from demo when clicking blue i
+                    $.each(annotationLists, function(){
+                      if(this["@id"]!==undefined && this["@id"] === alphaAnnoList){
+                        annoListCollection[0] = this;
+                      }
+                    });
+                    $.each(annotationLists, function(){
+                      if(this["@id"]!==undefined&&this["@id"] === betaAnnoList){
+                        annoListCollection[1] = this;
+                      }
+                    });
+
+                     $.each(annotationLists, function(){
+                      if(this["@id"]!==undefined&&this["@id"] === leafAnnoList){
+                        annoListCollection[2] = this;
+                      }
+                    });
+                }
+            }
+        });
+    }
+
+    $(".leafPopover").show();
+    var buttonToClose = $("<div onclick='closeLeafPopover();' class='leafPopClose'></div>");
+    var arrangeAreaCover = $("<div class='arrangeAreaCover'></div>");
+    $(".imgAdditionArea").show();
+    if($(".imgAdditionArea").children(".leafPopClose").length == 0){
+      $(".imgAdditionArea").append(buttonToClose);
+    }
+    //If admins can see this area, then the following doesn't have to be hidden.
+    $("#placement").children("input[type='button']").hide();
+   
+    $("#placement").children("p:first").html("This area shows where the leaf is positioned in the structure.  This cannot be altered here.  If you want to move your leaf to a new section \n\
+      close this and use the drag and drop interface.");
+
+    submitIntro('testEdit');
+    alpha = true;
+    beta = false;
+    zeta = false;
+    //$(".popoverTrail").find(".selectedSection:first").click(); //collapse the tree
+    selectInTree(leafIsIn); 
+    //console.log("Click folio side 1, hide saveCover, change saveText");
+    
+    //$("#folioSide1").addClass("selectedSection");
+    if(windowURL.indexOf("demo=1")>-1){
+        //console.log("demo, populate anno forms with annos:");
+        //console.log(annoListCollection);
+        $("#folioSide1").addClass("selectedSection");
+        populateAnnoForms();
+        $("#saveCover").hide();
+        $("#saveText").html("Updating...");
+    }
+    $(".popoverTrail").children(".rangeArrangementArea").append(arrangeAreaCover);
 }
 
 
