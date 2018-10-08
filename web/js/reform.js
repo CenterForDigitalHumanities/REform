@@ -22,35 +22,35 @@ var testLists = [
     {
         "@type" : "sc:AnnotationList",
         "context" : "http://www.shared-canvas.org/ns/context.json",
-        "on" : "http://www.example.org/iiif/LlangBrev/range/25", //January leaf
+        "on" : "http://www.example.org/reform/range/25", //January leaf
         "originalAnnoID" : "",
         "version" : 1,
         "permission" : 0,
         "forkFromID" : "",
-        "@id" :"http://www.example.org/iiif/LlangBrev/annoList/3",
-        "resources" : "[{\"@id\":\"http://165.134.241.141/annotationstore/annotation/554ce6dee4b0f1c678d2a54c\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"General Metadata\",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qwertyuuiio\"},\"on\":\"http://www.example.org/iiif/LlangBrev/range/25\"},{\"@id\":\"http://165.134.241.141/annotationstore/annotation/554ce6dee4b0f1c678d2a54b\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Institution or Repository: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qqqq\"},\"on\":\"http://www.example.org/iiif/LlangBrev/range/25\"},{\"@id\":\"http://165.134.241.141/annotationstore/annotation/554ce6dee4b0f1c678d2a54d\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Date: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"wwww\"},\"on\":\"http://www.example.org/iiif/LlangBrev/range/25\"},{\"@id\":\"http://165.134.241.141/annotationstore/annotation/554ce6dee4b0f1c678d2a54e\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Language:  \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"eeee\"},\"on\":\"http://www.example.org/iiif/LlangBrev/range/25\"}]"
+        "@id" :"http://www.example.org/reform/annoList/3",
+        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54c\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"General Metadata\",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qwertyuuiio\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54b\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Institution or Repository: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qqqq\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54d\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Date: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"wwww\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54e\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Language:  \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"eeee\"},\"on\":\"http://www.example.org/reform/range/25\"}]"
     },
     {
         "@type" : "sc:AnnotationList",
         "context" : "http://www.shared-canvas.org/ns/context.json",
-        "on" : "http://www.example.org/iiif/LlangBrev/canvas/1", //january leaf canvas 1
+        "on" : "http://www.example.org/reform/canvas/1", //january leaf canvas 1
         "originalAnnoID" : "",
         "version" : 1,
         "permission" : 0,
         "forkFromID" : "",
-        "@id" : "http://www.example.org/iiif/LlangBrev/annoList/1",
-        "resources" : "[{\"@id\":\"http://165.134.241.141/annotationstore/annotation/554ce6f3e4b0f1c678d2a550\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Place Of Origin: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"ssss\"},\"on\":\"http://www.example.org/iiif/LlangBrev/canvas/1\"}]"
+        "@id" : "http://www.example.org/reform/annoList/1",
+        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce6f3e4b0f1c678d2a550\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Place Of Origin: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"ssss\"},\"on\":\"http://www.example.org/reform/canvas/1\"}]"
     },
     {
         "@type" : "sc:AnnotationList",
         "context" : "http://www.shared-canvas.org/ns/context.json",
-        "on" : "http://www.example.org/iiif/LlangBrev/canvas/2", //january leaf canvas 2
+        "on" : "http://www.example.org/reform/canvas/2", //january leaf canvas 2
         "originalAnnoID" : "",
         "version" : 1,
         "permission" : 0,
         "forkFromID" : "",
-        "@id" : "http://www.example.org/iiif/LlangBrev/annoList/2",
-        "resources" : "[{\"@id\":\"http://165.134.241.141/annotationstore/annotation/554ce707e4b0f1c678d2a554\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Format (single leaf, half bifolium, fragment): \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"xxxxx\"},\"on\":\"http://www.example.org/iiif/LlangBrev/canvas/2\"}]"
+        "@id" : "http://www.example.org/reform/annoList/2",
+        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce707e4b0f1c678d2a554\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Format (single leaf, half bifolium, fragment): \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"xxxxx\"},\"on\":\"http://www.example.org/reform/canvas/2\"}]"
     }       
 ];
 annoListCollection[0] = testLists[0];
@@ -70,12 +70,12 @@ var testManifest = {
     "context" : "http://www.shared-canvas.org/ns/context.json",
     "label" : "Llang Binder",
     "sequences" : [{
-      "@id" : "http://www.example.org/iiif/LlangBrev/sequence/normal",
+      "@id" : "http://www.example.org/reform/sequence/normal",
       "@type" : "sc:Sequence",
       "label" : "Llangattock Bucket",
       "canvases" : [{
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/1_anchor",
+          "@id" : "http://www.example.org/reform/canvas/1_anchor",
           "@type" : "sc:Canvas",
           "label" : "Llang_001",
           "height" : 1000,
@@ -84,19 +84,19 @@ var testManifest = {
               "@type" : "oa:Annotation",
               "motivation" : "sc:painting",
               "resource" : {
-                "@id" : "http://www.example.org/iiif/LlangBrev/image_001",
+                "@id" : "http://www.example.org/reform/image_001",
                 "@type" : "dctypes:Image",
                 "format" : "image/jpeg",
                 "height" : 2365,
                 "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/1_anchor"
+              "on" : "http://www.example.org/reform/canvas/1_anchor"
           }],
           "otherContent":[]
          },
          {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/1",
+          "@id" : "http://www.example.org/reform/canvas/1",
           "@type" : "sc:Canvas",
           "label" : "January Text_r",
           "height" : 300,
@@ -112,15 +112,15 @@ var testManifest = {
                  "height" : 2365,
                  "width" : 1579
                },
-               "on" : "http://www.example.org/iiif/LlangBrev/canvas/1"
+               "on" : "http://www.example.org/reform/canvas/1"
           }
           ],
-          "otherContent":[{"@id":"http://www.example.org/iiif/LlangBrev/annoList/1", "@type":"sc:AnnotationList"}]
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/1", "@type":"sc:AnnotationList"}]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/2",
+          "@id" : "http://www.example.org/reform/canvas/2",
           "@type" : "sc:Canvas",
           "label" : "January Text_v",
           "height" : 300,
@@ -135,13 +135,13 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/2"
+              "on" : "http://www.example.org/reform/canvas/2"
           }],
-          "otherContent":[{"@id":"http://www.example.org/iiif/LlangBrev/annoList/2", "@type":"sc:AnnotationList"}]
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/2", "@type":"sc:AnnotationList"}]
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/3",
+          "@id" : "http://www.example.org/reform/canvas/3",
           "@type" : "sc:Canvas",
           "label" : "February Text_r",
           "height" : 300,
@@ -156,14 +156,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/3"
+              "on" : "http://www.example.org/reform/canvas/3"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/4",
+          "@id" : "http://www.example.org/reform/canvas/4",
           "@type" : "sc:Canvas",
           "label" : "February Text_v",
           "height" : 300,
@@ -178,14 +178,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/4"
+              "on" : "http://www.example.org/reform/canvas/4"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/5",
+          "@id" : "http://www.example.org/reform/canvas/5",
           "@type" : "sc:Canvas",
           "label" : "March Text_r",
           "height" : 300,
@@ -200,14 +200,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/5"
+              "on" : "http://www.example.org/reform/canvas/5"
           }],
           "otherContent":[]
          
    },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/6",
+          "@id" : "http://www.example.org/reform/canvas/6",
           "@type" : "sc:Canvas",
           "label" : "March Text_v",
           "height" : 300,
@@ -222,14 +222,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/6"
+              "on" : "http://www.example.org/reform/canvas/6"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/7",
+          "@id" : "http://www.example.org/reform/canvas/7",
           "@type" : "sc:Canvas",
           "label" : "April Text_r",
           "height" : 300,
@@ -244,14 +244,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/7"
+              "on" : "http://www.example.org/reform/canvas/7"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/8",
+          "@id" : "http://www.example.org/reform/canvas/8",
           "@type" : "sc:Canvas",
           "label" : "April Text_v",
           "height" : 300,
@@ -266,14 +266,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/8"
+              "on" : "http://www.example.org/reform/canvas/8"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/9",
+          "@id" : "http://www.example.org/reform/canvas/9",
           "@type" : "sc:Canvas",
           "label" : "May Text_r",
           "height" : 300,
@@ -288,14 +288,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/9"
+              "on" : "http://www.example.org/reform/canvas/9"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/10",
+          "@id" : "http://www.example.org/reform/canvas/10",
           "@type" : "sc:Canvas",
           "label" : "May Text_v",
           "height" : 300,
@@ -310,14 +310,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/10"
+              "on" : "http://www.example.org/reform/canvas/10"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/11",
+          "@id" : "http://www.example.org/reform/canvas/11",
           "@type" : "sc:Canvas",
           "label" : "June Text_r",
           "height" : 300,
@@ -332,14 +332,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/11"
+              "on" : "http://www.example.org/reform/canvas/11"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/12",
+          "@id" : "http://www.example.org/reform/canvas/12",
           "@type" : "sc:Canvas",
           "label" : "June Text_v",
           "height" : 300,
@@ -354,13 +354,13 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/12"
+              "on" : "http://www.example.org/reform/canvas/12"
           }],
           "otherContent":[]
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/13",
+          "@id" : "http://www.example.org/reform/canvas/13",
           "@type" : "sc:Canvas",
           "label" : "Advent_r",
           "height" : 300,
@@ -375,13 +375,13 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/13"
+              "on" : "http://www.example.org/reform/canvas/13"
           }],
           "otherContent":[]      
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/14",
+          "@id" : "http://www.example.org/reform/canvas/14",
           "@type" : "sc:Canvas",
           "label" : "Advent_v",
           "height" : 300,
@@ -396,14 +396,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/14"
+              "on" : "http://www.example.org/reform/canvas/14"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/15",
+          "@id" : "http://www.example.org/reform/canvas/15",
           "@type" : "sc:Canvas",
           "label" : "Epiphany_r",
           "height" : 300,
@@ -418,13 +418,13 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/15"
+              "on" : "http://www.example.org/reform/canvas/15"
           }],
           "otherContent":[]   
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/16",
+          "@id" : "http://www.example.org/reform/canvas/16",
           "@type" : "sc:Canvas",
           "label" : "Epiphany_v",
           "height" : 300,
@@ -439,14 +439,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/16"
+              "on" : "http://www.example.org/reform/canvas/16"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/17",
+          "@id" : "http://www.example.org/reform/canvas/17",
           "@type" : "sc:Canvas",
           "label" : "Pre-Lent_r",
           "height" : 300,
@@ -461,13 +461,13 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/17"
+              "on" : "http://www.example.org/reform/canvas/17"
           }],
           "otherContent":[]   
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/18",
+          "@id" : "http://www.example.org/reform/canvas/18",
           "@type" : "sc:Canvas",
           "label" : "Pre-Lent_v",
           "height" : 300,
@@ -482,14 +482,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/18"
+              "on" : "http://www.example.org/reform/canvas/18"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/19",
+          "@id" : "http://www.example.org/reform/canvas/19",
           "@type" : "sc:Canvas",
           "label" : "Ascension_r",
           "height" : 300,
@@ -504,14 +504,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/19"
+              "on" : "http://www.example.org/reform/canvas/19"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/20",
+          "@id" : "http://www.example.org/reform/canvas/20",
           "@type" : "sc:Canvas",
           "label" : "Ascension_v",
           "height" : 300,
@@ -526,14 +526,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/20"
+              "on" : "http://www.example.org/reform/canvas/20"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/21",
+          "@id" : "http://www.example.org/reform/canvas/21",
           "@type" : "sc:Canvas",
           "label" : "Pentecost_r",
           "height" : 300,
@@ -548,14 +548,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/21"
+              "on" : "http://www.example.org/reform/canvas/21"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/22",
+          "@id" : "http://www.example.org/reform/canvas/22",
           "@type" : "sc:Canvas",
           "label" : "Pentecost_v",
           "height" : 300,
@@ -570,14 +570,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/22"
+              "on" : "http://www.example.org/reform/canvas/22"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/23",
+          "@id" : "http://www.example.org/reform/canvas/23",
           "@type" : "sc:Canvas",
           "label" : "Pentecost After Advent_r",
           "height" : 300,
@@ -592,14 +592,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/23"
+              "on" : "http://www.example.org/reform/canvas/23"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/24",
+          "@id" : "http://www.example.org/reform/canvas/24",
           "@type" : "sc:Canvas",
           "label" : "Pentecost After Advent_v",
           "height" : 300,
@@ -614,14 +614,14 @@ var testManifest = {
                 // "height" : 2365,
                 // "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/24"
+              "on" : "http://www.example.org/reform/canvas/24"
           }],
           "otherContent":[]
          
    },
    {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/25",
+          "@id" : "http://www.example.org/reform/canvas/25",
           "@type" : "sc:Canvas",
           "label" : "Psalms 1-6",
           "height" : 300,
@@ -632,7 +632,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/26",
+          "@id" : "http://www.example.org/reform/canvas/26",
           "@type" : "sc:Canvas",
           "label" : "Psalms 6-11",
           "height" : 300,
@@ -643,7 +643,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/27",
+          "@id" : "http://www.example.org/reform/canvas/27",
           "@type" : "sc:Canvas",
           "label" : "Psalms 41-46",
           "height" : 300,
@@ -654,7 +654,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/28",
+          "@id" : "http://www.example.org/reform/canvas/28",
           "@type" : "sc:Canvas",
           "label" : "Psalms 46-50",
           "height" : 300,
@@ -665,7 +665,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/29",
+          "@id" : "http://www.example.org/reform/canvas/29",
           "@type" : "sc:Canvas",
           "label" : "Psalms 51-56",
           "height" : 300,
@@ -676,7 +676,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/30",
+          "@id" : "http://www.example.org/reform/canvas/30",
           "@type" : "sc:Canvas",
           "label" : "Psalms 56-61",
           "height" : 300,
@@ -687,7 +687,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/31",
+          "@id" : "http://www.example.org/reform/canvas/31",
           "@type" : "sc:Canvas",
           "label" : "Psalms 91-96",
           "height" : 300,
@@ -698,7 +698,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/32",
+          "@id" : "http://www.example.org/reform/canvas/32",
           "@type" : "sc:Canvas",
           "label" : "Psalms 96-100",
           "height" : 300,
@@ -709,7 +709,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/33",
+          "@id" : "http://www.example.org/reform/canvas/33",
           "@type" : "sc:Canvas",
           "label" : "Psalms 101-107",
           "height" : 300,
@@ -720,7 +720,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/34",
+          "@id" : "http://www.example.org/reform/canvas/34",
           "@type" : "sc:Canvas",
           "label" : "Psalms 106-111",
           "height" : 300,
@@ -731,7 +731,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/35",
+          "@id" : "http://www.example.org/reform/canvas/35",
           "@type" : "sc:Canvas",
           "label" : "Psalms 141-14150",
           "height" : 300,
@@ -742,7 +742,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/36",
+          "@id" : "http://www.example.org/reform/canvas/36",
           "@type" : "sc:Canvas",
           "label" : "Psalms 146-150",
           "height" : 300,
@@ -753,7 +753,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/37",
+          "@id" : "http://www.example.org/reform/canvas/37",
           "@type" : "sc:Canvas",
           "label" : "Apostles_r",
           "height" : 300,
@@ -764,7 +764,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/38",
+          "@id" : "http://www.example.org/reform/canvas/38",
           "@type" : "sc:Canvas",
           "label" : "Apostles_v",
           "height" : 300,
@@ -775,7 +775,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/39",
+          "@id" : "http://www.example.org/reform/canvas/39",
           "@type" : "sc:Canvas",
           "label" : "Virgins_r",
           "height" : 300,
@@ -786,7 +786,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/40",
+          "@id" : "http://www.example.org/reform/canvas/40",
           "@type" : "sc:Canvas",
           "label" : "Virgins_v",
           "height" : 300,
@@ -797,7 +797,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/41",
+          "@id" : "http://www.example.org/reform/canvas/41",
           "@type" : "sc:Canvas",
           "label" : "Andrew_r",
           "height" : 300,
@@ -808,7 +808,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/42",
+          "@id" : "http://www.example.org/reform/canvas/42",
           "@type" : "sc:Canvas",
           "label" : "Andrew_v",
           "height" : 300,
@@ -819,7 +819,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/43",
+          "@id" : "http://www.example.org/reform/canvas/43",
           "@type" : "sc:Canvas",
           "label" : "Petronilla_r",
           "height" : 300,
@@ -830,7 +830,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/44",
+          "@id" : "http://www.example.org/reform/canvas/44",
           "@type" : "sc:Canvas",
           "label" : "Pertonilla_v",
           "height" : 300,
@@ -841,7 +841,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/45",
+          "@id" : "http://www.example.org/reform/canvas/45",
           "@type" : "sc:Canvas",
           "label" : "Marcellinus_r",
           "height" : 300,
@@ -852,7 +852,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/46",
+          "@id" : "http://www.example.org/reform/canvas/46",
           "@type" : "sc:Canvas",
           "label" : "Marcellinus_v",
           "height" : 300,
@@ -863,7 +863,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/45",
+          "@id" : "http://www.example.org/reform/canvas/45",
           "@type" : "sc:Canvas",
           "label" : "Saturinus_r",
           "height" : 300,
@@ -874,7 +874,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/46",
+          "@id" : "http://www.example.org/reform/canvas/46",
           "@type" : "sc:Canvas",
           "label" : "Saturinus_v",
           "height" : 300,
@@ -885,7 +885,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/47",
+          "@id" : "http://www.example.org/reform/canvas/47",
           "@type" : "sc:Canvas",
           "label" : "OOV_r",
           "height" : 300,
@@ -896,7 +896,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/48",
+          "@id" : "http://www.example.org/reform/canvas/48",
           "@type" : "sc:Canvas",
           "label" : "OOV_v",
           "height" : 300,
@@ -907,7 +907,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/49",
+          "@id" : "http://www.example.org/reform/canvas/49",
           "@type" : "sc:Canvas",
           "label" : "OOD_r",
           "height" : 300,
@@ -918,7 +918,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/50",
+          "@id" : "http://www.example.org/reform/canvas/50",
           "@type" : "sc:Canvas",
           "label" : "OOD_v",
           "height" : 300,
@@ -929,7 +929,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/51",
+          "@id" : "http://www.example.org/reform/canvas/51",
           "@type" : "sc:Canvas",
           "label" : "misc_r",
           "height" : 300,
@@ -940,7 +940,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/52",
+          "@id" : "http://www.example.org/reform/canvas/52",
           "@type" : "sc:Canvas",
           "label" : "misc_v",
           "height" : 300,
@@ -951,7 +951,7 @@ var testManifest = {
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/55",
+          "@id" : "http://www.example.org/reform/canvas/55",
           "@type" : "sc:Canvas",
           "label" : "SLU_VFL_MS_002_fol_b_r",
           "height" : 300,
@@ -966,14 +966,14 @@ var testManifest = {
                 "height" : 2365,
                 "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/1_anchor"
+              "on" : "http://www.example.org/reform/canvas/1_anchor"
           }],
-          "otherContent":[{"@id":"http://www.example.org/iiif/LlangBrev/annoList/4", "@type":"sc:AnnotationList"}]
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/4", "@type":"sc:AnnotationList"}]
          
     },
     {
       //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/iiif/LlangBrev/canvas/56",
+          "@id" : "http://www.example.org/reform/canvas/56",
           "@type" : "sc:Canvas",
           "label" : "SLU_VFL_MS_002_fol_b_v",
           "height" : 300,
@@ -988,9 +988,9 @@ var testManifest = {
                 "height" : 2365,
                 "width" : 1579
               },
-              "on" : "http://www.example.org/iiif/LlangBrev/canvas/1_anchor"
+              "on" : "http://www.example.org/reform/canvas/1_anchor"
           }],
-          "otherContent":[{"@id":"http://www.example.org/iiif/LlangBrev/annoList/5", "@type":"sc:AnnotationList"}]
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/5", "@type":"sc:AnnotationList"}]
          
     },
     ]
@@ -998,632 +998,632 @@ var testManifest = {
 "structures" : [
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/parent_aggr",
+  "@id":"http://www.example.org/reform/range/parent_aggr",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Llangattock Breviary Structure",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/1",
-      "http://www.example.org/iiif/LlangBrev/range/2",
-      "http://www.example.org/iiif/LlangBrev/range/3",
-      "http://www.example.org/iiif/LlangBrev/range/4",
-      "http://www.example.org/iiif/LlangBrev/range/21",
-      "http://www.example.org/iiif/LlangBrev/range/5"
+      "http://www.example.org/reform/range/1",
+      "http://www.example.org/reform/range/2",
+      "http://www.example.org/reform/range/3",
+      "http://www.example.org/reform/range/4",
+      "http://www.example.org/reform/range/21",
+      "http://www.example.org/reform/range/5"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },    
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/1",
+  "@id":"http://www.example.org/reform/range/1",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Calendar",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/7",
-      "http://www.example.org/iiif/LlangBrev/range/8",
-      "http://www.example.org/iiif/LlangBrev/range/9",
-      "http://www.example.org/iiif/LlangBrev/range/10",
-      "http://www.example.org/iiif/LlangBrev/range/11",
-      "http://www.example.org/iiif/LlangBrev/range/12"
+      "http://www.example.org/reform/range/7",
+      "http://www.example.org/reform/range/8",
+      "http://www.example.org/reform/range/9",
+      "http://www.example.org/reform/range/10",
+      "http://www.example.org/reform/range/11",
+      "http://www.example.org/reform/range/12"
       //add leaf ranges here in order for page order
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 { //A connection of content can be made like this, but not fragments
-  "@id":"http://www.example.org/iiif/LlangBrev/range/2",
+  "@id":"http://www.example.org/reform/range/2",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Temporale",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/13",
-      "http://www.example.org/iiif/LlangBrev/range/14",
-      "http://www.example.org/iiif/LlangBrev/range/15",
-      "http://www.example.org/iiif/LlangBrev/range/53"
+      "http://www.example.org/reform/range/13",
+      "http://www.example.org/reform/range/14",
+      "http://www.example.org/reform/range/15",
+      "http://www.example.org/reform/range/53"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {//A connection of content can be made like this, but not fragments
-  "@id":"http://www.example.org/iiif/LlangBrev/range/3",
+  "@id":"http://www.example.org/reform/range/3",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalter",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/16",
-      "http://www.example.org/iiif/LlangBrev/range/17",
-      "http://www.example.org/iiif/LlangBrev/range/18"
+      "http://www.example.org/reform/range/16",
+      "http://www.example.org/reform/range/17",
+      "http://www.example.org/reform/range/18"
       //add leaf ranges here in order for page order
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/4",
+  "@id":"http://www.example.org/reform/range/4",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Sanctorale",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/19",
-      "http://www.example.org/iiif/LlangBrev/range/20",
+      "http://www.example.org/reform/range/19",
+      "http://www.example.org/reform/range/20",
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/5",
+  "@id":"http://www.example.org/reform/range/5",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Auxilary Texts",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/22",
-      "http://www.example.org/iiif/LlangBrev/range/23",
-      "http://www.example.org/iiif/LlangBrev/range/24"
+      "http://www.example.org/reform/range/22",
+      "http://www.example.org/reform/range/23",
+      "http://www.example.org/reform/range/24"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/7",
+  "@id":"http://www.example.org/reform/range/7",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"January",
   "ranges" : [
-    "http://www.example.org/iiif/LlangBrev/range/25"
+    "http://www.example.org/reform/range/25"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/8",
+  "@id":"http://www.example.org/reform/range/8",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"February",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/26"
+      "http://www.example.org/reform/range/26"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/9",
+  "@id":"http://www.example.org/reform/range/9",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"March",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/27"
+      "http://www.example.org/reform/range/27"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/10",
+  "@id":"http://www.example.org/reform/range/10",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"April",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/28"
+      "http://www.example.org/reform/range/28"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/11",
+  "@id":"http://www.example.org/reform/range/11",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"May",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/29"
+      "http://www.example.org/reform/range/29"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/12",
+  "@id":"http://www.example.org/reform/range/12",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"June",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/30"
+      "http://www.example.org/reform/range/30"
    ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 }, //EX: we know this is the last section.  Here are 4 pages we know are in it.  It is not inside the table of contents array.
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/13",
+  "@id":"http://www.example.org/reform/range/13",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Advent - Epiphany",
   "ranges" : [
-    "http://www.example.org/iiif/LlangBrev/range/31", 
-    "http://www.example.org/iiif/LlangBrev/range/32"
+    "http://www.example.org/reform/range/31", 
+    "http://www.example.org/reform/range/32"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/14",
+  "@id":"http://www.example.org/reform/range/14",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Pre-Lent through Ascension",
   "ranges" : [
-    "http://www.example.org/iiif/LlangBrev/range/33", 
-    "http://www.example.org/iiif/LlangBrev/range/34"
+    "http://www.example.org/reform/range/33", 
+    "http://www.example.org/reform/range/34"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/15",
+  "@id":"http://www.example.org/reform/range/15",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Pentecost to Advent",
   "ranges" : [
-    "http://www.example.org/iiif/LlangBrev/range/35", 
-    "http://www.example.org/iiif/LlangBrev/range/36"
+    "http://www.example.org/reform/range/35", 
+    "http://www.example.org/reform/range/36"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/16",
+  "@id":"http://www.example.org/reform/range/16",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 1-50",
   "ranges" : [
-    "http://www.example.org/iiif/LlangBrev/range/37", 
-    "http://www.example.org/iiif/LlangBrev/range/38"
+    "http://www.example.org/reform/range/37", 
+    "http://www.example.org/reform/range/38"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/17",
+  "@id":"http://www.example.org/reform/range/17",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 51-100",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/39", 
-      "http://www.example.org/iiif/LlangBrev/range/40"
+      "http://www.example.org/reform/range/39", 
+      "http://www.example.org/reform/range/40"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/18",
+  "@id":"http://www.example.org/reform/range/18",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 101-150",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/41", 
-      "http://www.example.org/iiif/LlangBrev/range/42"
+      "http://www.example.org/reform/range/41", 
+      "http://www.example.org/reform/range/42"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/19",
+  "@id":"http://www.example.org/reform/range/19",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Andrew (Nov 30)-Petronilla(May31)",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/46",
-      "http://www.example.org/iiif/LlangBrev/range/47"
+      "http://www.example.org/reform/range/46",
+      "http://www.example.org/reform/range/47"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/20",
+  "@id":"http://www.example.org/reform/range/20",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Marcellinus (June 2)â€“Satirinus(Nov 29)",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/48",
-      "http://www.example.org/iiif/LlangBrev/range/49"
+      "http://www.example.org/reform/range/48",
+      "http://www.example.org/reform/range/49"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/21",
+  "@id":"http://www.example.org/reform/range/21",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Common of Saints",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/43"
+      "http://www.example.org/reform/range/43"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/22",
+  "@id":"http://www.example.org/reform/range/22",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Office of the Virgin",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/50"
+      "http://www.example.org/reform/range/50"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/23",
+  "@id":"http://www.example.org/reform/range/23",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Office of the Dead",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/51"
+      "http://www.example.org/reform/range/51"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/24",
+  "@id":"http://www.example.org/reform/range/24",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Miscellaneous",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/52"
+      "http://www.example.org/reform/range/52"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/25",
+  "@id":"http://www.example.org/reform/range/25",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"January Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/1","http://www.example.org/iiif/LlangBrev/canvas/2"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
-  "otherContent" : [{"@id":"http://www.example.org/iiif/LlangBrev/annoList/3", "@type":"sc:AnnotationList"}]
+  "canvases" :["http://www.example.org/reform/canvas/1","http://www.example.org/reform/canvas/2"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : [{"@id":"http://www.example.org/reform/annoList/3", "@type":"sc:AnnotationList"}]
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/26",
+  "@id":"http://www.example.org/reform/range/26",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"February Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/3","http://www.example.org/iiif/LlangBrev/canvas/4"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/3","http://www.example.org/reform/canvas/4"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/27",
+  "@id":"http://www.example.org/reform/range/27",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"March Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/5","http://www.example.org/iiif/LlangBrev/canvas/6"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/5","http://www.example.org/reform/canvas/6"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/28",
+  "@id":"http://www.example.org/reform/range/28",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"April Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/7","http://www.example.org/iiif/LlangBrev/canvas/8"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/7","http://www.example.org/reform/canvas/8"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/29",
+  "@id":"http://www.example.org/reform/range/29",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"May Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/9","http://www.example.org/iiif/LlangBrev/canvas/10"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/9","http://www.example.org/reform/canvas/10"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/30",
+  "@id":"http://www.example.org/reform/range/30",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"June Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/11","http://www.example.org/iiif/LlangBrev/canvas/12"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/11","http://www.example.org/reform/canvas/12"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/31",
+  "@id":"http://www.example.org/reform/range/31",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Advent Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/13","http://www.example.org/iiif/LlangBrev/canvas/14"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/13","http://www.example.org/reform/canvas/14"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/32",
+  "@id":"http://www.example.org/reform/range/32",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Epiphany Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/15","http://www.example.org/iiif/LlangBrev/canvas/16"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/15","http://www.example.org/reform/canvas/16"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/33",
+  "@id":"http://www.example.org/reform/range/33",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Pre-Lent Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/17","http://www.example.org/iiif/LlangBrev/canvas/18"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/17","http://www.example.org/reform/canvas/18"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/34",
+  "@id":"http://www.example.org/reform/range/34",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Ascension Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/19","http://www.example.org/iiif/LlangBrev/canvas/20"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/19","http://www.example.org/reform/canvas/20"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/35",
+  "@id":"http://www.example.org/reform/range/35",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Pentecost Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/21","http://www.example.org/iiif/LlangBrev/canvas/22"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/21","http://www.example.org/reform/canvas/22"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/36",
+  "@id":"http://www.example.org/reform/range/36",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Advent After Pentecost Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/23","http://www.example.org/iiif/LlangBrev/canvas/24"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/23","http://www.example.org/reform/canvas/24"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/37",
+  "@id":"http://www.example.org/reform/range/37",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 1-11 Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/25","http://www.example.org/iiif/LlangBrev/canvas/26"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/25","http://www.example.org/reform/canvas/26"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/38",
+  "@id":"http://www.example.org/reform/range/38",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 41-50 Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/27","http://www.example.org/iiif/LlangBrev/canvas/28"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/27","http://www.example.org/reform/canvas/28"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/39",
+  "@id":"http://www.example.org/reform/range/39",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 51-61 Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/29","http://www.example.org/iiif/LlangBrev/canvas/30"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/29","http://www.example.org/reform/canvas/30"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/40",
+  "@id":"http://www.example.org/reform/range/40",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 91-100 Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/31","http://www.example.org/iiif/LlangBrev/canvas/32"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/31","http://www.example.org/reform/canvas/32"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/41",
+  "@id":"http://www.example.org/reform/range/41",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 101-111 Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/33","http://www.example.org/iiif/LlangBrev/canvas/34"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/33","http://www.example.org/reform/canvas/34"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/42",
+  "@id":"http://www.example.org/reform/range/42",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Psalms 141-150 Text",
   "ranges" : [
       
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/35","http://www.example.org/iiif/LlangBrev/canvas/36"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/35","http://www.example.org/reform/canvas/36"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/43",
+  "@id":"http://www.example.org/reform/range/43",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Apostles, Martyrs, Confessors, Virgins",
   "ranges" : [
-      "http://www.example.org/iiif/LlangBrev/range/44",
-      "http://www.example.org/iiif/LlangBrev/range/45"
+      "http://www.example.org/reform/range/44",
+      "http://www.example.org/reform/range/45"
   ],
   "canvases" :[],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/44",
+  "@id":"http://www.example.org/reform/range/44",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Apostles Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/37","http://www.example.org/iiif/LlangBrev/canvas/38"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/37","http://www.example.org/reform/canvas/38"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/45",
+  "@id":"http://www.example.org/reform/range/45",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Virgins Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/39","http://www.example.org/iiif/LlangBrev/canvas/40"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/39","http://www.example.org/reform/canvas/40"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/46",
+  "@id":"http://www.example.org/reform/range/46",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Andrew Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/41","http://www.example.org/iiif/LlangBrev/canvas/42"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/41","http://www.example.org/reform/canvas/42"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/47",
+  "@id":"http://www.example.org/reform/range/47",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Petronilla Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/43","http://www.example.org/iiif/LlangBrev/canvas/44"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/43","http://www.example.org/reform/canvas/44"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/48",
+  "@id":"http://www.example.org/reform/range/48",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Marcellinus Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/45","http://www.example.org/iiif/LlangBrev/canvas/46"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/45","http://www.example.org/reform/canvas/46"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/49",
+  "@id":"http://www.example.org/reform/range/49",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Saturinus Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/47","http://www.example.org/iiif/LlangBrev/canvas/48"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/47","http://www.example.org/reform/canvas/48"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/50",
+  "@id":"http://www.example.org/reform/range/50",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Office of the Virgin Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/49","http://www.example.org/iiif/LlangBrev/canvas/50"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/49","http://www.example.org/reform/canvas/50"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/51",
+  "@id":"http://www.example.org/reform/range/51",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Office of the Dead Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/51","http://www.example.org/iiif/LlangBrev/canvas/52"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/51","http://www.example.org/reform/canvas/52"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 },
 {
-  "@id":"http://www.example.org/iiif/LlangBrev/range/52",
+  "@id":"http://www.example.org/reform/range/52",
   "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
   "label":"Miscellaneous Text",
   "ranges" : [
 
   ],
-  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/53","http://www.example.org/iiif/LlangBrev/canvas/54"],
-  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+  "canvases" :["http://www.example.org/reform/canvas/53","http://www.example.org/reform/canvas/54"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
   "otherContent" : []
 }
 //{
-//  "@id":"http://www.example.org/iiif/LlangBrev/range/53",
+//  "@id":"http://www.example.org/reform/range/53",
 //  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
 //  "label":"Demo Test Leaf",
 //  "ranges" : [
 //
 //  ],
-//  "canvases" :["http://www.example.org/iiif/LlangBrev/canvas/55","http://www.example.org/iiif/LlangBrev/canvas/56"],
-//  "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+//  "canvases" :["http://www.example.org/reform/canvas/55","http://www.example.org/reform/canvas/56"],
+//  "isPartOf": "http://www.example.org/reform/sequence/normal",
 //  "otherContent" : []
 //}
 
@@ -1631,7 +1631,7 @@ var testManifest = {
 };
 
 var emptyAnnoList = {
-            "@id" : "http://www.example.org/iiif/LlangBrev/annoList/empty",
+            "@id" : "http://www.example.org/reform/annoList/empty",
             "@type" : "sc:AnnotationList",
             "context" : "http://www.shared-canvas.org/ns/context.json",
             "label" : "EMPTY",
@@ -1640,13 +1640,13 @@ var emptyAnnoList = {
         };
 var annotationLists = [
     {
-      "@id" : "http://www.example.org/iiif/LlangBrev/annoList/1",
+      "@id" : "http://www.example.org/reform/annoList/1",
       "@type" : "sc:AnnotationList",
       "context" : "http://www.shared-canvas.org/ns/context.json",
       "label" : "Fragments",
       "resources" : [ 
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/1",
+          "@id" : "http://www.example.org/reform/anno/1",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "BB Identifier",
@@ -1654,10 +1654,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "BB_LLang_01"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/1"
+          "on" : "http://www.example.org/reform/canvas/1"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/2",
+          "@id" : "http://www.example.org/reform/anno/2",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Nickname",
@@ -1665,10 +1665,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Bryan's test"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/1"
+          "on" : "http://www.example.org/reform/canvas/1"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/3",
+          "@id" : "http://www.example.org/reform/anno/3",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Date Acquired",
@@ -1676,20 +1676,20 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "6/12/15"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/1"
+          "on" : "http://www.example.org/reform/canvas/1"
         }
       ],
-      "on" :  "http://www.example.org/iiif/LlangBrev/canvas/1"//end resources
+      "on" :  "http://www.example.org/reform/canvas/1"//end resources
   },
 
   {
-      "@id" : "http://www.example.org/iiif/LlangBrev/annoList/2",
+      "@id" : "http://www.example.org/reform/annoList/2",
       "@type" : "sc:AnnotationList",
       "context" : "http://www.shared-canvas.org/ns/context.json",
       "label" : "Fragments",
       "resources" : [ 
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/4",
+          "@id" : "http://www.example.org/reform/anno/4",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Place Of Origin",
@@ -1697,10 +1697,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "St. Louis"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/2"
+          "on" : "http://www.example.org/reform/canvas/2"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/5",
+          "@id" : "http://www.example.org/reform/anno/5",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Condition",
@@ -1708,10 +1708,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Deplorable"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/2"
+          "on" : "http://www.example.org/reform/canvas/2"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/6",
+          "@id" : "http://www.example.org/reform/anno/6",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Illustrations",
@@ -1719,19 +1719,19 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Smiley Face Doodles"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/2"
+          "on" : "http://www.example.org/reform/canvas/2"
         }
       ], //end resources
-      "on" : "http://www.example.org/iiif/LlangBrev/canvas/2"
+      "on" : "http://www.example.org/reform/canvas/2"
   },
   {
-      "@id" : "http://www.example.org/iiif/LlangBrev/annoList/3",
+      "@id" : "http://www.example.org/reform/annoList/3",
       "@type" : "sc:AnnotationList",
       "context" : "http://www.shared-canvas.org/ns/context.json",
       "label" : "Fragments",
       "resources" : [ 
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/7",
+          "@id" : "http://www.example.org/reform/anno/7",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "General Metadata",
@@ -1739,10 +1739,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "This is the very first leaf in the breviary.  An interesting face is that Leonardo da Vinci created it, which makes no sense."
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/range/25"
+          "on" : "http://www.example.org/reform/range/25"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/8",
+          "@id" : "http://www.example.org/reform/anno/8",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Title",
@@ -1750,10 +1750,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Suspected da Vinci Writings"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/range/25"
+          "on" : "http://www.example.org/reform/range/25"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/9",
+          "@id" : "http://www.example.org/reform/anno/9",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Other Content Info",
@@ -1761,19 +1761,19 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "It takes up a much smaller portion of the page than usual."
           },
-         "on" : "http://www.example.org/iiif/LlangBrev/range/25"
+         "on" : "http://www.example.org/reform/range/25"
         }
       ], //end resources
-      "on" : "http://www.example.org/iiif/LlangBrev/range/25"
+      "on" : "http://www.example.org/reform/range/25"
   },
   {
-      "@id" : "http://www.example.org/iiif/LlangBrev/annoList/4",
+      "@id" : "http://www.example.org/reform/annoList/4",
       "@type" : "sc:AnnotationList",
       "context" : "http://www.shared-canvas.org/ns/context.json",
       "label" : "Fragments",
       "resources" : [ 
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/10",
+          "@id" : "http://www.example.org/reform/anno/10",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "BB Identifier",
@@ -1781,10 +1781,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "BB_Llang_003_r"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
          {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/11",
+          "@id" : "http://www.example.org/reform/anno/11",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Institution or Repository",
@@ -1792,10 +1792,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Saint Louis University"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/12",
+          "@id" : "http://www.example.org/reform/anno/12",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Shelfmark",
@@ -1803,10 +1803,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "SLU VFL MS 002, fol. b, recto"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/13",
+          "@id" : "http://www.example.org/reform/anno/13",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Date Acquired",
@@ -1814,10 +1814,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "1962"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/14",
+          "@id" : "http://www.example.org/reform/anno/14",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Provenance",
@@ -1825,10 +1825,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Milton& Gail Fischmann, 1962"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/15",
+          "@id" : "http://www.example.org/reform/anno/15",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Bibliography",
@@ -1836,10 +1836,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Evans, E.S. \"Medieval manuscripts at Saint Louis University: a catalogue,\" in Manuscripta 47/48 (2003/2004), p. 56-64."
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/16",
+          "@id" : "http://www.example.org/reform/anno/16",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Language",
@@ -1847,10 +1847,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Latin"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/17",
+          "@id" : "http://www.example.org/reform/anno/17",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Subject",
@@ -1858,10 +1858,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Catholic Church, Liturgy"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/18",
+          "@id" : "http://www.example.org/reform/anno/18",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Title (refers to contents)",
@@ -1869,10 +1869,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Feast of Holy Innocents (Dec 28), Matins, Lessons 4-7"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/19",
+          "@id" : "http://www.example.org/reform/anno/19",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Incipit",
@@ -1880,10 +1880,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "[Et ideo dignum...fuit causa]//p[o]ene, qui extitit et corone, ip[s]e odii c[aus]a qui p[rae]mii ..."
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/19",
+          "@id" : "http://www.example.org/reform/anno/19",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Date",
@@ -1891,10 +1891,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "1441-1448"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/20",
+          "@id" : "http://www.example.org/reform/anno/20",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Place Of Origin",
@@ -1902,10 +1902,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Ferrara, Italy"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/21",
+          "@id" : "http://www.example.org/reform/anno/21",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Format (single leaf, half bifolium, fragment)",
@@ -1913,10 +1913,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Single leaf"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/22",
+          "@id" : "http://www.example.org/reform/anno/22",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Dimensions",
@@ -1924,10 +1924,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "275 x 200 (170 x 130) mm"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/23",
+          "@id" : "http://www.example.org/reform/anno/23",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Columns",
@@ -1935,10 +1935,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "2"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/24",
+          "@id" : "http://www.example.org/reform/anno/24",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Lines",
@@ -1946,10 +1946,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "30"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/25",
+          "@id" : "http://www.example.org/reform/anno/25",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Script",
@@ -1957,10 +1957,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Gothic textualis rotunda"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/26",
+          "@id" : "http://www.example.org/reform/anno/26",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Decorations",
@@ -1968,10 +1968,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "4 two-line initials, two vertical bar extensions terminating in floral and foliate forms"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/27",
+          "@id" : "http://www.example.org/reform/anno/27",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Artist(s)",
@@ -1979,19 +1979,19 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Giorgio d'Alemagna (active 1441-1479) and others"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         }
       ], //end resources
-      "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+      "on" : "http://www.example.org/reform/canvas/55"
   },
   {
-      "@id" : "http://www.example.org/iiif/LlangBrev/annoList/5",
+      "@id" : "http://www.example.org/reform/annoList/5",
       "@type" : "sc:AnnotationList",
       "context" : "http://www.shared-canvas.org/ns/context.json",
       "label" : "Fragments",
       "resources" : [ 
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/29",
+          "@id" : "http://www.example.org/reform/anno/29",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "BB Identifier",
@@ -1999,10 +1999,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "BB_Llang_003_v"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
          {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/30",
+          "@id" : "http://www.example.org/reform/anno/30",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Institution or Repository",
@@ -2010,10 +2010,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Saint Louis University"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/31",
+          "@id" : "http://www.example.org/reform/anno/31",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Shelfmark",
@@ -2021,10 +2021,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "SLU VFL MS 002, fol. b, verso"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/32",
+          "@id" : "http://www.example.org/reform/anno/32",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Date Acquired",
@@ -2032,10 +2032,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "1962"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/33",
+          "@id" : "http://www.example.org/reform/anno/33",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Provenance",
@@ -2043,10 +2043,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Milton& Gail Fischmann, 1962"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/34",
+          "@id" : "http://www.example.org/reform/anno/34",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Bibliography",
@@ -2054,10 +2054,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Evans, E.S. \"Medieval manuscripts at Saint Louis University: a catalogue,\" in Manuscripta 47/48 (2003/2004), p. 56-64."
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/35",
+          "@id" : "http://www.example.org/reform/anno/35",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Language",
@@ -2065,10 +2065,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Latin"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/36",
+          "@id" : "http://www.example.org/reform/anno/36",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Subject",
@@ -2076,10 +2076,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Catholic Church, Liturgy"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/37",
+          "@id" : "http://www.example.org/reform/anno/37",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Title (refers to contents)",
@@ -2087,10 +2087,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Feast of Holy Innocents (Dec 28), Matins, Lessons 7-9, Laud"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/38",
+          "@id" : "http://www.example.org/reform/anno/38",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Explicit",
@@ -2098,10 +2098,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Cum rel[iquis] a[n]t[iphona]. A bymatu et infra occidit multos pueros hero//[des propter "
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/39",
+          "@id" : "http://www.example.org/reform/anno/39",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Date",
@@ -2109,10 +2109,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "1441-1448"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/40",
+          "@id" : "http://www.example.org/reform/anno/40",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Place Of Origin",
@@ -2120,10 +2120,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Ferrara, Italy"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/41",
+          "@id" : "http://www.example.org/reform/anno/41",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Format (single leaf, half bifolium, fragment)",
@@ -2131,10 +2131,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Single leaf"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/42",
+          "@id" : "http://www.example.org/reform/anno/42",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Dimensions",
@@ -2142,10 +2142,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "275 x 200 (170 x 130) mm"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/43",
+          "@id" : "http://www.example.org/reform/anno/43",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Columns",
@@ -2153,10 +2153,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "2"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/55"
+          "on" : "http://www.example.org/reform/canvas/55"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/44",
+          "@id" : "http://www.example.org/reform/anno/44",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Lines",
@@ -2164,10 +2164,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "30"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/45",
+          "@id" : "http://www.example.org/reform/anno/45",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Script",
@@ -2175,10 +2175,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Gothic textualis rotunda"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/46",
+          "@id" : "http://www.example.org/reform/anno/46",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Decorations",
@@ -2186,10 +2186,10 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "2 two-line initials, two vertical bar extensions terminating in floral and foliate forms"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         },
         {
-          "@id" : "http://www.example.org/iiif/LlangBrev/anno/47",
+          "@id" : "http://www.example.org/reform/anno/47",
           "@type" : "oa:Annotation",
           "motivation" : "oa:describing",
           "label" : "Artist(s)",
@@ -2197,9 +2197,9 @@ var annotationLists = [
             "@type" : "cnt:ContentAsText",
             "cnt:chars" : "Giorgio d'Alemagna (active 1441-1479) and others"
           },
-          "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+          "on" : "http://www.example.org/reform/canvas/56"
         }],
-        "on" : "http://www.example.org/iiif/LlangBrev/canvas/56"
+        "on" : "http://www.example.org/reform/canvas/56"
   //Everything above this fits into the January leaf (and its canvases.)
         }]; // end lists;
 
@@ -2226,6 +2226,7 @@ var annotationLists = [
     function loadInterface(manifestURL){
         getManifest(manifestURL)
         .then(function(responseData, status, jqXHR){
+            //@prezi3
             rangeCollection = responseData.structures;
             manifestCanvases = responseData.sequences[0];
             organizeRanges();
@@ -2235,86 +2236,6 @@ var annotationLists = [
             //Do we need to fire this here??  This means we could not update the list even though all line actions were successful.
         });
     }
-
-    
-/* 
- * For now, any of the BB pages should tell you what user you are.  This is a helper function to get the manifest ID for what user you are to use in the update functions
- * for the structure and sequence arrays.  It also sets the global manifest and manifestID variables.  
- */
-function getManifestID(){
-    var forProject = detectWho();
-    var properties={"@type" : "sc:Manifest", "forProject":forProject};
-    var localID = "unknown";
-    var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet";
-    var params = {"content" : JSON.stringify(properties)};
-    var windowurl = document.location.href;
-    if(windowurl.indexOf("demo=1") > -1){
-        rangeCollection = testManifest.structures;
-        manifestCanvases = testManifest.sequences[0].canvases;
-        manifest = testManifest;
-        manifestID = testManifest["@id"];
-    }
-    else{
-        $.post(url, params, function(data){
-           var manifest_data = JSON.parse(data);
-           manifest = manifest_data[0];
-           rangeCollection = manifest.structures;
-           manifestCanvases = manifest.sequences[0].canvases;
-           manifestID = manifest["@id"];
-           localID = manifestID;
-           $(".prepareleaf").show();
-           return localID;
-        });
-    }
-    
-}
-
-/* This function can be used to circumvent the canvas and ask the server for all the canvases for a users manifest.  Right now, 1 user has 1 manifest, 1 set of ranges. */
-function getAllRanges(){
-  //THERE WILL AT LEAST BE ONE RANGE
-  var forProject = detectWho();
-  var properties={"@type" : "sc:Range", "forProject":forProject};
-  //this will be superfluous when the annotation store has ranges from other projects
-  var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet";
-  var params = {"content" : JSON.stringify(properties)};
-  //console.log("GET RANGES LIVE");
-  $.post(url, params, function(data){
-     //console.log("Got ranges");
-     rangeCollection = JSON.parse(data);
-     getAllCanvases();
-  });
-}
-
-/* This function can be used to circumvent the canvas and ask the server for all the canvases for a users manifest.  Right now, 1 user has 1 manifest, 1 set of annos. */
-function getAllAnnotations(){
-  //THERE MAY BE NO ANNOTATIONS
-  var forProject = detectWho();
-  var properties={"@type" : "sc:AnnotationList", "forProject" : forProject};
-  //this will be superfluous when the annotation store has lists from other projects
-  var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet";
-  var properties={"@type" : "sc:AnnotationList"};
-  var params = {"content" : JSON.stringify(properties)};
-  $.post(url, params, function(data){
-     annotationLists = JSON.parse(data);
-     //console.log("Got annotations");
-     organizeRanges();
-  });
-}
-
-/* This function can be used to circumvent the canvas and ask the server for all the canvases for a users manifest.  Right now, 1 user has 1 manifest. */
-function getAllCanvases(){
-  //THERE WILL AT LEAST BE 2 CANVASES
-    manifestCanvases = manifest.sequences[0].canvases;
-    var forProject = detectWho();
-    var properties={"@type" : "sc:Canvas", "forProject":forProject};
-    var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet"
-    var params = {"content" : JSON.stringify(properties)};
-    $.post(url, params, function(data){
-       manifestCanvases = JSON.parse(data);
-       //console.log("got canvases");
-       getAllAnnotations();
-    });
-}
 
 function changeLabel(range, paginate, event){
     var currentLabel = $("div[rangeid='"+range+"']").children("span:first").html().replace("<br>", "");
@@ -3225,7 +3146,8 @@ function populateRangesToDOM(which){
         var lockitdown = "";
         var lockit = "";
         var noLock = false;
-
+        
+        //Need the top level range here, or assume they are making a new one.
         if(rangeCollection[i].parent && rangeCollection[i].parent.indexOf("paggr")>-1 || rangeCollection[i]["@id"].indexOf("parent_aggr") > -1){ 
           tag = "parent pAggr";
           outerRangeLabel = "";
@@ -3291,7 +3213,7 @@ function populateRangesToDOM(which){
           //}
         }
         else{
-          //dragAttribute = "id='drag_"+uniqueID+"165.134.241.141' draggable='true' ondragstart='dragHelp(event);'";
+          //dragAttribute = "id='drag_"+uniqueID+"localhost:8080' draggable='true' ondragstart='dragHelp(event);'";
           currentRange = outer.find(".arrangeSection[rangeID='"+rangeCollection[i]["@id"]+"']");
         }
         //Create an html range object that can be added
@@ -4134,11 +4056,11 @@ function populateAnnoForms(){
 
                 if((entryValue !== undefined && entryValue !== "") || $(_this).attr("set") === "set"){
                     //console.log('HELLO')
-                    var newAnnoURI = "http://www.example.org/iiif/LlangBrev/annos/" +annoID; 
+                    var newAnnoURI = "http://www.example.org/reform/annos/" +annoID; 
                     //console.log("Anno Object @ID is being set to :" + newAnnoURI)
                     annotationObject["@id"] = newAnnoURI;
                     annotationObject.resource["cnt:chars"] = entryValue;
-                        annotationObject["@id"] = "http://www.example.org/iiif/LlangBrev/annos/" +(annoID);
+                        annotationObject["@id"] = "http://www.example.org/reform/annos/" +(annoID);
                         annotationObject.label = addedInfoLabel;
                         annotationObject.resource["cnt:chars"] = entryValue;
                         $(_this).attr("set", "set");
@@ -4338,7 +4260,7 @@ function populateAnnoForms(){
         var canvasNotes = $("#notes").val();
         var forProject = detectWho();
         if(canvasNotes !== "" || $("#notes").attr("set") === "set"){
-            var newAnnoURI = "http://www.example.org/iiif/LlangBrev/annos/" +annoID;             
+            var newAnnoURI = "http://www.example.org/reform/annos/" +annoID;             
             var annoObject = {
                 //"@id" : newAnnoURI,
                 "@type" : "oa:Annotation",
@@ -4637,167 +4559,8 @@ function populateAnnoForms(){
               });
 	}
 
-	/*
-		Check if this particular annotation already exists.  If it does, we want to update the annotation.  Otherwise, we want to save a new one.
-		@see createNewAnno()
-	*/
-	function annoExists(annoObject){
-            var labelToCheckFor = annoObject.label;
-            var tmpAnnos = [];
-            var theReturn = false;
-            var theURI = "";
-            if(zeta){
-                tmpAnnos = annoListCollection[2];
-            }
-            else if(alpha){
-                tmpAnnos = annoListCollection[0];
-            }
-            else if (beta){
-                tmpAnnos = annoListCollection[1];
-            }
-            var annoResources = [];
-            if(!tmpAnnos.resources instanceof Array){
-                annoResources = JSON.parse(tmpAnnos.resources);
-            }
-            else{
-                annoResources = tmpAnnos.resources;
-            }
-            for(var i=0; i<annoResources.length; i++){
-                if(annoResources[i].label === labelToCheckFor){
-                    theReturn = true;
-                    return true;
-                }
-            }
-            return theReturn;
-	}
-
-	function updateAnnotation(annoURI, annoObj){
-                //This action will happen outside the post because its timing effects saveFolio() and updateList()
-                if(zeta){
-                    $.each(annoListCollection[2].resources, function(){
-                        if(this["@id"] == annoURI){
-                            this.resource = annoObj.resource;
-                            //actually update the annoList since we put the whole resource there and not just he URI.
-                        }
-                    });
-                }
-                else if (alpha){
-                    $.each(annoListCollection[0].resources, function(){
-                        if(this["@id"] == annoURI){
-                            this.resource = annoObj.resource;
-                            //actually update the annoList since we put the whole resource there and not just he URI.
-                        }
-                    });
-                }
-                else{
-                    $.each(annoListCollection[1].resources, function(){
-                        if(this["@id"] == annoURI){
-                            this.resource = annoObj.resource;
-                            //actually update the annoList since we put the whole resource there and not just he URI.
-                        }
-                    });
-                }
-	}
-
-	/*
-		This function takes the annotation object and saves it in the manifest object in the appropriate location.  it makes the decision whether the annotation is being saved to a canvas or a range.
-	*/
-	function createNewAnno(annoObject, newLabel, value, list, uri){
-            //TODO FIX: Does not allow annotations to be saved in order
-               // console.log("create new anno time...");
-               // console.log("It has label: "+newLabel+" and value: "+value+".  Does that match "+annoObject.resource["cnt:chars"]);
-		annoID ++;
-		var objectID = uri; //which object are we saving to
-		annoObject.on = objectID; //set the on property to be what object we are saving to 
-                annoObject.label = newLabel;
-                annoObject.resource["cnt:chars"] = value;
-		var labelToCheckFor = annoObject.label;
-		var tmpAnnos = [];
-		if(zeta){
-                    tmpAnnos = annoListCollection[2];
-		}
-		else if (alpha){
-                    tmpAnnos = annoListCollection[0];
-		}
-		else if (beta){
-                    tmpAnnos = annoListCollection[1];
-		}
-                var annoResources = [];
-                if(!tmpAnnos.resources instanceof Array){
-                    annoResources = JSON.parse(tmpAnnos.resources);
-                }
-                else{
-                    annoResources = tmpAnnos.resources;
-                }
-                if(annoResources.length > 0){
-                    for(var i=0; i<annoResources.length; i++){
-                        var labelForCheck = annoResources[i].label;   
-                        //console.log("Does "+i+" == "+ (annoResources.length - 1) +" or 0?");
-                        if(labelForCheck === labelToCheckFor){
-                            // this annotation exists.  Update annotation.
-                            //console.log("This anno already exists...");
-                            if(zeta){
-                                annoListCollection[2].resources[i].resource = annoObject.resource;
-                            }
-                            else if (alpha){
-                                annoListCollection[0].resources[i].resource = annoObject.resource;
-                            }
-                            else if (beta){
-                                annoListCollection[1].resources[i].resource = annoObject.resource;
-                            }
-//                           OR ^^this way takes out the loop that updateAnnotation imposes.
-                           // updateAnnotation(annoResources[i]["@id"], annoObject);
-                            break;
-                        }
-                        else if(i === annoResources.length - 1){ //we did not find this anno, save it as a new one in the list. 
-                            //console.log("This is a new anno, push it to anno list collection...");
-                            //console.log("Its value is "+annoObject.resource["cnt:chars"]);
-                            if(zeta){
-                                if(annoListCollection[2].resources === "[]"){
-                                    annoListCollection[2].resources = [];
-                                }
-                                annoListCollection[2].resources.push(annoObject); 
-                            }
-                            else if(alpha){
-                                if(annoListCollection[0].resources === "[]"){
-                                    annoListCollection[0].resources = [];
-                                }
-                                annoListCollection[0].resources.push(annoObject); 
-                            }
-                            else if(beta){
-                                if(annoListCollection[1].resources === "[]"){
-                                    annoListCollection[1].resources = [];
-                                }
-                                annoListCollection[1].resources.push(annoObject); 
-                            }
-                            break;
-                    }
-                }
-            }
-            else{
-                //console.log("This is a new anno to an empty list");
-                if(zeta){
-                    if(annoListCollection[2].resources === "[]"){
-                        annoListCollection[2].resources = [];
-                    }
-                    annoListCollection[2].resources.push(annoObject); 
-                }
-                else if(alpha){
-                    if(annoListCollection[0].resources === "[]"){
-                        annoListCollection[0].resources = [];
-                    }
-                    annoListCollection[0].resources.push(annoObject); 
-                }
-                else if (beta){
-                    if(annoListCollection[1].resources === "[]"){
-                        annoListCollection[1].resources = [];
-                    }
-                    annoListCollection[1].resources.push(annoObject); 
-                }
-            }
-
-	}
-        
+	
+	        
         /* 
          * The range that acts as the root range object needs to contain this newly added range in its list or it wont appear in order
          * in the structures.
@@ -4827,69 +4590,7 @@ function populateAnnoForms(){
             });
         }
                
-        /* An object has been updated.  Its representation in the manifest must also be updated.  where tells me either structures or sequence, the params are in order of
-         * @id followed by some fields to update.  I then call to the server to update the sequences or structures field of the manifest object. 
-         * 
-         * This can be used to update the manifest in real time.  We are doing it on a publish request, so this is
-         * no longer used.
-         *  
-         *  */
-        function updateInManifest(where, params){
-            //console.log("need to update in the manifest...");
-            var idToFind = params["@id"];
-            delete params["@id"];
-            if(where === "structures"){
-                for(var i=0; i< rangeCollection.length; i++){
-                    if(rangeCollection[i]["@id"] === idToFind){
-                        $.each(params, function(paramKey, paramVal){
-                           rangeCollection[i][paramKey] = paramVal;
-                        });
-                        //updateManifestStructures();
-                        break;
-                    }
-                }
-            }
-            else if(where === "sequences"){
-                for(var i=0; i< manifestCanvases.length; i++){
-                    if(manifestCanvases[i]["@id"] === idToFind){
-                        $.each(params, function(paramKey, paramVal){
-                            manifestCanvases[i][paramKey] = paramVal;
-                        });
-                        //updateManifestSequence();    
-                        break;
-                    }
-                }
-            }
-        }
         
-        function updateManifestStructures(){
-            //console.log("updating manifest structures...");
-            var postURL = "http://brokenbooks.org/brokenBooks/updateRange";
-            var paramObj1 = {"@id" : manifestID, "structures":rangeCollection};
-            var params1 = {"content" : JSON.stringify(paramObj1)};
-            $.post(postURL, params1, function(rootRangeList){
-                manifest.structures = rangeCollection;
-                //console.log("done updating manifest structures");
-            });
-        }
-        
-        function updateManifestSequence(){
-            //console.log("updating manifest sequence...");
-            var postURL = "http://brokenbooks.org/brokenBooks/updateRange";
-            var sequenceObj = {
-                "@id" : "http://brokenbooks.org/brokenBooks/sequence/normal",
-                "@type": "sc:Sequence",
-                "label" : "Manifest Sequence",
-                "canvases" : manifestCanvases
-            };
-            var paramObj1 = {"@id" : manifestID, "sequences":[sequenceObj]};
-            var params1 = {"content" : JSON.stringify(paramObj1)};
-            $.post(postURL, params1, function(data){
-                manifest.sequences[0].canvases = manifestCanvases;
-                //console.log("done updating manifest sequence");
-            });
-        }
-
 	/*
 		Add the range object to the structures array in the manifest object. 
 	*/
@@ -4925,7 +4626,7 @@ function populateAnnoForms(){
                     }
                     annoListID = parseInt(annoListID) + 1;
                     var newRangeAnnoList = {
-                        "@id":"http://www.example.org/iiif/LlangBrev/annoList/"+annoListID, 
+                        "@id":"http://www.example.org/reform/annoList/"+annoListID, 
                         "@type":"sc:AnnotationList",
                         "resources" : [],
                         "on" :newRangeObject["@id"],
@@ -4971,7 +4672,7 @@ function populateAnnoForms(){
                         who="paggr_unknown";
                     }
                     var newRangeAnnoList = {
-                        "@id":"http://www.example.org/iiif/LlangBrev/annoList/"+annoListID, 
+                        "@id":"http://www.example.org/reform/annoList/"+annoListID, 
                         "@type":"sc:AnnotationList",
                         "resources" : [],
                         "on" :newRangeObject["@id"],
@@ -5069,7 +4770,7 @@ function populateAnnoForms(){
           }
           console.log("got area for new group");
             rangeID = parseInt(rangeID) + 1;
-            var mockID = "http://www.example.org/iiif/LlangBrev/range/"+rangeID;
+            var mockID = "http://www.example.org/reform/range/"+rangeID;
             var dragAttribute = "id='drag_"+uniqueID+"' draggable='true' ondragstart='dragHelp(event);' ondragend='dragEnd(event);'";
             var dropAttribute = " ondragover='dragOverHelp(event);' ondrop='dropHelp(event);'";
             var rightClick = "oncontextmenu='breakUpConfirm(event); return false;'";
@@ -5439,299 +5140,7 @@ function populateAnnoForms(){
 //		});
 	}
 
-	/*
-		Fired when user clicks "Begin preparing a leaf".  We must create the canvases and the leaf range first, then feed it information as necessary. 
-	*/
-	function submitIntro(test){
-            var windowURL = document.location.href;
-            if(test === "testEdit"){
-                $("#saveText").html("Getting Leaf...");
-                $("#saveCover").show();
-            }
-            else{
-                $("#saveText").html("Creating Leaf...");
-                $("#saveCover").show();
-            }
-            
-            var forProject = detectWho();
-            
-            //$(".intro").hide("blind", "300ms", function(){$(".imgAdditionArea").show("explode", "500ms");});
-            $(".intro").hide();
-            $(".imgAdditionArea").show("explode", "500ms");
-            if(test === "testEdit"){
-                return false;
-            }
-//            if(windowURL.indexOf("demo=1") > -1){
-//                gatherRangesForArrange(1); //Should we populate this for the demo
-//                return false;
-//            }
-            gatherRangesForArrange(1);
-            $(".leafPopover").show();
-            var newCanvas1ServerID = -1;
-            var newCanvas2ServerID = -1;
-            annoListCollection = new Array(3);
-            //create a new leaf range and get ID.  The leaf range will create 2 canvases whose ID's I will also need.
-            canvasTag = 100;
-            canvasTag = parseInt(canvasTag)+1;
-            var newCanvasHolderImg = {
-                "@type":"oa:Annotation",
-                "motivation":"sc:painting",
-                "resource":
-                    {
-                            
-                            "format":"image/jpg",
-                            "@type":"dctypes:Image",
-                            
-                            "@id" : "http://brokenbooks.org/brokenBooks/images/imgNotFound.png",
-                            "service":
-                                {                                       
-                                    "@context": "http://iiif.io/api/image/2/context.json",
-                                    "profile":"http://iiif.io/api/image/2/profiles/level2.json",
-                                    "@id" : "http://brokenbooks.org/brokenBooks/images/imgNotFound.png"
-                                },
-                            "width": 667,
-                            "height":1000
-                    },
-                    "on":""
-                };
-            var newCanvas1 = {
-                "@id" : "http://www.example.org/iiif/LlangBrev/canvas/"+canvasTag+"", //local
-                "@type" : "sc:Canvas",
-                "label" : "Side A",
-                "height" : 1000,
-                "width" : 667,
-                "images" : [],
-                "forProject" : forProject,
-                "otherContent": [],
-                "within" : ""
-            };
-            
-         annoListID = parseInt(annoListID) + 1;
-         $("#folioSide1").attr("onclick","enterCatalogueInfo('http://www.example.org/iiif/LlangBrev/canvases/"+canvasTag+"', 'recto');"); //local
-      	 $("#folioSide1").attr("canvas","http://www.example.org/iiif/LlangBrev/canvases/"+canvasTag+""); //local
-      	 //testManifest.sequences[0].canvases.push(newCanvas1); //local
-      	 var url = "http://brokenbooks.org/brokenBooks/saveNewCanvas";
-      	 var params1 = {'content': JSON.stringify(newCanvas1)};
-         if(windowURL.indexOf("demo=1")>-1){
-                var data = newCanvas1;
-                var newCanvas1HolderImg = newCanvasHolderImg;
-                newCanvas1HolderImg.on = data["@id"];
-                var newCanvas1AnnoList = {
-                    "@id":"http://www.example.org/iiif/LlangBrev/annoList/"+annoListID, 
-                    "@type":"sc:AnnotationList",
-                    "resources" : [],
-                    "forProject": forProject,
-                    "on" : newCanvas1["@id"],
-       	 	}; //local
-                
-                annoListCollection[0] = newCanvas1AnnoList;
-      	 	$("#folioSide1").attr("onclick","enterCatalogueInfo('"+data["@id"]+"', 'recto');"); 
-      	 	$("#folioSide1").attr("canvas", data["@id"]); 
-      	 	manifestCanvases.push(newCanvas1); //live
-                var listID = newCanvas1AnnoList["@id"];
-                newCanvas1.images = [newCanvas1HolderImg];
-                newCanvas1.otherContent = [{"@id":listID,"@type":"sc:AnnotationList"}];
-                $("#folioSide1").click();
-                $("#catalogueInfoFor").val(newCanvas1["@id"]);
-                alpha = true;
-                beta= false;
-                zeta = false;
-      	 	newCanvas1ServerID = newCanvas1["@id"];
-  	        canvasTag = parseInt(canvasTag) + 1;
-                annoListID = parseInt(annoListID) + 1;
-
-                var urlCanvas = {
-                            "@id" : "http://www.example.org/iiif/LlangBrev/canvas/"+canvasTag+"",
-                            "@type" : "sc:Canvas",
-                            "label" : "Side B",
-                            "height" : 1000,
-                            "width" : 667,
-                            "images" : [],
-                            "forProject" : forProject,
-                            "otherContent" : [],
-                            "within" : ""
-                };
-                                       
-                var newCanvas2 = urlCanvas;
-                var newCanvas2HolderImg = newCanvasHolderImg;
-                newCanvas2HolderImg.on = newCanvas2["@id"];
-                newCanvas2ServerID = newCanvas2["@id"];
-                $("#folioSide2").attr("onclick","enterCatalogueInfo('"+ newCanvas2["@id"]+"','verso');");
-                $("#folioSide2").attr("canvas",  newCanvas2["@id"]);
-                manifestCanvases.push(newCanvas2); //live
-                var newCanvas2AnnoList = {
-                "@id":"http://www.example.org/iiif/LlangBrev/annoList/"+annoListID, 
-                "@type":"sc:AnnotationList",
-                "resources" : [],
-                "forProject": forProject,
-                "on" :  newCanvas2["@id"]
-                };
-                annoListCollection[1] = newCanvas2AnnoList;
-                rangeID = parseInt(rangeID) + 1;
-                annoListID = parseInt(annoListID) + 1;
-                var leafRangeObject = {
-                    "@id" : "http://www.example.org/iiif/LlangBrev/range/"+rangeID,
-                    "@type":"sc:Range",
-                    "label":"Manifest Page" ,
-                    "canvases" : [
-                      //newCanvas1["@id"], //local
-                      //newCanvas2["@id"] //local
-                      newCanvas1ServerID, //live on dev server
-                      newCanvas2ServerID //live on dev server
-                    ],
-                    "resources" : [],
-                    "ranges" : [],
-                    "isReferencedBy":manifestID,
-                    "forProject": forProject,
-                    "within" : "root",
-                    "otherContent" : [],
-                    "lockedup" : "false",
-                    "lockeddown": "false",
-                    "isOrdered" : "false"
-                    };
-                    currentLeaf = "http://www.example.org/iiif/LlangBrev/range/"+rangeID; //local
-                    createNewRange(leafRangeObject, 'currentLeaf', "", "", "");
-                   
-         }
-         else{
-            $.post(url, params1, function(data){ //save first new canvas
-                //console.log("saved first canvas...");
-      	 	data = JSON.parse(data);
-      	 	newCanvas1["@id"] = data["@id"];
-                var newCanvas1HolderImg = newCanvasHolderImg;
-                newCanvas1HolderImg.on = data["@id"];
-                annoListID = parseInt(annoListID) + 1;
-                var newCanvas1AnnoList = {
-                    "@id":"http://www.example.org/iiif/LlangBrev/annoList/"+annoListID, 
-                    "@type":"sc:AnnotationList",
-                    "resources" : [],
-                    "forProject": forProject,
-                    "on" : newCanvas1["@id"]
-       	 	}; //local
-                
-                annoListCollection[0] = newCanvas1AnnoList;
-      	 	$("#folioSide1").attr("onclick","enterCatalogueInfo('"+data["@id"]+"', 'recto');"); 
-      	 	$("#folioSide1").attr("canvas", data["@id"]); 
-      	 	//testManifest.sequences[0].canvases.push(newCanvas1); //live
-                
-        	//save anno list for new canvas
-                //annoListCollection[0] = newCanvas1AnnoList;
-        	var listURL1 = "http://brokenbooks.org/brokenBooks/saveNewRange";
-        	var listParams1 = {"content" : JSON.stringify(newCanvas1AnnoList)};
-        	$.post(listURL1, listParams1, function(data){ //save first canvas annotation list
-                    //add holder img annotation in to images field.
-                        //console.log("saved first canvas anno list");
-        		data = JSON.parse(data);
-        		annoListCollection[0]["@id"] = data["@id"];
-                        var listID = data["@id"];
-        		var updateCanvasURL = "http://brokenbooks.org/brokenBooks/updateCanvas";
-                        var imgAnno = {"@id":newCanvas1["@id"], "images":[newCanvas1HolderImg]};
-        		var imgParams = {"content":JSON.stringify(imgAnno)};
-                        newCanvas1.otherContent =[{"@id":listID,"@type":"sc:AnnotationList"}];
-                        manifestCanvases.push(newCanvas1); //live
-        		$.post(updateCanvasURL, imgParams, function(data){
-                            //console.log("update canvas image with new image anno, we had to wait to sait on property.");
-                            var paramObj = {"@id":newCanvas1["@id"], "otherContent":[{"@id":listID,"@type":"sc:AnnotationList"}]};
-                            var params = {"content":JSON.stringify(paramObj)};
-                            $.post(updateCanvasURL, params, function(data){
-                                //console.log("update canvas other content");
-                                $("#folioSide1").click();
-                                $("#catalogueInfoFor").val(newCanvas1["@id"]);
-                                alpha = true;
-                                beta= false;
-                                zeta = false;
-                            });
-        		});
-      
-        	});
-      	 	newCanvas1ServerID = newCanvas1["@id"];
-  	        canvasTag = parseInt(canvasTag) + 1;
-                annoListID = parseInt(annoListID) + 1;
-                var urlCanvas = {
-                            "@id":"http://www.example.org/iiif/LlangBrev/canvas/"+canvasTag+"",
-                            "@type" : "sc:Canvas",
-                            "label" : "Side B",
-                            "height" : 1000,
-                            "width" : 667,
-                            "images" : [],
-                            "forProject" : forProject,
-                            "otherContent" : [],
-                            "within" : ""
-                };
-                                       
-	      	var params2 = {'content': JSON.stringify(urlCanvas)};
-	      	$.post(url, params2, function(data){
-                        //console.log("saved second canvas");
-                        var newCanvas2 = urlCanvas;
-	      		data=JSON.parse(data);
-                        newCanvas2["@id"] = data["@id"];
-                        var newCanvas2HolderImg = newCanvasHolderImg;
-                        newCanvas2HolderImg.on = data["@id"];
-                        newCanvas2ServerID = newCanvas2["@id"];
-      	 		$("#folioSide2").attr("onclick","enterCatalogueInfo('"+ newCanvas2["@id"]+"','verso');");
-      	 		$("#folioSide2").attr("canvas",  newCanvas2["@id"]);
-      	 		//testManifest.sequences[0].canvases.push(newCanvas2); //live
-                        
-                        var newCanvas2AnnoList = {
-	                "@id":"http://www.example.org/iiif/LlangBrev/annoList/"+annoListID, 
-	                "@type":"sc:AnnotationList",
-	                "resources" : [],
-                        "forProject": forProject,
-	                "on" :  newCanvas2["@id"]
-	        	};
-                        annoListCollection[1] = newCanvas2AnnoList;
-                        var listURL2 = "http://brokenbooks.org/brokenBooks/saveNewRange";
-	        	var listParams2 = {"content" : JSON.stringify(newCanvas2AnnoList)};
-	        	var canvasID = newCanvas2["@id"];
-	        	$.post(listURL2, listParams2, function(data){
-                            //console.log("saved second canvas list");
-	        		data = JSON.parse(data);
-                                annoListCollection[1]["@id"] = data["@id"];
-                                var listID = data["@id"];
-	        		var updateCanvasURL = "http://brokenbooks.org/brokenBooks/updateCanvas";
-                                var imgAnno2 = {"@id":canvasID, "images":[newCanvas2HolderImg]};
-                                var imgParams2 = {"content":JSON.stringify(imgAnno2)};
-                                newCanvas2.otherContent = [{"@id":listID, "@type":"sc:AnnotationList"}];
-                                manifestCanvases.push(newCanvas2); //live
-                                $.post(updateCanvasURL, imgParams2, function(data){
-                                    //console.log("update second canvas image");
-                                    var paramObj = {"@id":canvasID, "otherContent":[{"@id":listID, "@type":"sc:AnnotationList"}]};
-                                    var params = {"content":JSON.stringify(paramObj)};
-                                    $.post(updateCanvasURL, params, function(data){
-                                        updateManifestSequence();
-                                    });
-                                });
-	        	});
-                        rangeID = parseInt(rangeID) + 1;
-                        annoListID = parseInt(annoListID) + 1;
-                        var leafRangeObject = {
-                            "@id" : "http://www.example.org/iiif/LlangBrev/range/"+rangeID,
-                            "@type":"sc:Range",
-                            "label":"Manifest Page" ,
-                            "canvases" : [
-                              //newCanvas1["@id"], //local
-                              //newCanvas2["@id"] //local
-                              newCanvas1ServerID, //live on dev server
-                              newCanvas2ServerID //live on dev server
-                            ],
-                            "resources" : [],
-                            "ranges" : [],
-                            "isReferencedBy":manifestID,
-                            "forProject": forProject,
-                            "within" : "bucket", //dont want these to appear until placed
-                            "otherContent" : [],
-                            "lockedup" : "false",
-                            "lockeddown": "false",
-                            "isOrdered" : "false"
-                            };
-                            currentLeaf = "http://www.example.org/iiif/LlangBrev/range/"+rangeID; //local
-                            createNewRange(leafRangeObject, 'currentLeaf', "", "", "");
-
-                        });
-                    });
-             }
-            
-	}
+	
 
 	function removeInfo(listItem){
 		var serverID = listItem.attr("annoserverid");
@@ -5864,6 +5273,7 @@ function populateAnnoForms(){
         var params = {"content":JSON.stringify(paramObj)};
         //updateInManifest("sequences",paramObj);
         $.post(updateURL, params, function(data){
+            
         });
     }
            
@@ -6169,7 +5579,7 @@ function populateAnnoForms(){
           var bucket = $("div[depth='1']").find(".unassigned");
           var bucketCount = parseInt(bucket.find(".folioCount").find(".countInt").html());
           rangeID = parseInt(rangeID) + 1;
-          var mockID= "http://www.example.org/iiif/LlangBrev/range/"+rangeID;
+          var mockID= "http://www.example.org/reform/range/"+rangeID;
           var newGroup = $("<div rangeID='"+mockID+"' leaf='false' class='arrangeSection child sortOrder' lockedup='false' lockeddown='false'\n\
           "+dragAttribute+" "+dropAttribute+" "+rightClick+" "+toggle1+" ><span>"+title+"</span><input onchange='highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' /></div>");
           if(depth ===1){
@@ -6233,7 +5643,7 @@ function populateAnnoForms(){
             "ranges" : children,
             "canvases" :[],
             "resources" : [],
-            "isPartOf": "http://www.example.org/iiif/LlangBrev/sequence/normal",
+            "isPartOf": "http://www.example.org/reform/sequence/normal",
             "otherContent" : [],
             "within": range,
             "forProject" : forProject,
@@ -6302,8 +5712,8 @@ function cancelNewGroupForm(){
 
 function existing(leaf, leafIsIn){
     var windowURL = document.location.href;
-    var alphaCanvasURI = "http://www.example.org/iiif/LlangBrev/canvas/1";
-    var betaCanvasURI = "http://www.example.org/iiif/LlangBrev/canvas/2";
+    var alphaCanvasURI = "http://www.example.org/reform/canvas/1";
+    var betaCanvasURI = "http://www.example.org/reform/canvas/2";
     var alphaCanvasObj = {};
     var betaCanvasObj = {};
     var alphaImage  = "http://brokenbooks.org/brokenBooks/images/addImg.jpg";
@@ -6314,7 +5724,7 @@ function existing(leaf, leafIsIn){
     $("#createMini").hide();
     $("#createMini").parent().children(".mainBlockCover").hide();
     $("#ordering").children(".mainBlock").children(".mainBlockCover").hide();
-        //var leaf = "http://165.134.241.141/annotationstore/annotation/554ce6d0e4b0f1c678d2a549";
+        //var leaf = "http://localhost:8080/v1/id/554ce6d0e4b0f1c678d2a549";
     if(leaf !== undefined){
         var leafObject = undefined;
         currentLeafServerID = leaf;
@@ -6347,7 +5757,7 @@ function existing(leaf, leafIsIn){
                 }
                 else{
                     leafAnnoList = "";
-                    //leafAnnoList = "http://www.example.org/iiif/LlangBrev/annoList/empty";
+                    //leafAnnoList = "http://www.example.org/reform/annoList/empty";
                     annoListCollection[2] = {"@id":"empty","resources":[]};
                     
                 }
@@ -6368,7 +5778,7 @@ function existing(leaf, leafIsIn){
                         else{
                             alphaAnnoList = "";
                             annoListCollection[0] = {"@id":"empty","resources":[]};
-                            //alphaAnnoList = "http://www.example.org/iiif/LlangBrev/annoList/empty";
+                            //alphaAnnoList = "http://www.example.org/reform/annoList/empty";
                             //annoListCollection[0] = [];
                         }
                         if(this.label !== ""){
@@ -6475,7 +5885,7 @@ function existing(leaf, leafIsIn){
                         }
                         else{
                             betaAnnoList = "";
-                            //betaAnnoList = "http://www.example.org/iiif/LlangBrev/annoList/empty";
+                            //betaAnnoList = "http://www.example.org/reform/annoList/empty";
                             annoListCollection[1] = {"@id":"empty","resources":[]};
                         }
                         if(this.label!== ""){
@@ -6813,24 +6223,6 @@ function closeLeafPopover(){
     $(".popoverTrail").find("div[depth='1']").find('.notBucket').empty();
 }
 
-function detectWho(){
-    var windowURL = document.location.href;
-    var who = "";
-    if(windowURL.indexOf("LFD") > -1){
-        who = "broken_books_lisa";
-    }
-    else if(windowURL.indexOf("KW") > -1){
-        who = "broken_books_karen";
-    }
-    else if (windowURL.indexOf("DTC") > -1){
-        who = "broken_books_debra";
-    }
-    else{ //TODO: something else maybe...sandbox it?
-        who = "broken_books_unknown";
-    }
-    return who;
-}
-
 function syncConfirmed(){
     $(".mainBlockCover").hide();
     $("#syncNotice_load").hide();
@@ -6842,7 +6234,6 @@ function populateMessage(msg){
     $("#actionMsg").fadeOut(3500);
     $("#gotoMirador").attr("disabled", "disabled");
     $("#publishBtn").removeAttr("disabled");
-    
 }
 
 function highlighLocks(where, why){
@@ -6963,4 +6354,560 @@ function replaceURLVariable(variable, value){
        variables = variables.replace(/,/g, "&");
        return(location + "?"+variables);
 }
+
+/** This stuff is deprecated out of BB */
+
+function detectWho(){
+    var windowURL = document.location.href;
+    var who = "";
+    if(windowURL.indexOf("LFD") > -1){
+        who = "broken_books_lisa";
+    }
+    else if(windowURL.indexOf("KW") > -1){
+        who = "broken_books_karen";
+    }
+    else if (windowURL.indexOf("DTC") > -1){
+        who = "broken_books_debra";
+    }
+    else{ //TODO: something else maybe...sandbox it?
+        who = "broken_books_unknown";
+    }
+    return who;
+}
+
+/* This function can be used to circumvent the canvas and ask the server for all the canvases for a users manifest.  Right now, 1 user has 1 manifest, 1 set of ranges. */
+function getAllRanges(){
+  //THERE WILL AT LEAST BE ONE RANGE
+  var forProject = detectWho();
+  var properties={"@type" : "sc:Range", "forProject":forProject};
+  //this will be superfluous when the annotation store has ranges from other projects
+  var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet";
+  var params = {"content" : JSON.stringify(properties)};
+  //console.log("GET RANGES LIVE");
+  $.post(url, params, function(data){
+     //console.log("Got ranges");
+     rangeCollection = JSON.parse(data);
+     getAllCanvases();
+  });
+}
+
+/* This function can be used to circumvent the canvas and ask the server for all the canvases for a users manifest.  Right now, 1 user has 1 manifest, 1 set of annos. */
+function getAllAnnotations(){
+  //THERE MAY BE NO ANNOTATIONS
+  var forProject = detectWho();
+  var properties={"@type" : "sc:AnnotationList", "forProject" : forProject};
+  //this will be superfluous when the annotation store has lists from other projects
+  var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet";
+  var properties={"@type" : "sc:AnnotationList"};
+  var params = {"content" : JSON.stringify(properties)};
+  $.post(url, params, function(data){
+     annotationLists = JSON.parse(data);
+     //console.log("Got annotations");
+     organizeRanges();
+  });
+}
+
+/* This function can be used to circumvent the canvas and ask the server for all the canvases for a users manifest.  Right now, 1 user has 1 manifest. */
+function getAllCanvases(){
+  //THERE WILL AT LEAST BE 2 CANVASES
+    manifestCanvases = manifest.sequences[0].canvases;
+    var forProject = detectWho();
+    var properties={"@type" : "sc:Canvas", "forProject":forProject};
+    var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet"
+    var params = {"content" : JSON.stringify(properties)};
+    $.post(url, params, function(data){
+       manifestCanvases = JSON.parse(data);
+       //console.log("got canvases");
+       getAllAnnotations();
+    });
+}
+
+/*
+		Fired when user clicks "Begin preparing a leaf".  We must create the canvases and the leaf range first, then feed it information as necessary. 
+	*/
+	function submitIntro(test){
+            var windowURL = document.location.href;
+            if(test === "testEdit"){
+                $("#saveText").html("Getting Leaf...");
+                $("#saveCover").show();
+            }
+            else{
+                $("#saveText").html("Creating Leaf...");
+                $("#saveCover").show();
+            }
+            
+            var forProject = detectWho();
+            
+            //$(".intro").hide("blind", "300ms", function(){$(".imgAdditionArea").show("explode", "500ms");});
+            $(".intro").hide();
+            $(".imgAdditionArea").show("explode", "500ms");
+            if(test === "testEdit"){
+                return false;
+            }
+//            if(windowURL.indexOf("demo=1") > -1){
+//                gatherRangesForArrange(1); //Should we populate this for the demo
+//                return false;
+//            }
+            gatherRangesForArrange(1);
+            $(".leafPopover").show();
+            var newCanvas1ServerID = -1;
+            var newCanvas2ServerID = -1;
+            annoListCollection = new Array(3);
+            //create a new leaf range and get ID.  The leaf range will create 2 canvases whose ID's I will also need.
+            canvasTag = 100;
+            canvasTag = parseInt(canvasTag)+1;
+            var newCanvasHolderImg = {
+                "@type":"oa:Annotation",
+                "motivation":"sc:painting",
+                "resource":
+                    {
+                            
+                            "format":"image/jpg",
+                            "@type":"dctypes:Image",
+                            
+                            "@id" : "http://brokenbooks.org/brokenBooks/images/imgNotFound.png",
+                            "service":
+                                {                                       
+                                    "@context": "http://iiif.io/api/image/2/context.json",
+                                    "profile":"http://iiif.io/api/image/2/profiles/level2.json",
+                                    "@id" : "http://brokenbooks.org/brokenBooks/images/imgNotFound.png"
+                                },
+                            "width": 667,
+                            "height":1000
+                    },
+                    "on":""
+                };
+            var newCanvas1 = {
+                "@id" : "http://www.example.org/reform/canvas/"+canvasTag+"", //local
+                "@type" : "sc:Canvas",
+                "label" : "Side A",
+                "height" : 1000,
+                "width" : 667,
+                "images" : [],
+                "forProject" : forProject,
+                "otherContent": [],
+                "within" : ""
+            };
+            
+         annoListID = parseInt(annoListID) + 1;
+         $("#folioSide1").attr("onclick","enterCatalogueInfo('http://www.example.org/reform/canvases/"+canvasTag+"', 'recto');"); //local
+      	 $("#folioSide1").attr("canvas","http://www.example.org/reform/canvases/"+canvasTag+""); //local
+      	 //testManifest.sequences[0].canvases.push(newCanvas1); //local
+      	 var url = "http://brokenbooks.org/brokenBooks/saveNewCanvas";
+      	 var params1 = {'content': JSON.stringify(newCanvas1)};
+         if(windowURL.indexOf("demo=1")>-1){
+                var data = newCanvas1;
+                var newCanvas1HolderImg = newCanvasHolderImg;
+                newCanvas1HolderImg.on = data["@id"];
+                var newCanvas1AnnoList = {
+                    "@id":"http://www.example.org/reform/annoList/"+annoListID, 
+                    "@type":"sc:AnnotationList",
+                    "resources" : [],
+                    "forProject": forProject,
+                    "on" : newCanvas1["@id"],
+       	 	}; //local
+                
+                annoListCollection[0] = newCanvas1AnnoList;
+      	 	$("#folioSide1").attr("onclick","enterCatalogueInfo('"+data["@id"]+"', 'recto');"); 
+      	 	$("#folioSide1").attr("canvas", data["@id"]); 
+      	 	manifestCanvases.push(newCanvas1); //live
+                var listID = newCanvas1AnnoList["@id"];
+                newCanvas1.images = [newCanvas1HolderImg];
+                newCanvas1.otherContent = [{"@id":listID,"@type":"sc:AnnotationList"}];
+                $("#folioSide1").click();
+                $("#catalogueInfoFor").val(newCanvas1["@id"]);
+                alpha = true;
+                beta= false;
+                zeta = false;
+      	 	newCanvas1ServerID = newCanvas1["@id"];
+  	        canvasTag = parseInt(canvasTag) + 1;
+                annoListID = parseInt(annoListID) + 1;
+
+                var urlCanvas = {
+                            "@id" : "http://www.example.org/reform/canvas/"+canvasTag+"",
+                            "@type" : "sc:Canvas",
+                            "label" : "Side B",
+                            "height" : 1000,
+                            "width" : 667,
+                            "images" : [],
+                            "forProject" : forProject,
+                            "otherContent" : [],
+                            "within" : ""
+                };
+                                       
+                var newCanvas2 = urlCanvas;
+                var newCanvas2HolderImg = newCanvasHolderImg;
+                newCanvas2HolderImg.on = newCanvas2["@id"];
+                newCanvas2ServerID = newCanvas2["@id"];
+                $("#folioSide2").attr("onclick","enterCatalogueInfo('"+ newCanvas2["@id"]+"','verso');");
+                $("#folioSide2").attr("canvas",  newCanvas2["@id"]);
+                manifestCanvases.push(newCanvas2); //live
+                var newCanvas2AnnoList = {
+                "@id":"http://www.example.org/reform/annoList/"+annoListID, 
+                "@type":"sc:AnnotationList",
+                "resources" : [],
+                "forProject": forProject,
+                "on" :  newCanvas2["@id"]
+                };
+                annoListCollection[1] = newCanvas2AnnoList;
+                rangeID = parseInt(rangeID) + 1;
+                annoListID = parseInt(annoListID) + 1;
+                var leafRangeObject = {
+                    "@id" : "http://www.example.org/reform/range/"+rangeID,
+                    "@type":"sc:Range",
+                    "label":"Manifest Page" ,
+                    "canvases" : [
+                      //newCanvas1["@id"], //local
+                      //newCanvas2["@id"] //local
+                      newCanvas1ServerID, //live on dev server
+                      newCanvas2ServerID //live on dev server
+                    ],
+                    "resources" : [],
+                    "ranges" : [],
+                    "isReferencedBy":manifestID,
+                    "forProject": forProject,
+                    "within" : "root",
+                    "otherContent" : [],
+                    "lockedup" : "false",
+                    "lockeddown": "false",
+                    "isOrdered" : "false"
+                    };
+                    currentLeaf = "http://www.example.org/reform/range/"+rangeID; //local
+                    createNewRange(leafRangeObject, 'currentLeaf', "", "", "");
+                   
+         }
+         else{
+            $.post(url, params1, function(data){ //save first new canvas
+                //console.log("saved first canvas...");
+      	 	data = JSON.parse(data);
+      	 	newCanvas1["@id"] = data["@id"];
+                var newCanvas1HolderImg = newCanvasHolderImg;
+                newCanvas1HolderImg.on = data["@id"];
+                annoListID = parseInt(annoListID) + 1;
+                var newCanvas1AnnoList = {
+                    "@id":"http://www.example.org/reform/annoList/"+annoListID, 
+                    "@type":"sc:AnnotationList",
+                    "resources" : [],
+                    "forProject": forProject,
+                    "on" : newCanvas1["@id"]
+       	 	}; //local
+                
+                annoListCollection[0] = newCanvas1AnnoList;
+      	 	$("#folioSide1").attr("onclick","enterCatalogueInfo('"+data["@id"]+"', 'recto');"); 
+      	 	$("#folioSide1").attr("canvas", data["@id"]); 
+      	 	//testManifest.sequences[0].canvases.push(newCanvas1); //live
+                
+        	//save anno list for new canvas
+                //annoListCollection[0] = newCanvas1AnnoList;
+        	var listURL1 = "http://brokenbooks.org/brokenBooks/saveNewRange";
+        	var listParams1 = {"content" : JSON.stringify(newCanvas1AnnoList)};
+        	$.post(listURL1, listParams1, function(data){ //save first canvas annotation list
+                    //add holder img annotation in to images field.
+                        //console.log("saved first canvas anno list");
+        		data = JSON.parse(data);
+        		annoListCollection[0]["@id"] = data["@id"];
+                        var listID = data["@id"];
+        		var updateCanvasURL = "http://brokenbooks.org/brokenBooks/updateCanvas";
+                        var imgAnno = {"@id":newCanvas1["@id"], "images":[newCanvas1HolderImg]};
+        		var imgParams = {"content":JSON.stringify(imgAnno)};
+                        newCanvas1.otherContent =[{"@id":listID,"@type":"sc:AnnotationList"}];
+                        manifestCanvases.push(newCanvas1); //live
+        		$.post(updateCanvasURL, imgParams, function(data){
+                            //console.log("update canvas image with new image anno, we had to wait to sait on property.");
+                            var paramObj = {"@id":newCanvas1["@id"], "otherContent":[{"@id":listID,"@type":"sc:AnnotationList"}]};
+                            var params = {"content":JSON.stringify(paramObj)};
+                            $.post(updateCanvasURL, params, function(data){
+                                //console.log("update canvas other content");
+                                $("#folioSide1").click();
+                                $("#catalogueInfoFor").val(newCanvas1["@id"]);
+                                alpha = true;
+                                beta= false;
+                                zeta = false;
+                            });
+        		});
+      
+        	});
+      	 	newCanvas1ServerID = newCanvas1["@id"];
+  	        canvasTag = parseInt(canvasTag) + 1;
+                annoListID = parseInt(annoListID) + 1;
+                var urlCanvas = {
+                            "@id":"http://www.example.org/reform/canvas/"+canvasTag+"",
+                            "@type" : "sc:Canvas",
+                            "label" : "Side B",
+                            "height" : 1000,
+                            "width" : 667,
+                            "images" : [],
+                            "forProject" : forProject,
+                            "otherContent" : [],
+                            "within" : ""
+                };
+                                       
+	      	var params2 = {'content': JSON.stringify(urlCanvas)};
+	      	$.post(url, params2, function(data){
+                        //console.log("saved second canvas");
+                        var newCanvas2 = urlCanvas;
+	      		data=JSON.parse(data);
+                        newCanvas2["@id"] = data["@id"];
+                        var newCanvas2HolderImg = newCanvasHolderImg;
+                        newCanvas2HolderImg.on = data["@id"];
+                        newCanvas2ServerID = newCanvas2["@id"];
+      	 		$("#folioSide2").attr("onclick","enterCatalogueInfo('"+ newCanvas2["@id"]+"','verso');");
+      	 		$("#folioSide2").attr("canvas",  newCanvas2["@id"]);
+      	 		//testManifest.sequences[0].canvases.push(newCanvas2); //live
+                        
+                        var newCanvas2AnnoList = {
+	                "@id":"http://www.example.org/reform/annoList/"+annoListID, 
+	                "@type":"sc:AnnotationList",
+	                "resources" : [],
+                        "forProject": forProject,
+	                "on" :  newCanvas2["@id"]
+	        	};
+                        annoListCollection[1] = newCanvas2AnnoList;
+                        var listURL2 = "http://brokenbooks.org/brokenBooks/saveNewRange";
+	        	var listParams2 = {"content" : JSON.stringify(newCanvas2AnnoList)};
+	        	var canvasID = newCanvas2["@id"];
+	        	$.post(listURL2, listParams2, function(data){
+                            //console.log("saved second canvas list");
+	        		data = JSON.parse(data);
+                                annoListCollection[1]["@id"] = data["@id"];
+                                var listID = data["@id"];
+	        		var updateCanvasURL = "http://brokenbooks.org/brokenBooks/updateCanvas";
+                                var imgAnno2 = {"@id":canvasID, "images":[newCanvas2HolderImg]};
+                                var imgParams2 = {"content":JSON.stringify(imgAnno2)};
+                                newCanvas2.otherContent = [{"@id":listID, "@type":"sc:AnnotationList"}];
+                                manifestCanvases.push(newCanvas2); //live
+                                $.post(updateCanvasURL, imgParams2, function(data){
+                                    //console.log("update second canvas image");
+                                    var paramObj = {"@id":canvasID, "otherContent":[{"@id":listID, "@type":"sc:AnnotationList"}]};
+                                    var params = {"content":JSON.stringify(paramObj)};
+                                    $.post(updateCanvasURL, params, function(data){
+                                        updateManifestSequence();
+                                    });
+                                });
+	        	});
+                        rangeID = parseInt(rangeID) + 1;
+                        annoListID = parseInt(annoListID) + 1;
+                        var leafRangeObject = {
+                            "@id" : "http://www.example.org/reform/range/"+rangeID,
+                            "@type":"sc:Range",
+                            "label":"Manifest Page" ,
+                            "canvases" : [
+                              //newCanvas1["@id"], //local
+                              //newCanvas2["@id"] //local
+                              newCanvas1ServerID, //live on dev server
+                              newCanvas2ServerID //live on dev server
+                            ],
+                            "resources" : [],
+                            "ranges" : [],
+                            "isReferencedBy":manifestID,
+                            "forProject": forProject,
+                            "within" : "bucket", //dont want these to appear until placed
+                            "otherContent" : [],
+                            "lockedup" : "false",
+                            "lockeddown": "false",
+                            "isOrdered" : "false"
+                            };
+                            currentLeaf = "http://www.example.org/reform/range/"+rangeID; //local
+                            createNewRange(leafRangeObject, 'currentLeaf', "", "", "");
+
+                        });
+                    });
+             }
+            
+	}
+        
+/*
+		This function takes the annotation object and saves it in the manifest object in the appropriate location.  it makes the decision whether the annotation is being saved to a canvas or a range.
+	*/
+	function createNewAnno(annoObject, newLabel, value, list, uri){
+            //TODO FIX: Does not allow annotations to be saved in order
+               // console.log("create new anno time...");
+               // console.log("It has label: "+newLabel+" and value: "+value+".  Does that match "+annoObject.resource["cnt:chars"]);
+		annoID ++;
+		var objectID = uri; //which object are we saving to
+		annoObject.on = objectID; //set the on property to be what object we are saving to 
+                annoObject.label = newLabel;
+                annoObject.resource["cnt:chars"] = value;
+		var labelToCheckFor = annoObject.label;
+		var tmpAnnos = [];
+		if(zeta){
+                    tmpAnnos = annoListCollection[2];
+		}
+		else if (alpha){
+                    tmpAnnos = annoListCollection[0];
+		}
+		else if (beta){
+                    tmpAnnos = annoListCollection[1];
+		}
+                var annoResources = [];
+                if(!tmpAnnos.resources instanceof Array){
+                    annoResources = JSON.parse(tmpAnnos.resources);
+                }
+                else{
+                    annoResources = tmpAnnos.resources;
+                }
+                if(annoResources.length > 0){
+                    for(var i=0; i<annoResources.length; i++){
+                        var labelForCheck = annoResources[i].label;   
+                        //console.log("Does "+i+" == "+ (annoResources.length - 1) +" or 0?");
+                        if(labelForCheck === labelToCheckFor){
+                            // this annotation exists.  Update annotation.
+                            //console.log("This anno already exists...");
+                            if(zeta){
+                                annoListCollection[2].resources[i].resource = annoObject.resource;
+                            }
+                            else if (alpha){
+                                annoListCollection[0].resources[i].resource = annoObject.resource;
+                            }
+                            else if (beta){
+                                annoListCollection[1].resources[i].resource = annoObject.resource;
+                            }
+//                           OR ^^this way takes out the loop that updateAnnotation imposes.
+                           // updateAnnotation(annoResources[i]["@id"], annoObject);
+                            break;
+                        }
+                        else if(i === annoResources.length - 1){ //we did not find this anno, save it as a new one in the list. 
+                            //console.log("This is a new anno, push it to anno list collection...");
+                            //console.log("Its value is "+annoObject.resource["cnt:chars"]);
+                            if(zeta){
+                                if(annoListCollection[2].resources === "[]"){
+                                    annoListCollection[2].resources = [];
+                                }
+                                annoListCollection[2].resources.push(annoObject); 
+                            }
+                            else if(alpha){
+                                if(annoListCollection[0].resources === "[]"){
+                                    annoListCollection[0].resources = [];
+                                }
+                                annoListCollection[0].resources.push(annoObject); 
+                            }
+                            else if(beta){
+                                if(annoListCollection[1].resources === "[]"){
+                                    annoListCollection[1].resources = [];
+                                }
+                                annoListCollection[1].resources.push(annoObject); 
+                            }
+                            break;
+                    }
+                }
+            }
+            else{
+                //console.log("This is a new anno to an empty list");
+                if(zeta){
+                    if(annoListCollection[2].resources === "[]"){
+                        annoListCollection[2].resources = [];
+                    }
+                    annoListCollection[2].resources.push(annoObject); 
+                }
+                else if(alpha){
+                    if(annoListCollection[0].resources === "[]"){
+                        annoListCollection[0].resources = [];
+                    }
+                    annoListCollection[0].resources.push(annoObject); 
+                }
+                else if (beta){
+                    if(annoListCollection[1].resources === "[]"){
+                        annoListCollection[1].resources = [];
+                    }
+                    annoListCollection[1].resources.push(annoObject); 
+                }
+            }
+
+	}
+        
+/* An object has been updated.  Its representation in the manifest must also be updated.  where tells me either structures or sequence, the params are in order of
+         * @id followed by some fields to update.  I then call to the server to update the sequences or structures field of the manifest object. 
+         * 
+         * This can be used to update the manifest in real time.  We are doing it on a publish request, so this is
+         * no longer used.
+         *  
+         *  */
+        function updateInManifest(where, params){
+            //console.log("need to update in the manifest...");
+            var idToFind = params["@id"];
+            delete params["@id"];
+            if(where === "structures"){
+                for(var i=0; i< rangeCollection.length; i++){
+                    if(rangeCollection[i]["@id"] === idToFind){
+                        $.each(params, function(paramKey, paramVal){
+                           rangeCollection[i][paramKey] = paramVal;
+                        });
+                        //updateManifestStructures();
+                        break;
+                    }
+                }
+            }
+            else if(where === "sequences"){
+                for(var i=0; i< manifestCanvases.length; i++){
+                    if(manifestCanvases[i]["@id"] === idToFind){
+                        $.each(params, function(paramKey, paramVal){
+                            manifestCanvases[i][paramKey] = paramVal;
+                        });
+                        //updateManifestSequence();    
+                        break;
+                    }
+                }
+            }
+        }
+        
+        function updateManifestStructures(){
+            //console.log("updating manifest structures...");
+            var postURL = "http://brokenbooks.org/brokenBooks/updateRange";
+            var paramObj1 = {"@id" : manifestID, "structures":rangeCollection};
+            var params1 = {"content" : JSON.stringify(paramObj1)};
+            $.post(postURL, params1, function(rootRangeList){
+                manifest.structures = rangeCollection;
+                //console.log("done updating manifest structures");
+            });
+        }
+        
+        function updateManifestSequence(){
+            //console.log("updating manifest sequence...");
+            var postURL = "http://brokenbooks.org/brokenBooks/updateRange";
+            var sequenceObj = {
+                "@id" : "http://brokenbooks.org/brokenBooks/sequence/normal",
+                "@type": "sc:Sequence",
+                "label" : "Manifest Sequence",
+                "canvases" : manifestCanvases
+            };
+            var paramObj1 = {"@id" : manifestID, "sequences":[sequenceObj]};
+            var params1 = {"content" : JSON.stringify(paramObj1)};
+            $.post(postURL, params1, function(data){
+                manifest.sequences[0].canvases = manifestCanvases;
+                //console.log("done updating manifest sequence");
+            });
+        }
+        
+/* 
+ * For now, any of the BB pages should tell you what user you are.  This is a helper function to get the manifest ID for what user you are to use in the update functions
+ * for the structure and sequence arrays.  It also sets the global manifest and manifestID variables.  
+ */
+function getManifestID(){
+    var forProject = detectWho();
+    var properties={"@type" : "sc:Manifest", "forProject":forProject};
+    var localID = "unknown";
+    var url="http://brokenbooks.org/brokenBooks/getAnnotationByPropertiesServlet";
+    var params = {"content" : JSON.stringify(properties)};
+    var windowurl = document.location.href;
+    if(windowurl.indexOf("demo=1") > -1){
+        rangeCollection = testManifest.structures;
+        manifestCanvases = testManifest.sequences[0].canvases;
+        manifest = testManifest;
+        manifestID = testManifest["@id"];
+    }
+    else{
+        $.post(url, params, function(data){
+           var manifest_data = JSON.parse(data);
+           manifest = manifest_data[0];
+           rangeCollection = manifest.structures;
+           manifestCanvases = manifest.sequences[0].canvases;
+           manifestID = manifest["@id"];
+           localID = manifestID;
+           $(".prepareleaf").show();
+           return localID;
+        });
+    }
+    
+}
+
 
