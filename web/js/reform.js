@@ -15,2193 +15,128 @@ var thisURL = document.location.href;
 var bucketID = "";
 var manifest = {};
 var manifestID = "";
+var windowURL = document.location.href;
+var rootRangeID = "";
 if(thisURL.indexOf("demo=1") > -1 ){
     putInBucketDemo = true; 
 }
-var testLists = [
-    {
-        "@type" : "sc:AnnotationList",
-        "context" : "http://www.shared-canvas.org/ns/context.json",
-        "on" : "http://www.example.org/reform/range/25", //January leaf
-        "originalAnnoID" : "",
-        "version" : 1,
-        "permission" : 0,
-        "forkFromID" : "",
-        "@id" :"http://www.example.org/reform/annoList/3",
-        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54c\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"General Metadata\",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qwertyuuiio\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54b\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Institution or Repository: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qqqq\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54d\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Date: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"wwww\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54e\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Language:  \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"eeee\"},\"on\":\"http://www.example.org/reform/range/25\"}]"
-    },
-    {
-        "@type" : "sc:AnnotationList",
-        "context" : "http://www.shared-canvas.org/ns/context.json",
-        "on" : "http://www.example.org/reform/canvas/1", //january leaf canvas 1
-        "originalAnnoID" : "",
-        "version" : 1,
-        "permission" : 0,
-        "forkFromID" : "",
-        "@id" : "http://www.example.org/reform/annoList/1",
-        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce6f3e4b0f1c678d2a550\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Place Of Origin: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"ssss\"},\"on\":\"http://www.example.org/reform/canvas/1\"}]"
-    },
-    {
-        "@type" : "sc:AnnotationList",
-        "context" : "http://www.shared-canvas.org/ns/context.json",
-        "on" : "http://www.example.org/reform/canvas/2", //january leaf canvas 2
-        "originalAnnoID" : "",
-        "version" : 1,
-        "permission" : 0,
-        "forkFromID" : "",
-        "@id" : "http://www.example.org/reform/annoList/2",
-        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce707e4b0f1c678d2a554\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Format (single leaf, half bifolium, fragment): \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"xxxxx\"},\"on\":\"http://www.example.org/reform/canvas/2\"}]"
-    }       
-];
-annoListCollection[0] = testLists[0];
-annoListCollection[1] = testLists[1];
-annoListCollection[2] = testLists[2];
-var serverCanvasID = -1;
-var serverAnnoID = -1;
-var currentLeafServerID = -1;
 
-var manifestCanvases = [];
-var rangeCollection = [];
-var allLeaves = [];
-var testManifest = {
-    "@context" : "http://iiif.io/api/presentation/2/context.json",
-    "@id" : "",
-    "@type" : "sc:Manifest",
-    "context" : "http://www.shared-canvas.org/ns/context.json",
-    "label" : "Llang Binder",
-    "sequences" : [{
-      "@id" : "http://www.example.org/reform/sequence/normal",
-      "@type" : "sc:Sequence",
-      "label" : "Llangattock Bucket",
-      "canvases" : [{
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/1_anchor",
-          "@type" : "sc:Canvas",
-          "label" : "Llang_001",
-          "height" : 1000,
-          "width" : 667,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.example.org/reform/image_001",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                "height" : 2365,
-                "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/1_anchor"
-          }],
-          "otherContent":[]
-         },
-         {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/1",
-          "@type" : "sc:Canvas",
-          "label" : "January Text_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [
-          {
-               "@type" : "oa:Annotation",
-               "motivation" : "sc:painting",
-               "resource" : {
-                 "@id" : "http://www.yoyowall.com/wp-content/uploads/2013/03/Abstract-Colourful-Cool.jpg",
-                 "@type" : "dctypes:Image",
-                 "format" : "image/jpeg",
-                 "height" : 2365,
-                 "width" : 1579
-               },
-               "on" : "http://www.example.org/reform/canvas/1"
-          }
-          ],
-          "otherContent":[{"@id":"http://www.example.org/reform/annoList/1", "@type":"sc:AnnotationList"}]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/2",
-          "@type" : "sc:Canvas",
-          "label" : "January Text_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://funlava.com/wp-content/uploads/2013/03/cool-hd-wallpapers.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/2"
-          }],
-          "otherContent":[{"@id":"http://www.example.org/reform/annoList/2", "@type":"sc:AnnotationList"}]
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/3",
-          "@type" : "sc:Canvas",
-          "label" : "February Text_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSRYZAj0K5SiHcZonHG--GrygYLgnjhSXX35BfapUckYLB7fKYI",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/3"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/4",
-          "@type" : "sc:Canvas",
-          "label" : "February Text_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://i.huffpost.com/gen/1719761/images/o-COOL-CAT-facebook.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/4"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/5",
-          "@type" : "sc:Canvas",
-          "label" : "March Text_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://cloud-4.steamusercontent.com/ugc/43108316458046990/EC4110525593F4CC213E69257ABE6F0BE1D18D9A/",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/5"
-          }],
-          "otherContent":[]
-         
-   },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/6",
-          "@type" : "sc:Canvas",
-          "label" : "March Text_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.hdwallpaperscool.com/wp-content/uploads/2014/06/amazing-backgrounds-cool-wallpapers-of-high-resolution.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/6"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/7",
-          "@type" : "sc:Canvas",
-          "label" : "April Text_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://t3.gstatic.com/images?q=tbn:ANd9GcR-CUW-EqZ7WboySAFm_3oQH9xLbxZsSHu2EyPsQ8gCObts0-nJ",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/7"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/8",
-          "@type" : "sc:Canvas",
-          "label" : "April Text_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://t1.gstatic.com/images?q=tbn:ANd9GcQM3TBh35_znmOW65GdTY1u6WZCa5smnvv_s1nIJl355iaqIBeVGg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/8"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/9",
-          "@type" : "sc:Canvas",
-          "label" : "May Text_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.darveshtv.com/wp-content/uploads/2015/02/cool_car_3d_wallpapers_hot.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/9"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/10",
-          "@type" : "sc:Canvas",
-          "label" : "May Text_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://ajournalofmusicalthings.com/wp-content/uploads/Cool.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/10"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/11",
-          "@type" : "sc:Canvas",
-          "label" : "June Text_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://upload.wikimedia.org/wikipedia/commons/2/20/Cool,_Calif_sign.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/11"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/12",
-          "@type" : "sc:Canvas",
-          "label" : "June Text_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://t1.gstatic.com/images?q=tbn:ANd9GcT_cVgwB1vOupPsjjiGbnPrkK24fpq9BThi3fkVNrgoX0oMNwzv0w",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/12"
-          }],
-          "otherContent":[]
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/13",
-          "@type" : "sc:Canvas",
-          "label" : "Advent_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://t0.gstatic.com/images?q=tbn:ANd9GcTLM1VY3Ehp3F1hd78mrszS3euO32XV-BjtgXaaKNcRJ8je3ECmZg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/13"
-          }],
-          "otherContent":[]      
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/14",
-          "@type" : "sc:Canvas",
-          "label" : "Advent_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://browsewallpaper.com/wp-content/uploads/2014/11/cool%20designs%20wallpaper-cKAa.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/14"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/15",
-          "@type" : "sc:Canvas",
-          "label" : "Epiphany_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.desktopaper.com/wp-content/uploads/great-cool-design-backgrounds.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/15"
-          }],
-          "otherContent":[]   
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/16",
-          "@type" : "sc:Canvas",
-          "label" : "Epiphany_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Haliaeetus_leucocephalus_-Skagit_valley-8-2c.jpg/300px-Haliaeetus_leucocephalus_-Skagit_valley-8-2c.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/16"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/17",
-          "@type" : "sc:Canvas",
-          "label" : "Pre-Lent_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.chicagonow.com/greenamajigger/files/2013/04/bee-eater_1627477i.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/17"
-          }],
-          "otherContent":[]   
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/18",
-          "@type" : "sc:Canvas",
-          "label" : "Pre-Lent_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.arizonafoothillsmagazine.com/images/stories/aug13/Butterfly_Blue.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/18"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/19",
-          "@type" : "sc:Canvas",
-          "label" : "Ascension_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Butterflies_%28Costa_Rica%29.jpg/800px-Butterflies_%28Costa_Rica%29.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/19"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/20",
-          "@type" : "sc:Canvas",
-          "label" : "Ascension_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.slu.edu/Images/marketing_communications/logos/slu/slu_2c.bmp",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/20"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/21",
-          "@type" : "sc:Canvas",
-          "label" : "Pentecost_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://vaccinenewsdaily.com/wp-content/uploads/2015/01/SLU_Vert_blue.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/21"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/22",
-          "@type" : "sc:Canvas",
-          "label" : "Pentecost_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://rbrua3v80lj2rulsf7iqfnpmf.wpengine.netdna-cdn.com/wp-content/uploads/2014/10/St_Louis_Blues3.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/22"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/23",
-          "@type" : "sc:Canvas",
-          "label" : "Pentecost After Advent_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://www.sports-logos-screensavers.com/user/St_Louis_Blues4.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/23"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/24",
-          "@type" : "sc:Canvas",
-          "label" : "Pentecost After Advent_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://p1.pichost.me/i/39/1623860.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                // "height" : 2365,
-                // "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/24"
-          }],
-          "otherContent":[]
-         
-   },
-   {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/25",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 1-6",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/26",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 6-11",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/27",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 41-46",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/28",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 46-50",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/29",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 51-56",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/30",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 56-61",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/31",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 91-96",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/32",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 96-100",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/33",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 101-107",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/34",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 106-111",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/35",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 141-14150",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/36",
-          "@type" : "sc:Canvas",
-          "label" : "Psalms 146-150",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/37",
-          "@type" : "sc:Canvas",
-          "label" : "Apostles_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/38",
-          "@type" : "sc:Canvas",
-          "label" : "Apostles_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/39",
-          "@type" : "sc:Canvas",
-          "label" : "Virgins_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/40",
-          "@type" : "sc:Canvas",
-          "label" : "Virgins_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/41",
-          "@type" : "sc:Canvas",
-          "label" : "Andrew_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/42",
-          "@type" : "sc:Canvas",
-          "label" : "Andrew_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/43",
-          "@type" : "sc:Canvas",
-          "label" : "Petronilla_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/44",
-          "@type" : "sc:Canvas",
-          "label" : "Pertonilla_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/45",
-          "@type" : "sc:Canvas",
-          "label" : "Marcellinus_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/46",
-          "@type" : "sc:Canvas",
-          "label" : "Marcellinus_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/45",
-          "@type" : "sc:Canvas",
-          "label" : "Saturinus_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/46",
-          "@type" : "sc:Canvas",
-          "label" : "Saturinus_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/47",
-          "@type" : "sc:Canvas",
-          "label" : "OOV_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/48",
-          "@type" : "sc:Canvas",
-          "label" : "OOV_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/49",
-          "@type" : "sc:Canvas",
-          "label" : "OOD_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/50",
-          "@type" : "sc:Canvas",
-          "label" : "OOD_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/51",
-          "@type" : "sc:Canvas",
-          "label" : "misc_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/52",
-          "@type" : "sc:Canvas",
-          "label" : "misc_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [],
-          "otherContent":[]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/55",
-          "@type" : "sc:Canvas",
-          "label" : "SLU_VFL_MS_002_fol_b_r",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://brokenbooks.org/brokenBooks/images/SLU_VFL_MS_002_fol_b_r.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                "height" : 2365,
-                "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/1_anchor"
-          }],
-          "otherContent":[{"@id":"http://www.example.org/reform/annoList/4", "@type":"sc:AnnotationList"}]
-         
-    },
-    {
-      //This will be the anchor canvas in the anchor range
-          "@id" : "http://www.example.org/reform/canvas/56",
-          "@type" : "sc:Canvas",
-          "label" : "SLU_VFL_MS_002_fol_b_v",
-          "height" : 300,
-          "width" : 200,
-          "images" : [{
-              "@type" : "oa:Annotation",
-              "motivation" : "sc:painting",
-              "resource" : {
-                "@id" : "http://brokenbooks.org/brokenBooks/images/SLU_VFL_MS_002_fol_b_v.jpg",
-                "@type" : "dctypes:Image",
-                "format" : "image/jpeg",
-                "height" : 2365,
-                "width" : 1579
-              },
-              "on" : "http://www.example.org/reform/canvas/1_anchor"
-          }],
-          "otherContent":[{"@id":"http://www.example.org/reform/annoList/5", "@type":"sc:AnnotationList"}]
-         
-    },
-    ]
-}], 
-"structures" : [
-
-{
-  "@id":"http://www.example.org/reform/range/parent_aggr",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Llangattock Breviary Structure",
-  "ranges" : [
-      "http://www.example.org/reform/range/1",
-      "http://www.example.org/reform/range/2",
-      "http://www.example.org/reform/range/3",
-      "http://www.example.org/reform/range/4",
-      "http://www.example.org/reform/range/21",
-      "http://www.example.org/reform/range/5"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},    
-{
-  "@id":"http://www.example.org/reform/range/1",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Calendar",
-  "ranges" : [
-      "http://www.example.org/reform/range/7",
-      "http://www.example.org/reform/range/8",
-      "http://www.example.org/reform/range/9",
-      "http://www.example.org/reform/range/10",
-      "http://www.example.org/reform/range/11",
-      "http://www.example.org/reform/range/12"
-      //add leaf ranges here in order for page order
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{ //A connection of content can be made like this, but not fragments
-  "@id":"http://www.example.org/reform/range/2",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Temporale",
-  "ranges" : [
-      "http://www.example.org/reform/range/13",
-      "http://www.example.org/reform/range/14",
-      "http://www.example.org/reform/range/15",
-      "http://www.example.org/reform/range/53"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{//A connection of content can be made like this, but not fragments
-  "@id":"http://www.example.org/reform/range/3",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalter",
-  "ranges" : [
-      "http://www.example.org/reform/range/16",
-      "http://www.example.org/reform/range/17",
-      "http://www.example.org/reform/range/18"
-      //add leaf ranges here in order for page order
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-
-{
-  "@id":"http://www.example.org/reform/range/4",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Sanctorale",
-  "ranges" : [
-      "http://www.example.org/reform/range/19",
-      "http://www.example.org/reform/range/20",
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/5",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Auxilary Texts",
-  "ranges" : [
-      "http://www.example.org/reform/range/22",
-      "http://www.example.org/reform/range/23",
-      "http://www.example.org/reform/range/24"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-
-{
-  "@id":"http://www.example.org/reform/range/7",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"January",
-  "ranges" : [
-    "http://www.example.org/reform/range/25"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/8",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"February",
-  "ranges" : [
-      "http://www.example.org/reform/range/26"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/9",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"March",
-  "ranges" : [
-      "http://www.example.org/reform/range/27"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/10",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"April",
-  "ranges" : [
-      "http://www.example.org/reform/range/28"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/11",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"May",
-  "ranges" : [
-      "http://www.example.org/reform/range/29"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/12",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"June",
-  "ranges" : [
-      "http://www.example.org/reform/range/30"
-   ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-}, //EX: we know this is the last section.  Here are 4 pages we know are in it.  It is not inside the table of contents array.
-
-{
-  "@id":"http://www.example.org/reform/range/13",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Advent - Epiphany",
-  "ranges" : [
-    "http://www.example.org/reform/range/31", 
-    "http://www.example.org/reform/range/32"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/14",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Pre-Lent through Ascension",
-  "ranges" : [
-    "http://www.example.org/reform/range/33", 
-    "http://www.example.org/reform/range/34"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/15",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Pentecost to Advent",
-  "ranges" : [
-    "http://www.example.org/reform/range/35", 
-    "http://www.example.org/reform/range/36"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/16",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 1-50",
-  "ranges" : [
-    "http://www.example.org/reform/range/37", 
-    "http://www.example.org/reform/range/38"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/17",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 51-100",
-  "ranges" : [
-      "http://www.example.org/reform/range/39", 
-      "http://www.example.org/reform/range/40"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-
-{
-  "@id":"http://www.example.org/reform/range/18",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 101-150",
-  "ranges" : [
-      "http://www.example.org/reform/range/41", 
-      "http://www.example.org/reform/range/42"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/19",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Andrew (Nov 30)-Petronilla(May31)",
-  "ranges" : [
-      "http://www.example.org/reform/range/46",
-      "http://www.example.org/reform/range/47"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/20",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Marcellinus (June 2)â€“Satirinus(Nov 29)",
-  "ranges" : [
-      "http://www.example.org/reform/range/48",
-      "http://www.example.org/reform/range/49"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/21",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Common of Saints",
-  "ranges" : [
-      "http://www.example.org/reform/range/43"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/22",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Office of the Virgin",
-  "ranges" : [
-      "http://www.example.org/reform/range/50"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/23",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Office of the Dead",
-  "ranges" : [
-      "http://www.example.org/reform/range/51"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/24",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Miscellaneous",
-  "ranges" : [
-      "http://www.example.org/reform/range/52"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/25",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"January Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/1","http://www.example.org/reform/canvas/2"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : [{"@id":"http://www.example.org/reform/annoList/3", "@type":"sc:AnnotationList"}]
-},
-{
-  "@id":"http://www.example.org/reform/range/26",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"February Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/3","http://www.example.org/reform/canvas/4"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/27",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"March Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/5","http://www.example.org/reform/canvas/6"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/28",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"April Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/7","http://www.example.org/reform/canvas/8"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/29",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"May Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/9","http://www.example.org/reform/canvas/10"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/30",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"June Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/11","http://www.example.org/reform/canvas/12"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/31",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Advent Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/13","http://www.example.org/reform/canvas/14"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/32",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Epiphany Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/15","http://www.example.org/reform/canvas/16"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/33",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Pre-Lent Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/17","http://www.example.org/reform/canvas/18"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/34",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Ascension Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/19","http://www.example.org/reform/canvas/20"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/35",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Pentecost Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/21","http://www.example.org/reform/canvas/22"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/36",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Advent After Pentecost Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/23","http://www.example.org/reform/canvas/24"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/37",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 1-11 Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/25","http://www.example.org/reform/canvas/26"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/38",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 41-50 Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/27","http://www.example.org/reform/canvas/28"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/39",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 51-61 Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/29","http://www.example.org/reform/canvas/30"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/40",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 91-100 Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/31","http://www.example.org/reform/canvas/32"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/41",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 101-111 Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/33","http://www.example.org/reform/canvas/34"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/42",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Psalms 141-150 Text",
-  "ranges" : [
-      
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/35","http://www.example.org/reform/canvas/36"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/43",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Apostles, Martyrs, Confessors, Virgins",
-  "ranges" : [
-      "http://www.example.org/reform/range/44",
-      "http://www.example.org/reform/range/45"
-  ],
-  "canvases" :[],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/44",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Apostles Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/37","http://www.example.org/reform/canvas/38"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/45",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Virgins Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/39","http://www.example.org/reform/canvas/40"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/46",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Andrew Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/41","http://www.example.org/reform/canvas/42"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/47",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Petronilla Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/43","http://www.example.org/reform/canvas/44"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/48",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Marcellinus Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/45","http://www.example.org/reform/canvas/46"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/49",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Saturinus Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/47","http://www.example.org/reform/canvas/48"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/50",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Office of the Virgin Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/49","http://www.example.org/reform/canvas/50"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/51",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Office of the Dead Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/51","http://www.example.org/reform/canvas/52"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-},
-{
-  "@id":"http://www.example.org/reform/range/52",
-  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-  "label":"Miscellaneous Text",
-  "ranges" : [
-
-  ],
-  "canvases" :["http://www.example.org/reform/canvas/53","http://www.example.org/reform/canvas/54"],
-  "isPartOf": "http://www.example.org/reform/sequence/normal",
-  "otherContent" : []
-}
-//{
-//  "@id":"http://www.example.org/reform/range/53",
-//  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
-//  "label":"Demo Test Leaf",
-//  "ranges" : [
-//
-//  ],
-//  "canvases" :["http://www.example.org/reform/canvas/55","http://www.example.org/reform/canvas/56"],
-//  "isPartOf": "http://www.example.org/reform/sequence/normal",
-//  "otherContent" : []
-//}
-
-]
-};
-
-var emptyAnnoList = {
-            "@id" : "http://www.example.org/reform/annoList/empty",
-            "@type" : "sc:AnnotationList",
-            "context" : "http://www.shared-canvas.org/ns/context.json",
-            "label" : "EMPTY",
-            "resources" : [],
-            "on" :  "demo"
-        };
-var annotationLists = [
-    {
-      "@id" : "http://www.example.org/reform/annoList/1",
-      "@type" : "sc:AnnotationList",
-      "context" : "http://www.shared-canvas.org/ns/context.json",
-      "label" : "Fragments",
-      "resources" : [ 
-        {
-          "@id" : "http://www.example.org/reform/anno/1",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "BB Identifier",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "BB_LLang_01"
-          },
-          "on" : "http://www.example.org/reform/canvas/1"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/2",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Nickname",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Bryan's test"
-          },
-          "on" : "http://www.example.org/reform/canvas/1"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/3",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Date Acquired",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "6/12/15"
-          },
-          "on" : "http://www.example.org/reform/canvas/1"
+    /* 
+     * It could be a group locked together that we are sorting, so we need to account for making a clone helper for the group
+     * of elements and making the move actually move all the elements together. 
+     */
+    function makeSortable(column){
+        var columnDepth = column.attr("depth");
+        $.each($(".adminTrail").find(".rangeArrangementArea").not(".rangeArrangementArea[depth='"+columnDepth+"']"), function(){
+            var overDiv = $("<div class='areaCover'></div>");
+            $(this).append(overDiv);
+        });
+       
+        column.find(".makeSortable").hide();
+        column.find(".doneSortable").show();
+        column.children('.notBucket').sortable({
+            helper:function(e, item){
+                if(!item.hasClass('selected'))item.addClass('selected');
+                var chainedElems = chainTargets(item[0]);
+                var helper = $('<div class="sortHelper"></div>');
+                var hlpWidth = 0;
+                // grab all the chained elements and add the selected class
+                // clone selected items before hiding
+                for(var i=0; i<chainedElems.length; i++){
+                    var element = $(chainedElems[i]);
+                    if(i===0){
+                        hlpWidth = element.parent().width() + 50;
+                    }
+                    var clonedElement = element.clone();
+                    clonedElement.addClass("helper");
+                    clonedElement.find(".lockedUp").remove();
+                    clonedElement.find(".lockUp").remove();
+                    clonedElement.find(".putInGroup").remove();
+                    helper.append(clonedElement);
+                    element.addClass("selected");
+                    element.addClass("hidden");
+                }
+                helper.css("width", hlpWidth);
+                return helper;
+            },
+            start: function (e, ui) {
+                var elements =$(".selected.hidden").not(".helper");
+                //store the selected items to item being dragged
+                ui.item.data('items', elements);
+            },
+            stop: function (e, ui) {
+                //This will always take the selected item and place it in the drop spot.  It will then bring the other items,
+                //and you have to tell the other items whether they go after or before the item that was just sorted.  
+                var itemAfter = $(ui.item).next();
+                var itemBefore = $(ui.item).prev();
+                //item being sorted cannot be placed inbetween locked items.
+                if(itemAfter.attr("lockedup") === "true" && itemBefore.attr("lockeddown") === "true"){
+                    alert("You cannot put this object in the middle of locked items");
+                    $('.hidden').removeClass("hidden");
+                    $(".selected").removeClass("selected");
+                    return false;
+                }
+                var clonedSet = $(ui.item.data('items').clone());
+                clonedSet.removeClass("hidden selected");
+                // you must clone the set or the original ui.item will not be present after replaceWith()
+                $(ui.item).replaceWith(clonedSet);
+                $('.hidden').remove();
+                $(".selected").removeClass("selected");
+                //unselect since the operation is complete
+                
+            },
+            placeholder: "customPlaceholder",
+            forcePlaceholderSize: true,
+            axis:"y",
+            cursorAt: { top: 0, left: 0 }
+        });
+    }
+    
+    function stopSorting(column){
+        var windowurl = document.location.href;
+        var children = column.children(".notBucket").children(".arrangeSection");
+        var childrenArray = [];
+        if(windowurl.indexOf("demo=1") >-1){
+            column.children(".notBucket").sortable("destroy");
+            $(".areaCover").remove();
+            column.find(".makeSortable").show();
+            column.find(".doneSortable").hide();
         }
-      ],
-      "on" :  "http://www.example.org/reform/canvas/1"//end resources
-  },
-
-  {
-      "@id" : "http://www.example.org/reform/annoList/2",
-      "@type" : "sc:AnnotationList",
-      "context" : "http://www.shared-canvas.org/ns/context.json",
-      "label" : "Fragments",
-      "resources" : [ 
-        {
-          "@id" : "http://www.example.org/reform/anno/4",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Place Of Origin",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "St. Louis"
-          },
-          "on" : "http://www.example.org/reform/canvas/2"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/5",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Condition",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Deplorable"
-          },
-          "on" : "http://www.example.org/reform/canvas/2"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/6",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Illustrations",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Smiley Face Doodles"
-          },
-          "on" : "http://www.example.org/reform/canvas/2"
+        else{
+            $.each(children, function(){
+                childrenArray.push($(this).attr("rangeID"));
+            });
+        //need to update this column range id with the new order of ranges
+            var updateURL ="http://brokenbooks.org/brokenBooks/updateRange"; //update list with the range removed
+            var paramObj1 = {"@id" : column.attr("rangeID"), "ranges" : childrenArray};
+            var params1 = {"content" : JSON.stringify(paramObj1)};
+            $.post(updateURL, params1, function(){
+               column.children(".notBucket").sortable("destroy");
+               $(".areaCover").remove();
+               column.find(".makeSortable").show();
+               column.find(".doneSortable").hide();
+               populateMessage("new order saved!");
+            });
         }
-      ], //end resources
-      "on" : "http://www.example.org/reform/canvas/2"
-  },
-  {
-      "@id" : "http://www.example.org/reform/annoList/3",
-      "@type" : "sc:AnnotationList",
-      "context" : "http://www.shared-canvas.org/ns/context.json",
-      "label" : "Fragments",
-      "resources" : [ 
-        {
-          "@id" : "http://www.example.org/reform/anno/7",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "General Metadata",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "This is the very first leaf in the breviary.  An interesting face is that Leonardo da Vinci created it, which makes no sense."
-          },
-          "on" : "http://www.example.org/reform/range/25"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/8",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Title",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Suspected da Vinci Writings"
-          },
-          "on" : "http://www.example.org/reform/range/25"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/9",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Other Content Info",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "It takes up a much smaller portion of the page than usual."
-          },
-         "on" : "http://www.example.org/reform/range/25"
+        
+    }
+    function resetFolioCount(){
+        if($(".rangeArrangementArea:first").find(".selectedSection").length > 0){
+            $(".rangeArrangementArea:first").find(".selectedSection").click();
         }
-      ], //end resources
-      "on" : "http://www.example.org/reform/range/25"
-  },
-  {
-      "@id" : "http://www.example.org/reform/annoList/4",
-      "@type" : "sc:AnnotationList",
-      "context" : "http://www.shared-canvas.org/ns/context.json",
-      "label" : "Fragments",
-      "resources" : [ 
-        {
-          "@id" : "http://www.example.org/reform/anno/10",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "BB Identifier",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "BB_Llang_003_r"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-         {
-          "@id" : "http://www.example.org/reform/anno/11",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Institution or Repository",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Saint Louis University"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/12",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Shelfmark",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "SLU VFL MS 002, fol. b, recto"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/13",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Date Acquired",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "1962"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/14",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Provenance",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Milton& Gail Fischmann, 1962"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/15",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Bibliography",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Evans, E.S. \"Medieval manuscripts at Saint Louis University: a catalogue,\" in Manuscripta 47/48 (2003/2004), p. 56-64."
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/16",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Language",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Latin"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/17",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Subject",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Catholic Church, Liturgy"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/18",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Title (refers to contents)",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Feast of Holy Innocents (Dec 28), Matins, Lessons 4-7"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/19",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Incipit",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "[Et ideo dignum...fuit causa]//p[o]ene, qui extitit et corone, ip[s]e odii c[aus]a qui p[rae]mii ..."
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/19",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Date",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "1441-1448"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/20",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Place Of Origin",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Ferrara, Italy"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/21",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Format (single leaf, half bifolium, fragment)",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Single leaf"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/22",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Dimensions",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "275 x 200 (170 x 130) mm"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/23",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Columns",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "2"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/24",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Lines",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "30"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/25",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Script",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Gothic textualis rotunda"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/26",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Decorations",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "4 two-line initials, two vertical bar extensions terminating in floral and foliate forms"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/27",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Artist(s)",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Giorgio d'Alemagna (active 1441-1479) and others"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        }
-      ], //end resources
-      "on" : "http://www.example.org/reform/canvas/55"
-  },
-  {
-      "@id" : "http://www.example.org/reform/annoList/5",
-      "@type" : "sc:AnnotationList",
-      "context" : "http://www.shared-canvas.org/ns/context.json",
-      "label" : "Fragments",
-      "resources" : [ 
-        {
-          "@id" : "http://www.example.org/reform/anno/29",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "BB Identifier",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "BB_Llang_003_v"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-         {
-          "@id" : "http://www.example.org/reform/anno/30",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Institution or Repository",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Saint Louis University"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/31",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Shelfmark",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "SLU VFL MS 002, fol. b, verso"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/32",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Date Acquired",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "1962"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/33",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Provenance",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Milton& Gail Fischmann, 1962"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/34",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Bibliography",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Evans, E.S. \"Medieval manuscripts at Saint Louis University: a catalogue,\" in Manuscripta 47/48 (2003/2004), p. 56-64."
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/35",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Language",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Latin"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/36",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Subject",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Catholic Church, Liturgy"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/37",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Title (refers to contents)",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Feast of Holy Innocents (Dec 28), Matins, Lessons 7-9, Laud"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/38",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Explicit",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Cum rel[iquis] a[n]t[iphona]. A bymatu et infra occidit multos pueros hero//[des propter "
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/39",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Date",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "1441-1448"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/40",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Place Of Origin",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Ferrara, Italy"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/41",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Format (single leaf, half bifolium, fragment)",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Single leaf"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/42",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Dimensions",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "275 x 200 (170 x 130) mm"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/43",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Columns",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "2"
-          },
-          "on" : "http://www.example.org/reform/canvas/55"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/44",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Lines",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "30"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/45",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Script",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Gothic textualis rotunda"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/46",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Decorations",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "2 two-line initials, two vertical bar extensions terminating in floral and foliate forms"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        },
-        {
-          "@id" : "http://www.example.org/reform/anno/47",
-          "@type" : "oa:Annotation",
-          "motivation" : "oa:describing",
-          "label" : "Artist(s)",
-          "resource" : {
-            "@type" : "cnt:ContentAsText",
-            "cnt:chars" : "Giorgio d'Alemagna (active 1441-1479) and others"
-          },
-          "on" : "http://www.example.org/reform/canvas/56"
-        }],
-        "on" : "http://www.example.org/reform/canvas/56"
-  //Everything above this fits into the January leaf (and its canvases.)
-        }]; // end lists;
+        //wait for click event to resolve
+        setTimeout(function(){
+            $.each($(".arrangeSection"), function(){
+                $(this).children(".folioCount").remove();
+                var folioCount = $(this).find("div[leaf='true']").length;
+                var folioCountHTML = $("<span class='folioCount'><span class='countInt'>"+folioCount+"</span><img class='pageIcon' src='http://brokenbooks.org/brokenBooks/images/b_page.png'/></span>");
+                if($(this).attr("leaf") === "true"){
+                    folioCountHTML = $("<span class='folioCount'><img class='leafIcon' src='http://brokenbooks.org/brokenBooks/images/leaf.png'/></span>");
+                }      
+                $(this).append(folioCountHTML);
+            });
+        },500);
+    }
 
     function getManifest(url){
         //We can't be certain whether it was a line or a list that was updated.  Don't handle putting the return
@@ -2289,9 +224,7 @@ function updateLabel(range, currentLabel){
                populateMessage("Label updated!");
            });
         }
-        
     }
-    
 }
 
 function toggleChildren(parentRange, admin, event){
@@ -5421,7 +3354,6 @@ function populateAnnoForms(){
             populateMessage("Object deleted!");
         });
       }
-      
   }
   
   function removeAndUpdate(remove, update, bringup, leaf){
@@ -5625,7 +3557,6 @@ function populateAnnoForms(){
               var rangeForNewGroup = $("div[depth='"+depth+"']").attr("rangeid");
               newGroupUpdate(rangeForNewGroup, childLeaves, newGroup, depth);
           }
-          
       }
   }
   
@@ -5920,18 +3851,15 @@ function highlighLocks(where, why){
             else if(lockedDown){
                 $(where).find(".lockedUp").css("background-color","red");
             }
-            
             if(lockedUp){
                 window.setTimeout(function(){
                     $(where).prev().find(".lockedUp").css("background-color","white");
                 }, 2000);
-
             }
             else if(lockedDown){
                 window.setTimeout(function(){
                     $(where).find(".lockedUp").css("background-color","white");
                 }, 2000);
-
             }
             //alert("You cannot merge locked objects.  If you would like them to be in their own sections, create an empty section then drag and drop the objects into the new empty section. The locked object has been unchecked.");
         }
@@ -5952,13 +3880,11 @@ function highlighLocks(where, why){
                 window.setTimeout(function(){
                     $(where).prev().find(".lockedUp").css("background-color","white");
                 }, 2000);
-
             }
             else if(lockedDown){
                 window.setTimeout(function(){
                     $(where).find(".lockedUp").css("background-color","white");
                 }, 2000);
-
             }
         }
     }
@@ -6023,11 +3949,15 @@ function replaceURLVariable(variable, value){
        return(location + "?"+variables);
 }
 
+
+
+
+
+
+
+
+
 /** This stuff is deprecated out of BB logic */
-
-
-
-
 
 
 
@@ -6910,5 +4840,2194 @@ function existing(leaf, leafIsIn){
     }
     $(".popoverTrail").children(".rangeArrangementArea").append(arrangeAreaCover);
 }
+
+/**
+ * This is demo content
+ */
+
+var testLists = [
+    {
+        "@type" : "sc:AnnotationList",
+        "context" : "http://www.shared-canvas.org/ns/context.json",
+        "on" : "http://www.example.org/reform/range/25", //January leaf
+        "originalAnnoID" : "",
+        "version" : 1,
+        "permission" : 0,
+        "forkFromID" : "",
+        "@id" :"http://www.example.org/reform/annoList/3",
+        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54c\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"General Metadata\",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qwertyuuiio\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54b\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Institution or Repository: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"qqqq\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54d\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Date: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"wwww\"},\"on\":\"http://www.example.org/reform/range/25\"},{\"@id\":\"http://localhost:8080/v1/id/554ce6dee4b0f1c678d2a54e\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Language:  \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"eeee\"},\"on\":\"http://www.example.org/reform/range/25\"}]"
+    },
+    {
+        "@type" : "sc:AnnotationList",
+        "context" : "http://www.shared-canvas.org/ns/context.json",
+        "on" : "http://www.example.org/reform/canvas/1", //january leaf canvas 1
+        "originalAnnoID" : "",
+        "version" : 1,
+        "permission" : 0,
+        "forkFromID" : "",
+        "@id" : "http://www.example.org/reform/annoList/1",
+        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce6f3e4b0f1c678d2a550\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Place Of Origin: \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"ssss\"},\"on\":\"http://www.example.org/reform/canvas/1\"}]"
+    },
+    {
+        "@type" : "sc:AnnotationList",
+        "context" : "http://www.shared-canvas.org/ns/context.json",
+        "on" : "http://www.example.org/reform/canvas/2", //january leaf canvas 2
+        "originalAnnoID" : "",
+        "version" : 1,
+        "permission" : 0,
+        "forkFromID" : "",
+        "@id" : "http://www.example.org/reform/annoList/2",
+        "resources" : "[{\"@id\":\"http://localhost:8080/v1/id/554ce707e4b0f1c678d2a554\",\"@type\":\"oa:Annotation\",\"motivation\":\"oa:describing\",\"label\":\"Format (single leaf, half bifolium, fragment): \",\"resource\":{\"@type\":\"cnt:ContentAsText\",\"cnt:chars\":\"xxxxx\"},\"on\":\"http://www.example.org/reform/canvas/2\"}]"
+    }       
+];
+annoListCollection[0] = testLists[0];
+annoListCollection[1] = testLists[1];
+annoListCollection[2] = testLists[2];
+var serverCanvasID = -1;
+var serverAnnoID = -1;
+var currentLeafServerID = -1;
+
+var manifestCanvases = [];
+var rangeCollection = [];
+var allLeaves = [];
+var testManifest = {
+    "@context" : "http://iiif.io/api/presentation/2/context.json",
+    "@id" : "",
+    "@type" : "sc:Manifest",
+    "context" : "http://www.shared-canvas.org/ns/context.json",
+    "label" : "Llang Binder",
+    "sequences" : [{
+      "@id" : "http://www.example.org/reform/sequence/normal",
+      "@type" : "sc:Sequence",
+      "label" : "Llangattock Bucket",
+      "canvases" : [{
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/1_anchor",
+          "@type" : "sc:Canvas",
+          "label" : "Llang_001",
+          "height" : 1000,
+          "width" : 667,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.example.org/reform/image_001",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                "height" : 2365,
+                "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/1_anchor"
+          }],
+          "otherContent":[]
+         },
+         {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/1",
+          "@type" : "sc:Canvas",
+          "label" : "January Text_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [
+          {
+               "@type" : "oa:Annotation",
+               "motivation" : "sc:painting",
+               "resource" : {
+                 "@id" : "http://www.yoyowall.com/wp-content/uploads/2013/03/Abstract-Colourful-Cool.jpg",
+                 "@type" : "dctypes:Image",
+                 "format" : "image/jpeg",
+                 "height" : 2365,
+                 "width" : 1579
+               },
+               "on" : "http://www.example.org/reform/canvas/1"
+          }
+          ],
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/1", "@type":"sc:AnnotationList"}]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/2",
+          "@type" : "sc:Canvas",
+          "label" : "January Text_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://funlava.com/wp-content/uploads/2013/03/cool-hd-wallpapers.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/2"
+          }],
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/2", "@type":"sc:AnnotationList"}]
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/3",
+          "@type" : "sc:Canvas",
+          "label" : "February Text_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSRYZAj0K5SiHcZonHG--GrygYLgnjhSXX35BfapUckYLB7fKYI",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/3"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/4",
+          "@type" : "sc:Canvas",
+          "label" : "February Text_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://i.huffpost.com/gen/1719761/images/o-COOL-CAT-facebook.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/4"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/5",
+          "@type" : "sc:Canvas",
+          "label" : "March Text_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://cloud-4.steamusercontent.com/ugc/43108316458046990/EC4110525593F4CC213E69257ABE6F0BE1D18D9A/",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/5"
+          }],
+          "otherContent":[]
+         
+   },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/6",
+          "@type" : "sc:Canvas",
+          "label" : "March Text_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.hdwallpaperscool.com/wp-content/uploads/2014/06/amazing-backgrounds-cool-wallpapers-of-high-resolution.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/6"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/7",
+          "@type" : "sc:Canvas",
+          "label" : "April Text_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://t3.gstatic.com/images?q=tbn:ANd9GcR-CUW-EqZ7WboySAFm_3oQH9xLbxZsSHu2EyPsQ8gCObts0-nJ",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/7"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/8",
+          "@type" : "sc:Canvas",
+          "label" : "April Text_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://t1.gstatic.com/images?q=tbn:ANd9GcQM3TBh35_znmOW65GdTY1u6WZCa5smnvv_s1nIJl355iaqIBeVGg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/8"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/9",
+          "@type" : "sc:Canvas",
+          "label" : "May Text_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.darveshtv.com/wp-content/uploads/2015/02/cool_car_3d_wallpapers_hot.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/9"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/10",
+          "@type" : "sc:Canvas",
+          "label" : "May Text_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://ajournalofmusicalthings.com/wp-content/uploads/Cool.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/10"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/11",
+          "@type" : "sc:Canvas",
+          "label" : "June Text_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://upload.wikimedia.org/wikipedia/commons/2/20/Cool,_Calif_sign.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/11"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/12",
+          "@type" : "sc:Canvas",
+          "label" : "June Text_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://t1.gstatic.com/images?q=tbn:ANd9GcT_cVgwB1vOupPsjjiGbnPrkK24fpq9BThi3fkVNrgoX0oMNwzv0w",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/12"
+          }],
+          "otherContent":[]
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/13",
+          "@type" : "sc:Canvas",
+          "label" : "Advent_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://t0.gstatic.com/images?q=tbn:ANd9GcTLM1VY3Ehp3F1hd78mrszS3euO32XV-BjtgXaaKNcRJ8je3ECmZg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/13"
+          }],
+          "otherContent":[]      
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/14",
+          "@type" : "sc:Canvas",
+          "label" : "Advent_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://browsewallpaper.com/wp-content/uploads/2014/11/cool%20designs%20wallpaper-cKAa.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/14"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/15",
+          "@type" : "sc:Canvas",
+          "label" : "Epiphany_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.desktopaper.com/wp-content/uploads/great-cool-design-backgrounds.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/15"
+          }],
+          "otherContent":[]   
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/16",
+          "@type" : "sc:Canvas",
+          "label" : "Epiphany_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Haliaeetus_leucocephalus_-Skagit_valley-8-2c.jpg/300px-Haliaeetus_leucocephalus_-Skagit_valley-8-2c.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/16"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/17",
+          "@type" : "sc:Canvas",
+          "label" : "Pre-Lent_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.chicagonow.com/greenamajigger/files/2013/04/bee-eater_1627477i.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/17"
+          }],
+          "otherContent":[]   
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/18",
+          "@type" : "sc:Canvas",
+          "label" : "Pre-Lent_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.arizonafoothillsmagazine.com/images/stories/aug13/Butterfly_Blue.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/18"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/19",
+          "@type" : "sc:Canvas",
+          "label" : "Ascension_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Butterflies_%28Costa_Rica%29.jpg/800px-Butterflies_%28Costa_Rica%29.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/19"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/20",
+          "@type" : "sc:Canvas",
+          "label" : "Ascension_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.slu.edu/Images/marketing_communications/logos/slu/slu_2c.bmp",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/20"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/21",
+          "@type" : "sc:Canvas",
+          "label" : "Pentecost_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://vaccinenewsdaily.com/wp-content/uploads/2015/01/SLU_Vert_blue.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/21"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/22",
+          "@type" : "sc:Canvas",
+          "label" : "Pentecost_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://rbrua3v80lj2rulsf7iqfnpmf.wpengine.netdna-cdn.com/wp-content/uploads/2014/10/St_Louis_Blues3.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/22"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/23",
+          "@type" : "sc:Canvas",
+          "label" : "Pentecost After Advent_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://www.sports-logos-screensavers.com/user/St_Louis_Blues4.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/23"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/24",
+          "@type" : "sc:Canvas",
+          "label" : "Pentecost After Advent_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://p1.pichost.me/i/39/1623860.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                // "height" : 2365,
+                // "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/24"
+          }],
+          "otherContent":[]
+         
+   },
+   {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/25",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 1-6",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/26",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 6-11",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/27",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 41-46",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/28",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 46-50",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/29",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 51-56",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/30",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 56-61",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/31",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 91-96",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/32",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 96-100",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/33",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 101-107",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/34",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 106-111",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/35",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 141-14150",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/36",
+          "@type" : "sc:Canvas",
+          "label" : "Psalms 146-150",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/37",
+          "@type" : "sc:Canvas",
+          "label" : "Apostles_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/38",
+          "@type" : "sc:Canvas",
+          "label" : "Apostles_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/39",
+          "@type" : "sc:Canvas",
+          "label" : "Virgins_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/40",
+          "@type" : "sc:Canvas",
+          "label" : "Virgins_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/41",
+          "@type" : "sc:Canvas",
+          "label" : "Andrew_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/42",
+          "@type" : "sc:Canvas",
+          "label" : "Andrew_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/43",
+          "@type" : "sc:Canvas",
+          "label" : "Petronilla_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/44",
+          "@type" : "sc:Canvas",
+          "label" : "Pertonilla_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/45",
+          "@type" : "sc:Canvas",
+          "label" : "Marcellinus_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/46",
+          "@type" : "sc:Canvas",
+          "label" : "Marcellinus_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/45",
+          "@type" : "sc:Canvas",
+          "label" : "Saturinus_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/46",
+          "@type" : "sc:Canvas",
+          "label" : "Saturinus_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/47",
+          "@type" : "sc:Canvas",
+          "label" : "OOV_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/48",
+          "@type" : "sc:Canvas",
+          "label" : "OOV_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/49",
+          "@type" : "sc:Canvas",
+          "label" : "OOD_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/50",
+          "@type" : "sc:Canvas",
+          "label" : "OOD_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/51",
+          "@type" : "sc:Canvas",
+          "label" : "misc_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/52",
+          "@type" : "sc:Canvas",
+          "label" : "misc_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [],
+          "otherContent":[]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/55",
+          "@type" : "sc:Canvas",
+          "label" : "SLU_VFL_MS_002_fol_b_r",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://brokenbooks.org/brokenBooks/images/SLU_VFL_MS_002_fol_b_r.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                "height" : 2365,
+                "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/1_anchor"
+          }],
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/4", "@type":"sc:AnnotationList"}]
+         
+    },
+    {
+      //This will be the anchor canvas in the anchor range
+          "@id" : "http://www.example.org/reform/canvas/56",
+          "@type" : "sc:Canvas",
+          "label" : "SLU_VFL_MS_002_fol_b_v",
+          "height" : 300,
+          "width" : 200,
+          "images" : [{
+              "@type" : "oa:Annotation",
+              "motivation" : "sc:painting",
+              "resource" : {
+                "@id" : "http://brokenbooks.org/brokenBooks/images/SLU_VFL_MS_002_fol_b_v.jpg",
+                "@type" : "dctypes:Image",
+                "format" : "image/jpeg",
+                "height" : 2365,
+                "width" : 1579
+              },
+              "on" : "http://www.example.org/reform/canvas/1_anchor"
+          }],
+          "otherContent":[{"@id":"http://www.example.org/reform/annoList/5", "@type":"sc:AnnotationList"}]
+         
+    },
+    ]
+}], 
+"structures" : [
+
+{
+  "@id":"http://www.example.org/reform/range/parent_aggr",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Llangattock Breviary Structure",
+  "ranges" : [
+      "http://www.example.org/reform/range/1",
+      "http://www.example.org/reform/range/2",
+      "http://www.example.org/reform/range/3",
+      "http://www.example.org/reform/range/4",
+      "http://www.example.org/reform/range/21",
+      "http://www.example.org/reform/range/5"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},    
+{
+  "@id":"http://www.example.org/reform/range/1",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Calendar",
+  "ranges" : [
+      "http://www.example.org/reform/range/7",
+      "http://www.example.org/reform/range/8",
+      "http://www.example.org/reform/range/9",
+      "http://www.example.org/reform/range/10",
+      "http://www.example.org/reform/range/11",
+      "http://www.example.org/reform/range/12"
+      //add leaf ranges here in order for page order
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{ //A connection of content can be made like this, but not fragments
+  "@id":"http://www.example.org/reform/range/2",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Temporale",
+  "ranges" : [
+      "http://www.example.org/reform/range/13",
+      "http://www.example.org/reform/range/14",
+      "http://www.example.org/reform/range/15",
+      "http://www.example.org/reform/range/53"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{//A connection of content can be made like this, but not fragments
+  "@id":"http://www.example.org/reform/range/3",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalter",
+  "ranges" : [
+      "http://www.example.org/reform/range/16",
+      "http://www.example.org/reform/range/17",
+      "http://www.example.org/reform/range/18"
+      //add leaf ranges here in order for page order
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+
+{
+  "@id":"http://www.example.org/reform/range/4",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Sanctorale",
+  "ranges" : [
+      "http://www.example.org/reform/range/19",
+      "http://www.example.org/reform/range/20",
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/5",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Auxilary Texts",
+  "ranges" : [
+      "http://www.example.org/reform/range/22",
+      "http://www.example.org/reform/range/23",
+      "http://www.example.org/reform/range/24"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+
+{
+  "@id":"http://www.example.org/reform/range/7",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"January",
+  "ranges" : [
+    "http://www.example.org/reform/range/25"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/8",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"February",
+  "ranges" : [
+      "http://www.example.org/reform/range/26"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/9",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"March",
+  "ranges" : [
+      "http://www.example.org/reform/range/27"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/10",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"April",
+  "ranges" : [
+      "http://www.example.org/reform/range/28"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/11",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"May",
+  "ranges" : [
+      "http://www.example.org/reform/range/29"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/12",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"June",
+  "ranges" : [
+      "http://www.example.org/reform/range/30"
+   ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+}, //EX: we know this is the last section.  Here are 4 pages we know are in it.  It is not inside the table of contents array.
+
+{
+  "@id":"http://www.example.org/reform/range/13",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Advent - Epiphany",
+  "ranges" : [
+    "http://www.example.org/reform/range/31", 
+    "http://www.example.org/reform/range/32"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/14",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Pre-Lent through Ascension",
+  "ranges" : [
+    "http://www.example.org/reform/range/33", 
+    "http://www.example.org/reform/range/34"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/15",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Pentecost to Advent",
+  "ranges" : [
+    "http://www.example.org/reform/range/35", 
+    "http://www.example.org/reform/range/36"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/16",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 1-50",
+  "ranges" : [
+    "http://www.example.org/reform/range/37", 
+    "http://www.example.org/reform/range/38"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/17",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 51-100",
+  "ranges" : [
+      "http://www.example.org/reform/range/39", 
+      "http://www.example.org/reform/range/40"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+
+{
+  "@id":"http://www.example.org/reform/range/18",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 101-150",
+  "ranges" : [
+      "http://www.example.org/reform/range/41", 
+      "http://www.example.org/reform/range/42"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/19",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Andrew (Nov 30)-Petronilla(May31)",
+  "ranges" : [
+      "http://www.example.org/reform/range/46",
+      "http://www.example.org/reform/range/47"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/20",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Marcellinus (June 2)â€“Satirinus(Nov 29)",
+  "ranges" : [
+      "http://www.example.org/reform/range/48",
+      "http://www.example.org/reform/range/49"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/21",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Common of Saints",
+  "ranges" : [
+      "http://www.example.org/reform/range/43"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/22",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Office of the Virgin",
+  "ranges" : [
+      "http://www.example.org/reform/range/50"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/23",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Office of the Dead",
+  "ranges" : [
+      "http://www.example.org/reform/range/51"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/24",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Miscellaneous",
+  "ranges" : [
+      "http://www.example.org/reform/range/52"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/25",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"January Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/1","http://www.example.org/reform/canvas/2"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : [{"@id":"http://www.example.org/reform/annoList/3", "@type":"sc:AnnotationList"}]
+},
+{
+  "@id":"http://www.example.org/reform/range/26",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"February Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/3","http://www.example.org/reform/canvas/4"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/27",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"March Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/5","http://www.example.org/reform/canvas/6"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/28",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"April Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/7","http://www.example.org/reform/canvas/8"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/29",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"May Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/9","http://www.example.org/reform/canvas/10"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/30",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"June Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/11","http://www.example.org/reform/canvas/12"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/31",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Advent Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/13","http://www.example.org/reform/canvas/14"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/32",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Epiphany Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/15","http://www.example.org/reform/canvas/16"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/33",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Pre-Lent Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/17","http://www.example.org/reform/canvas/18"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/34",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Ascension Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/19","http://www.example.org/reform/canvas/20"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/35",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Pentecost Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/21","http://www.example.org/reform/canvas/22"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/36",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Advent After Pentecost Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/23","http://www.example.org/reform/canvas/24"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/37",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 1-11 Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/25","http://www.example.org/reform/canvas/26"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/38",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 41-50 Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/27","http://www.example.org/reform/canvas/28"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/39",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 51-61 Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/29","http://www.example.org/reform/canvas/30"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/40",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 91-100 Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/31","http://www.example.org/reform/canvas/32"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/41",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 101-111 Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/33","http://www.example.org/reform/canvas/34"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/42",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Psalms 141-150 Text",
+  "ranges" : [
+      
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/35","http://www.example.org/reform/canvas/36"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/43",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Apostles, Martyrs, Confessors, Virgins",
+  "ranges" : [
+      "http://www.example.org/reform/range/44",
+      "http://www.example.org/reform/range/45"
+  ],
+  "canvases" :[],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/44",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Apostles Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/37","http://www.example.org/reform/canvas/38"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/45",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Virgins Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/39","http://www.example.org/reform/canvas/40"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/46",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Andrew Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/41","http://www.example.org/reform/canvas/42"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/47",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Petronilla Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/43","http://www.example.org/reform/canvas/44"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/48",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Marcellinus Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/45","http://www.example.org/reform/canvas/46"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/49",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Saturinus Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/47","http://www.example.org/reform/canvas/48"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/50",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Office of the Virgin Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/49","http://www.example.org/reform/canvas/50"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/51",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Office of the Dead Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/51","http://www.example.org/reform/canvas/52"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+},
+{
+  "@id":"http://www.example.org/reform/range/52",
+  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+  "label":"Miscellaneous Text",
+  "ranges" : [
+
+  ],
+  "canvases" :["http://www.example.org/reform/canvas/53","http://www.example.org/reform/canvas/54"],
+  "isPartOf": "http://www.example.org/reform/sequence/normal",
+  "otherContent" : []
+}
+//{
+//  "@id":"http://www.example.org/reform/range/53",
+//  "@type":"sc:Range","lockedup":"false","lockeddown":"false","isOrdered":"false",
+//  "label":"Demo Test Leaf",
+//  "ranges" : [
+//
+//  ],
+//  "canvases" :["http://www.example.org/reform/canvas/55","http://www.example.org/reform/canvas/56"],
+//  "isPartOf": "http://www.example.org/reform/sequence/normal",
+//  "otherContent" : []
+//}
+
+]
+};
+
+var emptyAnnoList = {
+            "@id" : "http://www.example.org/reform/annoList/empty",
+            "@type" : "sc:AnnotationList",
+            "context" : "http://www.shared-canvas.org/ns/context.json",
+            "label" : "EMPTY",
+            "resources" : [],
+            "on" :  "demo"
+        };
+var annotationLists = [
+    {
+      "@id" : "http://www.example.org/reform/annoList/1",
+      "@type" : "sc:AnnotationList",
+      "context" : "http://www.shared-canvas.org/ns/context.json",
+      "label" : "Fragments",
+      "resources" : [ 
+        {
+          "@id" : "http://www.example.org/reform/anno/1",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "BB Identifier",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "BB_LLang_01"
+          },
+          "on" : "http://www.example.org/reform/canvas/1"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/2",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Nickname",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Bryan's test"
+          },
+          "on" : "http://www.example.org/reform/canvas/1"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/3",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Date Acquired",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "6/12/15"
+          },
+          "on" : "http://www.example.org/reform/canvas/1"
+        }
+      ],
+      "on" :  "http://www.example.org/reform/canvas/1"//end resources
+  },
+
+  {
+      "@id" : "http://www.example.org/reform/annoList/2",
+      "@type" : "sc:AnnotationList",
+      "context" : "http://www.shared-canvas.org/ns/context.json",
+      "label" : "Fragments",
+      "resources" : [ 
+        {
+          "@id" : "http://www.example.org/reform/anno/4",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Place Of Origin",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "St. Louis"
+          },
+          "on" : "http://www.example.org/reform/canvas/2"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/5",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Condition",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Deplorable"
+          },
+          "on" : "http://www.example.org/reform/canvas/2"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/6",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Illustrations",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Smiley Face Doodles"
+          },
+          "on" : "http://www.example.org/reform/canvas/2"
+        }
+      ], //end resources
+      "on" : "http://www.example.org/reform/canvas/2"
+  },
+  {
+      "@id" : "http://www.example.org/reform/annoList/3",
+      "@type" : "sc:AnnotationList",
+      "context" : "http://www.shared-canvas.org/ns/context.json",
+      "label" : "Fragments",
+      "resources" : [ 
+        {
+          "@id" : "http://www.example.org/reform/anno/7",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "General Metadata",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "This is the very first leaf in the breviary.  An interesting face is that Leonardo da Vinci created it, which makes no sense."
+          },
+          "on" : "http://www.example.org/reform/range/25"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/8",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Title",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Suspected da Vinci Writings"
+          },
+          "on" : "http://www.example.org/reform/range/25"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/9",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Other Content Info",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "It takes up a much smaller portion of the page than usual."
+          },
+         "on" : "http://www.example.org/reform/range/25"
+        }
+      ], //end resources
+      "on" : "http://www.example.org/reform/range/25"
+  },
+  {
+      "@id" : "http://www.example.org/reform/annoList/4",
+      "@type" : "sc:AnnotationList",
+      "context" : "http://www.shared-canvas.org/ns/context.json",
+      "label" : "Fragments",
+      "resources" : [ 
+        {
+          "@id" : "http://www.example.org/reform/anno/10",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "BB Identifier",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "BB_Llang_003_r"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+         {
+          "@id" : "http://www.example.org/reform/anno/11",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Institution or Repository",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Saint Louis University"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/12",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Shelfmark",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "SLU VFL MS 002, fol. b, recto"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/13",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Date Acquired",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "1962"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/14",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Provenance",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Milton& Gail Fischmann, 1962"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/15",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Bibliography",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Evans, E.S. \"Medieval manuscripts at Saint Louis University: a catalogue,\" in Manuscripta 47/48 (2003/2004), p. 56-64."
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/16",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Language",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Latin"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/17",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Subject",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Catholic Church, Liturgy"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/18",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Title (refers to contents)",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Feast of Holy Innocents (Dec 28), Matins, Lessons 4-7"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/19",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Incipit",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "[Et ideo dignum...fuit causa]//p[o]ene, qui extitit et corone, ip[s]e odii c[aus]a qui p[rae]mii ..."
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/19",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Date",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "1441-1448"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/20",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Place Of Origin",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Ferrara, Italy"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/21",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Format (single leaf, half bifolium, fragment)",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Single leaf"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/22",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Dimensions",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "275 x 200 (170 x 130) mm"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/23",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Columns",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "2"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/24",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Lines",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "30"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/25",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Script",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Gothic textualis rotunda"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/26",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Decorations",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "4 two-line initials, two vertical bar extensions terminating in floral and foliate forms"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/27",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Artist(s)",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Giorgio d'Alemagna (active 1441-1479) and others"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        }
+      ], //end resources
+      "on" : "http://www.example.org/reform/canvas/55"
+  },
+  {
+      "@id" : "http://www.example.org/reform/annoList/5",
+      "@type" : "sc:AnnotationList",
+      "context" : "http://www.shared-canvas.org/ns/context.json",
+      "label" : "Fragments",
+      "resources" : [ 
+        {
+          "@id" : "http://www.example.org/reform/anno/29",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "BB Identifier",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "BB_Llang_003_v"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+         {
+          "@id" : "http://www.example.org/reform/anno/30",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Institution or Repository",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Saint Louis University"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/31",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Shelfmark",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "SLU VFL MS 002, fol. b, verso"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/32",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Date Acquired",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "1962"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/33",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Provenance",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Milton& Gail Fischmann, 1962"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/34",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Bibliography",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Evans, E.S. \"Medieval manuscripts at Saint Louis University: a catalogue,\" in Manuscripta 47/48 (2003/2004), p. 56-64."
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/35",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Language",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Latin"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/36",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Subject",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Catholic Church, Liturgy"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/37",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Title (refers to contents)",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Feast of Holy Innocents (Dec 28), Matins, Lessons 7-9, Laud"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/38",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Explicit",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Cum rel[iquis] a[n]t[iphona]. A bymatu et infra occidit multos pueros hero//[des propter "
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/39",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Date",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "1441-1448"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/40",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Place Of Origin",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Ferrara, Italy"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/41",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Format (single leaf, half bifolium, fragment)",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Single leaf"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/42",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Dimensions",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "275 x 200 (170 x 130) mm"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/43",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Columns",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "2"
+          },
+          "on" : "http://www.example.org/reform/canvas/55"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/44",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Lines",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "30"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/45",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Script",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Gothic textualis rotunda"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/46",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Decorations",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "2 two-line initials, two vertical bar extensions terminating in floral and foliate forms"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        },
+        {
+          "@id" : "http://www.example.org/reform/anno/47",
+          "@type" : "oa:Annotation",
+          "motivation" : "oa:describing",
+          "label" : "Artist(s)",
+          "resource" : {
+            "@type" : "cnt:ContentAsText",
+            "cnt:chars" : "Giorgio d'Alemagna (active 1441-1479) and others"
+          },
+          "on" : "http://www.example.org/reform/canvas/56"
+        }],
+        "on" : "http://www.example.org/reform/canvas/56"
+  //Everything above this fits into the January leaf (and its canvases.)
+        }]; // end lists;
 
 

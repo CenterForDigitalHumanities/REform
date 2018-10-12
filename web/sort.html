@@ -393,6 +393,8 @@ and open the template in the editor.
             <input style="position: relative; left: 665px; top:10px;" id="saveGroupForm" type="button" onclick="saveNewGroupForm();" value="Save"/>
             <input style="position: relative; left: 670px; top:10px;" type="button" onclick="cancelNewGroupForm();" value="Cancel"/>
         </div>
+        
+        <!-- Only want these if we are actually updating the manifest -->
         <div id="syncNotice" class="helPop" style="">
             <div style="left:22px;" class="popHdr">Data Sync</div>
             <div class="syncText" style="background-color:white;">Please wait while we sync your manifest data...</div>
@@ -413,128 +415,13 @@ and open the template in the editor.
                 <input id="gotIT" style="position: relative; left: 235px;" type="button" value="Got It!" onclick="syncConfirmed();"/>
             </div>
         </div>
+        <!-- I don't think we will need this anymore, we will not be altering annos or metadata on canvases with this -->
         <div class="leafPopover"></div>
+        
+        
     </body>
     <script>
-    var windowURL = document.location.href;
-    var rootRangeID = "";
-    /* 
-     * It could be a group locked together that we are sorting, so we need to account for making a clone helper for the group
-     * of elements and making the move actually move all the elements together. 
-     */
-    function makeSortable(column){
-        var columnDepth = column.attr("depth");
-        $.each($(".adminTrail").find(".rangeArrangementArea").not(".rangeArrangementArea[depth='"+columnDepth+"']"), function(){
-            var overDiv = $("<div class='areaCover'></div>");
-            $(this).append(overDiv);
-        });
-       
-        column.find(".makeSortable").hide();
-        column.find(".doneSortable").show();
-        column.children('.notBucket').sortable({
-            helper:function(e, item){
-                if(!item.hasClass('selected'))item.addClass('selected');
-                var chainedElems = chainTargets(item[0]);
-                var helper = $('<div class="sortHelper"></div>');
-                var hlpWidth = 0;
-                // grab all the chained elements and add the selected class
-                // clone selected items before hiding
-                for(var i=0; i<chainedElems.length; i++){
-                    var element = $(chainedElems[i]);
-                    if(i===0){
-                        hlpWidth = element.parent().width() + 50;
-                    }
-                    var clonedElement = element.clone();
-                    clonedElement.addClass("helper");
-                    clonedElement.find(".lockedUp").remove();
-                    clonedElement.find(".lockUp").remove();
-                    clonedElement.find(".putInGroup").remove();
-                    helper.append(clonedElement);
-                    element.addClass("selected");
-                    element.addClass("hidden");
-                }
-                helper.css("width", hlpWidth);
-                return helper;
-            },
-            start: function (e, ui) {
-                var elements =$(".selected.hidden").not(".helper");
-                //store the selected items to item being dragged
-                ui.item.data('items', elements);
-            },
-            stop: function (e, ui) {
-                //This will always take the selected item and place it in the drop spot.  It will then bring the other items,
-                //and you have to tell the other items whether they go after or before the item that was just sorted.  
-                var itemAfter = $(ui.item).next();
-                var itemBefore = $(ui.item).prev();
-                //item being sorted cannot be placed inbetween locked items.
-                if(itemAfter.attr("lockedup") === "true" && itemBefore.attr("lockeddown") === "true"){
-                    alert("You cannot put this object in the middle of locked items");
-                    $('.hidden').removeClass("hidden");
-                    $(".selected").removeClass("selected");
-                    return false;
-                }
-                var clonedSet = $(ui.item.data('items').clone());
-                clonedSet.removeClass("hidden selected");
-                // you must clone the set or the original ui.item will not be present after replaceWith()
-                $(ui.item).replaceWith(clonedSet);
-                $('.hidden').remove();
-                $(".selected").removeClass("selected");
-                //unselect since the operation is complete
-                
-            },
-            placeholder: "customPlaceholder",
-            forcePlaceholderSize: true,
-            axis:"y",
-            cursorAt: { top: 0, left: 0 }
-        });
-    }
-    function stopSorting(column){
-        var windowurl = document.location.href;
-        var children = column.children(".notBucket").children(".arrangeSection");
-        var childrenArray = [];
-        if(windowurl.indexOf("demo=1") >-1){
-            column.children(".notBucket").sortable("destroy");
-            $(".areaCover").remove();
-            column.find(".makeSortable").show();
-            column.find(".doneSortable").hide();
-        }
-        else{
-            $.each(children, function(){
-                childrenArray.push($(this).attr("rangeID"));
-            });
-        //need to update this column range id with the new order of ranges
-            var updateURL ="http://brokenbooks.org/brokenBooks/updateRange"; //update list with the range removed
-            var paramObj1 = {"@id" : column.attr("rangeID"), "ranges" : childrenArray};
-            var params1 = {"content" : JSON.stringify(paramObj1)};
-            $.post(updateURL, params1, function(){
-               column.children(".notBucket").sortable("destroy");
-               $(".areaCover").remove();
-               column.find(".makeSortable").show();
-               column.find(".doneSortable").hide();
-               populateMessage("new order saved!");
-            });
-        }
-        
-    }
-    function resetFolioCount(){
-        if($(".rangeArrangementArea:first").find(".selectedSection").length > 0){
-            $(".rangeArrangementArea:first").find(".selectedSection").click();
-        }
-        //wait for click event to resolve
-        setTimeout(function(){
-            $.each($(".arrangeSection"), function(){
-                $(this).children(".folioCount").remove();
-                var folioCount = $(this).find("div[leaf='true']").length;
-                var folioCountHTML = $("<span class='folioCount'><span class='countInt'>"+folioCount+"</span><img class='pageIcon' src='http://brokenbooks.org/brokenBooks/images/b_page.png'/></span>");
-                if($(this).attr("leaf") === "true"){
-                    folioCountHTML = $("<span class='folioCount'><img class='leafIcon' src='http://brokenbooks.org/brokenBooks/images/leaf.png'/></span>");
-                }      
-                $(this).append(folioCountHTML);
-            });
-        },500);
-    }
-    
-    
+
         $(function(){
             //NOTE: THIS SHOULD ONLY WORK FOR ADMINS
 //            if(windowURL.indexOf("LFD") > -1){
