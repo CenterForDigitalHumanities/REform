@@ -8,19 +8,79 @@ const testData =
 }
 const REform = {}
 REform.crud.create = async function (obj){
-    
+    let url = "create"
+    let jsonReturn = {};
+    await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(obj) // body data type must match "Content-Type" header
+    })
+    .then(REform.handleHTTPError)
+    .then(resp => jsonReturn = resp.json())
+    .catch(error => REform.unhandled(error))
+    return jsonReturn;
 }
 REform.crud.putUpdate = async function (obj){
-    
+    let url = "update"
+    let jsonReturn = {};
+    await fetch(url, {
+        method: "PUT", 
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(obj) // body data type must match "Content-Type" header
+    })
+    .then(REform.handleHTTPError)
+    .then(resp => jsonReturn = resp.json())
+    .catch(error => REform.unhandled(error))
+    return jsonReturn;
 }
 REform.crud.patchUpdate = async function (obj){
-    
+    let url = "patch"
+    let jsonReturn = {};
+    await fetch(url, {
+        method: "PATCH", 
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(obj) // body data type must match "Content-Type" header
+    })
+    .then(REform.handleHTTPError)
+    .then(resp => jsonReturn = resp.json())
+    .catch(error => REform.unhandled(error))
+    return jsonReturn;
 }
 REform.crud.delete = async function (obj){
-    
+    let url = "delete"
+    let jsonReturn = {};
+    await fetch(url, {
+        method: "DELETE", 
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(obj), // body data type must match "Content-Type" header
+    })
+    .then(REform.handleHTTPError)
+    .then(resp => jsonReturn = resp.json())
+    .catch(error => REform.unhandled(error))
+    return jsonReturn;
 }
 REform.crud.query = async function (obj){
-    
+    let url = "query"
+    let jsonReturn = {};
+    await fetch(url, {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(obj), // body data type must match "Content-Type" header
+    })
+    .then(REform.handleHTTPError)
+    .then(resp => jsonReturn = resp.json())
+    .catch(error => REform.unhandled(error))
+    return jsonReturn;
 }
 REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
 REform.noTop = true;
