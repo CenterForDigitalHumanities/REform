@@ -27,7 +27,7 @@ public class TokenManager{
     //Notice that when it is initialized, nothing is set.
     private String currentAccessToken = "";
     private String currentRefreshToken = "";
-    private String propFileLocation = "tiny.properties";
+    private String propFileLocation = "reform.properties";
     private String apiSetting = "";
     private Properties props = new Properties();
     
