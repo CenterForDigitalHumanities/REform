@@ -196,22 +196,23 @@ and open the template in the editor.
         <input disabled id="publishBtn" class="helperIcon" value="Save Manifest" onclick="publish();"/>
         <input id="gotoMirador" class="helperIcon" onclick="" value="View In Mirador" />
         <span class='sortTitle'>Manifest Structure</span>
-        <div class="mainBlock">
+        <div id="structureContainer" class="mainBlock">
             <div class="mainBlockCover"></div>
-            <div class="arrangeTrail adminTrail">
-                <div class="rangeArrangementArea" depth = "1" rangeID="bucket">
+            <div id="orderedRangesContainer" class="arrangeTrail adminTrail">
+                <!-- The top level Table of Contents container, pre-drawn because it is constant -->
+                <div class="rangeArrangementArea" depth="1" rangeID="bucket">
                     <div class='columnActions'>
-                        <input class="makeGroup" value="merge" type="button" onclick="askForNewTitle($(this).parent().parent());"/>
-                        <input class="addGroup" value="add" type="button" onclick="newGroupForm($(this).parent().parent(), false);"/>
-                        <input class="addLacuna" value="lacuna" type="button" onclick="newGroupForm($(this).parent().parent(), true);"/>
-                        <input class="makeSortable" value="sort" type="button" onclick="makeSortable($(this).parent().parent());"/>
-                        <input class="doneSortable" value="done" type="button" onclick="stopSorting($(this).parent().parent());"/><br>
-                        <!--<input class="resetCount" value="refresh folio count" type="button" onclick="resetFolioCount();"/>-->
+                        <input class="makeGroup" value="merge" type="button" onclick="askForNewTitle('1');"/>
+                        <input class="addGroup" value="add" type="button" onclick="newGroupForm('1', false);"/>
+                        <input class="makeSortable" value="sort" type="button" onclick="makeSortable('1');"/>
+                        <input class="doneSortable" value="done" type="button" onclick="stopSorting('1');"/><br>
                     </div>
                    <div class="rAreaLabel">Table of Contents</div>
-                   <div ondragover='dragOverHelp(event);' ondrop='dropHelp(event);' class="notBucket"></div>
-                   <div style="display:block;" ondragover='dragOverHelp(event);' ondrop='dropHelp(event);' rangeID="bucket" onclick='toggleChildren($(this), "admin", event);'  class="arrangeSection parent bucket unassigned sortOrder"><span>UNASSIGNED</span></div>
-                   
+                   <div id="toc" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' class="notBucket"></div>
+                   <div style="display:block;" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' rangeID="bucket" 
+                    onclick='REform.toggleChildren($(this), "admin", event);'  class="arrangeSection parent bucket unassigned sortOrder">
+                       <span>UNASSIGNED</span>
+                   </div>
                 </div>
             </div>
         </div>
@@ -414,41 +415,9 @@ and open the template in the editor.
             <div>
                 <input id="gotIT" style="position: relative; left: 235px;" type="button" value="Got It!" onclick="syncConfirmed();"/>
             </div>
-        </div>
-        <!-- I don't think we will need this anymore, we will not be altering annos or metadata on canvases with this -->
-        <div class="leafPopover"></div>
-        
-        
+        </div>   
     </body>
     <script>
-
-        $(function(){
-            //NOTE: THIS SHOULD ONLY WORK FOR ADMINS
-//            if(windowURL.indexOf("LFD") > -1){
-//                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?LFD');");
-//                $(".sortTitle").html("Beauvais Missal Structure");
-//                usr="lisa";
-//            }
-//            else if(windowURL.indexOf("DTC") > -1){
-//                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?DTC');");
-//                $(".sortTitle").html("The Llangattock Breviary Structure");
-//                usr="debra";
-//            }
-//            else if(windowURL.indexOf("KW") > -1){
-//                $("#gotoMirador").attr("onclick", "publish(false,'http://brokenbooks.org/brokenBooks/getManifest.html?KW');");
-//                $(".sortTitle").html("Karen's Project Structure");
-//                usr="karen";
-//            }
-            if(windowURL.indexOf("demo=1")>-1){
-                $("#gotoMirador").hide();
-                $(".sortTitle").html("Demo Editable Structure");
-            }
-            else{
-                //This can be like a preview now.  What should this button be for reform?
-                $("#gotoMirador").attr("onclick", "");
-            }
-            var manifestURL = getURLVariable("manifest");
-            loadInterface(manifestURL);    
-        });         
+        REform.gatherTOC()
     </script>
 </html>
