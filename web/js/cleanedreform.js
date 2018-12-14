@@ -2,10 +2,48 @@
  * Get just the pieces for the ordering algorithms out of reform.js and put them here. 
  */
 
+const testData = 
+{
+            
+}
 const REform = {}
+REform.rerum.create = async function (obj){
+    
+}
+REform.rerum.putUpdate = async function (obj){
+    
+}
+REform.rerum.patchUpdate = async function (obj){
+    
+}
+REform.rerum.delete = async function (obj){
+    
+}
+REform.rerum.query = async function (obj){
+    
+}
+REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
+REform.noTop = true;
 REform.manifest = {} //keep track of the manifest being used
 REform.top = {} //keep track of the viewingHint: top range
 
+REform.structureAlert = function(){
+    if(REform.noStructure){
+        alert("There are no ranges for this manifest.  You can begin by creating your top level range now or provide a different manifest to use.");
+    }
+    else{
+        alert("There are ranges for this manifest, but there is no top range.  A top range must be defined to begin structuring.  You ");
+    }
+    
+}
+
+REform.updateManifest = function(){
+    
+}
+
+REform.announceUpdatesToManifest = function(){
+    
+}
 REform.dragOverHelp = function(e){
     
 }
@@ -18,8 +56,8 @@ REform.dropHelp = function(e){
 * It could be a group locked together that we are sorting, so we need to account for making a clone helper for the group
 * of elements and making the move actually move all the elements together. 
 */
-REform.makeSortable = function (depth){
-    var columnDepth = column.attr("depth");
+REform.makeSortable = function (columnDepth){
+    var column = column.attr("depth"); //set this properly!!
     $.each($(".adminTrail").find(".rangeArrangementArea").not(".rangeArrangementArea[depth='"+columnDepth+"']"), function(){
         var overDiv = $("<div class='areaCover'></div>");
         $(this).append(overDiv);
@@ -156,11 +194,25 @@ REform.handleHTTPerror = function(response){
                 console.log("Server down time")
             break;
             default:
-                console.log("HTTP ERROR")
+                console.log("unahndled HTTP ERROR")
         }
         throw Error("HTTP Error: "+response.statusText);
     }
     return response;
+}
+
+REform.showTopRangeCreation = function(){
+    document.getElementById("orderedRangesContainer").style.display = "none";
+    document.getElementById("makeTopRange").style.display = "block";
+}
+
+REform.createTopRange = function(){
+    let topRange = {
+        "viewingHint" : "top",
+        "type" : "Range",
+        "label": { "en": [ "Table of Contents" ] },
+        "items":[]
+    };
 }
 
 /**
@@ -172,24 +224,31 @@ REform.findTopRange = function(manifestObj){
     let manifestStructures = (manifestObj.structures) ? manifestObj.structures : [];
     let topRange = {};
     let topFound = false;
-    for(entry in manifestStructures){
-        let rangeObj = {};
-        if(typeof manifestStructures[entry] === "string"){
-            rangeObj = resolveForJSON(manifestStructures[entry])
-        }
-        else if(typeof manifestStructures[entry] === "object" ){
-            rangeObj = manifestStructures[entry];
-        }
-        if(rangeObj.viewingHint && rangeObj.viewingHint === "top"){
-            if(topFound){
-                console.log("Error in manifest, found 2 top ranges.  What should i do?");
+    if(manifestStructures.length > 0){
+        REform.noStructure = false;
+        for(entry in manifestStructures){
+            let rangeObj = {};
+            if(typeof manifestStructures[entry] === "string"){
+                rangeObj = resolveForJSON(manifestStructures[entry])
             }
-            else{
-                //dont break or return, lets check if there happens to be more than one in the manifest structures.
-                topFound = true;
-                topRange = rangeObj;
+            else if(typeof manifestStructures[entry] === "object" ){
+                rangeObj = manifestStructures[entry];
+            }
+            if(rangeObj.viewingHint && rangeObj.viewingHint === "top"){
+                REform.noTop = false;
+                if(topFound){
+                    console.log("Error in manifest, found 2 top ranges.  What should i do?");
+                }
+                else{
+                    //dont break or return, lets check if there happens to be more than one in the manifest structures.
+                    topFound = true;
+                    topRange = rangeObj;
+                }
             }
         }
+    }
+    else{
+        REform.noStructure = true;
     }
     return topRange;
 }
@@ -199,12 +258,24 @@ REform.findTopRange = function(manifestObj){
  * @param {type} manifestID
  * @return {undefined}
  */
-REform.gatherTOC = async function(manifestID){
+REform.gatherTOC = async function(){
+    let manifestID = getURLVariable("manifest");
     let manifest = await resolveForJSON(manifestID);
     REform.manifest = manifest;
     REform.top = REform.findTopRange(manifest);
-    let tocRangesHTML = REform.drawChildRanges("1", REform.top);
-    document.getElementById("toc").innerHTML = tocRangesHTML
+    let tocRangesHTML = "";
+    if(Object.keys(REform.top).length === 0 && REform.top.constructor === Object){
+        //There is no top object, so we can't begin to structure anything
+        REform.structureAlert();
+        REform.showTopRangeCreation();
+    }
+    else{
+        //We found ranges and most importantly the TOP range, let's draw.
+        tocRangesHTML = REform.drawChildRanges("1", REform.top);
+        document.getElementById("toc").innerHTML = tocRangesHTML
+    }
+    
+    
 }
 
 /**
