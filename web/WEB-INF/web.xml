@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>delete</servlet-name>
+        <servlet-class>crud.Delete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>create</servlet-name>
+        <servlet-class>crud.Create</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>patch_update</servlet-name>
+        <servlet-class>crud.Patch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>update</servlet-name>
+        <servlet-class>crud.Update</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>query</servlet-name>
+        <servlet-class>crud.Query</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>delete</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>create</servlet-name>
+        <url-pattern>/create</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>patch_update</servlet-name>
+        <url-pattern>/patch</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>update</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>query</servlet-name>
+        <url-pattern>/query</url-pattern>
+    </servlet-mapping>
+
+</web-app>
