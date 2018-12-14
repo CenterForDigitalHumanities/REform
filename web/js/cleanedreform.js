@@ -7,26 +7,26 @@ const testData =
             
 }
 const REform = {}
-REform.rerum.create = async function (obj){
+REform.crud.create = async function (obj){
     
 }
-REform.rerum.putUpdate = async function (obj){
+REform.crud.putUpdate = async function (obj){
     
 }
-REform.rerum.patchUpdate = async function (obj){
+REform.crud.patchUpdate = async function (obj){
     
 }
-REform.rerum.delete = async function (obj){
+REform.crud.delete = async function (obj){
     
 }
-REform.rerum.query = async function (obj){
+REform.crud.query = async function (obj){
     
 }
 REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
 REform.noTop = true;
 REform.manifest = {} //keep track of the manifest being used
 REform.top = {} //keep track of the viewingHint: top range
-
+REform.bucket = []; //All the ranges from manifest.structures that are not ordered in the TOC anywhere. 
 REform.structureAlert = function(){
     if(REform.noStructure){
         alert("There are no ranges for this manifest.  You can begin by creating your top level range now or provide a different manifest to use.");
@@ -215,6 +215,62 @@ REform.createTopRange = function(){
     };
 }
 
+/*
+ * By now we know the manifest, the manifest structures and the top range (or lack thereof)
+ * We need to trace the map of the structures presented by the ranges and put anything that is outside
+ * of the TOC into the bucket.  In this function, we only care about what goes into the bucket.  
+ * @return {undefined}
+ */
+REform.generateBucket = async function(){
+    let bucketRanges = []; //ignore these
+    let unorderedRanges = []; //Put these into bucket
+    let bucketRanges = REform.manifest.structures.filter(o => o.type === "Range");
+    
+    /*
+     * A range that has range.items is handed to this function.  Go over each item
+     * and remove from the set of all ranges.
+     * Recurse so that it goes over all ranges contained in any range.items array. 
+     * @param {type} topLevelRangse
+     * @return {undefined}
+     */
+    function traceMap(topLevelRangse){
+        for(range in topLevelRanges.items){
+            let itemToRecurse = topLevelRanges.items[range];
+            let nextLevelRanges = itemToRecurse.items.filter(o => o.type === "Range");
+            bucketRanges.filter(o => o.id === itemToRecurse.id);
+            traceMap(nextLevelRanges);
+        }
+    }
+    
+    
+    if(REform.noTop){
+        //There is no top level range.  Everything will end up in the bucket.  
+        for(struct in bucketRanges){
+            let range = REform.manifest.structures[struct]
+            let rangeObj = {};
+            if(typeof rangeObj === "string"){
+                rangeObj = await REform.resolveForJSON(range);
+            }
+            else if(typeof rangeObj === "object"){
+                rangeObj = range;
+            }
+            bucketRanges.push(rangeObj);
+        }
+        bucketRanges = allRanges
+    }
+    else{
+        //We have a top level range.  Start with that range and initiate recursion to go over
+        //ever ranges's items array.  For each item you find, remove it from the array
+        //of all ranges.  What you are left with is what belongs in the bucket.  
+        let topLevelRange = JSON.parse(JSON.stringify(REform.top));
+        allRanges.filter(o => o.id === topLevelRange.id);
+        let topLevelRanges = topLevelRange.items.filter(o => o.type === "Range");
+        traceMap(topLevelRanges);
+    }
+    
+    return bucketRanges;   
+}
+
 /**
  * 
  * @param {type} manifestObj
@@ -266,16 +322,18 @@ REform.gatherTOC = async function(){
     let tocRangesHTML = "";
     if(Object.keys(REform.top).length === 0 && REform.top.constructor === Object){
         //There is no top object, so we can't begin to structure anything
+        //Everything goes in the bucket of unstructuresd ranges
         REform.structureAlert();
         REform.showTopRangeCreation();
     }
     else{
-        //We found ranges and most importantly the TOP range, let's draw.
+        //We found ranges and most importantly the TOP range, let's draw it.
         tocRangesHTML = REform.drawChildRanges("1", REform.top);
         document.getElementById("toc").innerHTML = tocRangesHTML
     }
-    
-    
+    //Now we need to trace the ranges map to figure out what does and does not belong in the bucket
+    let bucketRangesHTML = "<span>UNASSIGNED</span>"+REform.generateBucket();
+    document.getElementById("bucket").innerHTML = bucketRangesHTML
 }
 
 /**
@@ -785,4 +843,119 @@ function dropFlash($elem){
 
 function dragOverHelp(event){
     event.preventDefault();
+}
+
+/* 
+ * The goal here is to have a 'Publish' function, from which the sequence of the structure will produce
+ * a hard-ordered sequence of the manifest.sequence[0].  
+
+ * manifestCanvases: This is the global variable holding manifest.structures[0].  It should be unaltered based 
+ * on actions of this page.
+ * 
+ * rangeCollection: This is the global variable holding manifest.structures.  It has been altered based on
+ * actions of this page, but has been kept up to date so updating off of it should be safe.
+ */
+function orderSeqFromStruct(){
+    var parent;
+    var canvases = [];
+
+    function pushToOrderedSequence(canvas_uri, ordered_canvases){
+        $.each(manifestCanvases,function(){
+            if(this["@id"] === canvas_uri){
+                delete this["_id"];
+                canvases.push(this);
+                return false;
+            }
+        });
+    }
+
+    function getParentest(rangeList){
+        var parentest = {'@id': "root", label: "Table of Contents", within:"root" };
+        for(var i=0; i<rangeList.length; i++){
+            if(rangeList[i].within && rangeList[i].within === "root"){ 
+                parentest = rangeList[i];
+                delete parentest["_id"];
+                break; //There can only be one range considered the ultimate aggregator.
+            }
+        }
+        return parentest;
+    }
+
+    function pullFromStructures(uri, rangeList){
+        var pull_this_out = {};
+        for(var i=0; i<rangeList.length; i++){
+            if(rangeList[i]["@id"] === uri){
+                pull_this_out = rangeList[i];
+                delete pull_this_out["_id"];
+                break;
+            }
+        }
+        return pull_this_out;
+    }
+    
+    /* Very long URLs like the ones Karen used that do not get saved as an HTTP URL, but a dataurl, cause call stack overflows. */
+    function unflatten(flatRanges, parent) {
+      var children_uris = [];
+      var children = [];
+      var canvas_uris = [];
+      parent = typeof parent !== 'undefined' ? parent : getParentest(flatRanges);
+      if(typeof parent.ranges !== 'undefined'){ 
+        children_uris = parent.ranges;
+      }
+      if(typeof parent.canvases !== 'undefined' && parent.canvases.length!==0){
+          //it is a leaf, we found it in its order, push its canvases, there will be 2.
+          canvas_uris = parent.canvases;
+          pushToOrderedSequence(canvas_uris[0]);
+          pushToOrderedSequence(canvas_uris[1]);
+      }
+      for(var i=0; i<children_uris.length; i++){ //get the children in order by their @id property from the structures array
+        var new_child = pullFromStructures(children_uris[i], flatRanges);//Remember from earlier, if this was an empty child, we wanted to skip it.  
+        if(!jQuery.isEmptyObject(new_child)){ //check if empty
+          children.push(new_child); //push to our array if not empty
+        }
+      }
+      if ( children.length ) {
+        jQuery.each(children, function( index, child ){unflatten(flatRanges, child);});
+      }
+    }
+    unflatten(rangeCollection);
+    manifestCanvases = canvases;
+    return canvases;
+}
+
+/*
+* Helper function for mergeSort().  It mergest the left and right arrays created when splitting the source array in the middle. 
+*/
+function merge(left, right){
+    var result  = [],
+        il      = 0,
+        ir      = 0;
+
+    while (il < left.length && ir < right.length){
+        if (left[il].ranges.length < right[ir].ranges.length){
+            result.push(left[il++]);
+        } else {
+            result.push(right[ir++]);
+        }
+    }
+
+    return result.concat(left.slice(il)).concat(right.slice(ir));
+}
+/*
+* The classic merge sort function that sorts an array of numbers from smallest to largest.  In our case, the array is an array of range objects, but what I test is the length of their ranges[] field, since those with the highest count in the ranges[] field will be top parent objects and the ordered array is easier to build the tree structure from.  Even for an array of 1000 ranges, this runs pretty quick.  
+*/
+function mergeSort(items){
+    if (items.length < 2) {
+        return items;
+    }
+
+    var middle = Math.floor(items.length / 2),
+        left    = items.slice(0, middle),
+        right   = items.slice(middle),
+        params = merge(mergeSort(left), mergeSort(right));
+    
+    // Add the arguments to replace everything between 0 and last item in the array
+    params.unshift(0, items.length);
+    items.splice.apply(items, params);
+    return items;
 }
