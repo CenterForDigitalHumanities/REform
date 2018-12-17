@@ -2,11 +2,16 @@
  * Get just the pieces for the ordering algorithms out of reform.js and put them here. 
  */
 
-const testData = 
-{
-            
-}
+
+
 const REform = {}
+REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
+REform.noTop = true;
+REform.manifest = {} //keep track of the manifest being used
+REform.manifestID = ""; //  http://devstore.rerum.io/v1/id/5c17dbbbe4b05b14fb531efb
+REform.top = {} //keep track of the viewingHint: top range
+REform.bucket = []; //All the ranges from manifest.structures that are not ordered in the TOC anywhere. 
+
 REform.crud.create = async function (obj){
     let url = "create"
     let jsonReturn = {};
@@ -60,7 +65,7 @@ REform.crud.delete = async function (obj){
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(obj), // body data type must match "Content-Type" header
+        body: JSON.stringify(obj) // body data type must match "Content-Type" header
     })
     .then(REform.handleHTTPError)
     .then(resp => jsonReturn = resp.json())
@@ -75,18 +80,39 @@ REform.crud.query = async function (obj){
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(obj), // body data type must match "Content-Type" header
+        body: JSON.stringify(obj) // body data type must match "Content-Type" header
     })
     .then(REform.handleHTTPError)
     .then(resp => jsonReturn = resp.json())
     .catch(error => REform.unhandled(error))
     return jsonReturn;
 }
-REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
-REform.noTop = true;
-REform.manifest = {} //keep track of the manifest being used
-REform.top = {} //keep track of the viewingHint: top range
-REform.bucket = []; //All the ranges from manifest.structures that are not ordered in the TOC anywhere. 
+
+REform.local.create = function (obj){
+    
+}
+
+REform.local.update = function (obj){
+    
+}
+
+REform.local.delete = function (obj){
+    
+}
+
+REform.local.getByID = function (obj){
+    
+}
+
+/*
+ * Create queued ranges and update existing ranges up to the top range
+ * to represent the new structure created.
+ * @return {undefined}
+ */
+REform.local.commitStrcturalChanges = function (){
+    
+}
+
 REform.structureAlert = function(){
     if(REform.noStructure){
         alert("There are no ranges for this manifest.  You can begin by creating your top level range now or provide a different manifest to use.");
