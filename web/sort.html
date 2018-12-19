@@ -7,20 +7,21 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../REform/css/reformstyle.css">	
+        <link rel="stylesheet" href="css/reformstyle.css">	
 <!--        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>  -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script src="../Reform/js/reform.js"></script>  
+        <script src="js/cleanedreform.js"></script>  
         <title>Arrange</title>
     </head>
     <body>
         <div id="dragCloneHelp">
             
         </div>
+        
         <div id="actionMsg">
             
         </div>
@@ -33,14 +34,24 @@ and open the template in the editor.
         <input id="gotoMirador" class="helperIcon" onclick="" value="View In Mirador" />
         <span class='sortTitle'>Manifest Structure</span>
         <div id="structureContainer" class="mainBlock">
-            <div class="mainBlockCover"></div>
+            <div class="demoPopover" id="sequenceChoiceNotice">
+                <div class="demoContent">
+                    <p>
+                        We have found more than one sequencing range at the top level.  Please choose.
+                    </p>
+                    <div id="sequenceChoices">
+
+                    </div>
+                </div>
+            </div>
+            <div id="mainBlockCover" class="mainBlockCover"></div>
             <div id="makeTopRange">
                  <input type="text" id="topRangeLabel"/>
                  <input type="button" onclick="REform.createTopRange()"/>
             </div>
             <div id="orderedRangesContainer" class="arrangeTrail adminTrail">
                 <!-- The top level Table of Contents container, pre-drawn because it is constant -->
-                <div class="rangeArrangementArea" depth="1" rangeID="bucket">
+                <div class="rangeArrangementArea" depth="1" id="top" url="">
                     <div class='columnActions'>
                         <input class="makeGroup" value="merge" type="button" onclick="askForNewTitle('1');"/>
                         <input class="addGroup" value="add" type="button" onclick="newGroupForm('1', false);"/>
@@ -49,9 +60,9 @@ and open the template in the editor.
                     </div>
                    <div class="rAreaLabel">Table of Contents</div>
                    <div id="toc" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' class="notBucket"></div>
-                   <div id="bucket" style="display:block;" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' rangeID="bucket" 
-                    onclick='REform.toggleChildren($(this), "admin", event);'  class="arrangeSection parent bucket unassigned sortOrder">
-                       <span>UNASSIGNED</span>
+                   <div id="bucket" style="display:block;" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' url="bucket"
+                    onclick='REform.toggleChildren(event, "bucket");' class="arrangeSection parent bucket unassigned sortOrder" inDepth="1">
+                       
                    </div>
                 </div>
             </div>

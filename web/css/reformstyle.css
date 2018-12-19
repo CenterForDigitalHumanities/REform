@@ -717,7 +717,6 @@ and open the template in the editor.
             }
 
             .arrangeSection.child{
-                display: none;
                 border: 2px solid black;
             }
             
@@ -1333,7 +1332,7 @@ and open the template in the editor.
                 display: none;
             }
             .unassigned .child{ /* This will hide leaves sitting in the unassigned areas. */
-                display: none !important;
+                display: none 
             }
             .unassigned .parent{ /* This will hide leaves sitting in the unassigned areas. */
                 display: none !important;

@@ -2,12 +2,13 @@
  * Get just the pieces for the ordering algorithms out of reform.js and put them here. 
  */
 
-
-
 const REform = {}
+REform.local = {}
+REform.crud = {}
 if (typeof(Storage) !== "undefined") {
   REform.localData = window.localStorage;  
-} else {
+} 
+else {
   alert("Your browser must support local storage to use this application!");
 }
 REform.uniqueID = (REform.localData.getItem("uniqueID")) ? parseInt(REform.localData.getItem("uniqueID")) : 0;
@@ -20,55 +21,17 @@ REform.noStructure = true;  //There needs to be a structure to work with, or we 
 REform.noTop = true;
 REform.manifest = {} //keep track of the manifest being used
 REform.manifestID = ""; //  http://devstore.rerum.io/v1/id/5c17dbbbe4b05b14fb531efb
-REform.top = {} //keep track of the viewingHint: top range
+REform.top = [] //keep track of the viewingHint: top range(s)
+REform.root = {} //The selected viewhingHint : top range
 REform.bucket = {} //keep track of the viewingHint: top range's bucket.  
 REform.error = function (msg){
     alert(msg);
 }
 
-
-/**
- * The action of placing Canvas objects into the bucket range of the Table of Contents.
- * The bucket range is for Canvases not yet placed into any part of the Table of Content
- * top level ranges.  
- * @param {type} obj
- * @return {JSON representing the new state of the bucket}
- */
-REform.placeInBucket = function(obj){
-    REform.bucket.items.push(obj);
-    return REform.local.update(REform.top, REform.bucket)
+REform.test = function(){
+    
 }
 
-/**
- * The action of placing new Range objects into the top level of the Table of Contents.
- * The bucket range is for Canvases not yet placed into any part of the Table of Content
- * top level ranges.  
- * @param {type} obj
- * @return {JSON representing the new state of the bucket}
- */
-REform.putInTopLevel = function(obj){
-    REform.top.items.push(obj);
-    return REform.local.update(REform.top, obj)
-}
-
-/**
- * Users can make a "Lacuna" canvas as a holder for their structure.  They must enrich this 
- * object elsewhere.  
- * @return {JSON representing the Lacuna canvas created}
- */
-REform.createLacunaCanvas = async function(){
-    let canv =  
-    {  
-        "type":"Canvas",
-        "label":{  
-           "en":[  
-              "Lacuna"
-           ]
-        }
-     }
-     let localCanv = REform.crud.create(canv)  
-     REform.placeInBucket(localCanv);
-}
 
 /**
  * Call to the REform proxy API into RERUM API to create this object in the data store
@@ -133,7 +96,7 @@ REform.crud.patchUpdate = async function (obj){
     .then(REform.handleHTTPError)
     .then(resp => jsonReturn = resp.json().new_obj_state)
     .catch(error => REform.unhandled(error))
-    return jsonReturn;
+    return jsonReturn
 }
 
 /**
@@ -154,7 +117,7 @@ REform.crud.delete = async function (obj){
     .then(REform.handleHTTPError)
     .then(resp => jsonReturn = resp.json())
     .catch(error => REform.unhandled(error))
-    return jsonReturn;
+    return jsonReturn
 }
 
 /**
@@ -177,7 +140,7 @@ REform.crud.query = async function (obj){
     .then(REform.handleHTTPError)
     .then(resp => jsonReturn = resp.json())
     .catch(error => REform.unhandled(error))
-    return jsonReturn;
+    return jsonReturn
 }
 
 /**
@@ -205,11 +168,11 @@ REform.local.create = function (obj, parent){
     else if(objType === "Range"){
         if(parent){
           // Need to dig through REform.top.items children to find the obj to update  
-            REform.local.update(parent, obj);
+            REform.local.update(parent, obj)
         }
         else{
          // The object is a top level range in REform.top, no need to dig
-            REform.putInTopLevel(obj);
+            REform.putInTopLevel(obj)
 
         }
     }
@@ -240,26 +203,24 @@ REform.local.update = function (parent, obj){
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 recurse.push(obj)
-                objForReturn = recurse;
+                objForReturn = recurse
                 return recurse;
             }
-            traceMap(recurse, searchID);
+            traceMap(recurse, searchID)
         }
-        return objForReturn;
-    }
-    
+        return objForReturn
+    }  
     let matchedObj = {};
     let searchID = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
-    matchedObj = traceMap(REform.top, searchID)    
+    matchedObj = traceMap(REform.root, searchID)    
     //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
-        REform.localData.setItem("top", JSON.stringify(REform.top));
+        REform.localData.setItem("top", JSON.stringify(REform.root))
         return matchedObj
     }
     else{
-        REform.error("Could not find the item in local storage to update...");
+        REform.error("Could not find the item in local storage to update...")
     }
-
 }
 
 /**
@@ -285,21 +246,21 @@ REform.local.delete = function (obj){
                 objForReturn = topLevelRange;
                 return topLevelRange;
             }
-            traceMap(recurse, searchID);
+            traceMap(recurse, searchID)
         }
-        return objForReturn;
+        return objForReturn
     }
     
     let matchedObj = {};
     let searchID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
-    matchedObj = traceMap(REform.top, searchID)    
+    matchedObj = traceMap(REform.root, searchID)    
     //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
-        REform.localData.setItem("top", JSON.stringify(REform.top));
+        REform.localData.setItem("top", JSON.stringify(REform.root))
         return matchedObj
     }
     else{
-        REform.error("Could not find the item in local storage to delete...");
+        REform.error("Could not find the item in local storage to delete...")
     }
 }
 
@@ -323,25 +284,107 @@ REform.local.getByID = function (id){
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the item we want to return
-                objForReturn = recurse;
+                objForReturn = recurse
                 return recurse;
             }
-            traceMap(recurse, searchID);
+            traceMap(recurse, searchID)
         }
-        return objForReturn;
+        return objForReturn
     }
     
     let matchedObj = {};
-    matchedObj = traceMap(REform.top, id)    
+    matchedObj = traceMap(REform.root, id)    
     //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
-        REform.localData.setItem("top", JSON.stringify(REform.top));
+        REform.localData.setItem("top", JSON.stringify(REform.root));
         return matchedObj
     }
     else{
-        REform.error("Could not find the item in local storage to get...");
+        REform.error("Could not find the item in local storage to get...")
     }
 }
+
+REform.unhandled = function(error){
+    console.log("There was an unhandled error when using fetch")
+    console.log(error)
+    throw Error(error)
+    return error
+}
+
+REform.handleHTTPerror = function(response){
+    if (!response.ok){
+        let status = response.status;
+        switch(status){
+            case 400:
+                console.log("Bad Request")
+            break;
+            case 401:
+                console.log("Request was unauthorized")
+            break;
+            case 403:
+                console.log("Forbidden to make request")
+            break;
+            case 404:
+                console.log("Not found")
+            break;
+            case 500:
+                console.log("Internal server error")
+            break;
+            case 503:
+                console.log("Server down time")
+            break;
+            default:
+                console.log("unahndled HTTP ERROR")
+        }
+        throw Error("HTTP Error: "+response.statusText)
+    }
+    return response
+}
+
+/**
+ * The action of placing Canvas objects into the bucket range of the Table of Contents.
+ * The bucket range is for Canvases not yet placed into any part of the Table of Content
+ * top level ranges.  
+ * @param {type} obj
+ * @return {JSON representing the new state of the bucket}
+ */
+REform.placeInBucket = function(obj){
+    REform.bucket.items.push(obj);
+    return REform.local.update(REform.root, REform.bucket)
+}
+
+/**
+ * The action of placing new Range objects into the top level of the Table of Contents.
+ * The bucket range is for Canvases not yet placed into any part of the Table of Content
+ * top level ranges.  
+ * @param {type} obj
+ * @return {JSON representing the new state of the bucket}
+ */
+REform.putInTopLevel = function(obj){
+    REform.top.items.push(obj);
+    return REform.local.update(REform.root, obj)
+}
+
+/**
+ * Users can make a "Lacuna" canvas as a holder for their structure.  They must enrich this 
+ * object elsewhere.  
+ * @return {JSON representing the Lacuna canvas created}
+ */
+REform.createLacunaCanvas = async function(){
+    let canv =  
+    {  
+        "type":"Canvas",
+        "label":{  
+           "en":[  
+              "Lacuna"
+           ]
+        }
+     }
+     let localCanv = REform.crud.create(canv)  
+     REform.placeInBucket(localCanv)
+}
+
+
 
 /*
  * Create queued ranges to get an @id throughout the REform.top structure.
@@ -349,6 +392,8 @@ REform.local.getByID = function (id){
  * @return {undefined}
  */
 REform.local.commitStrcturalChanges = function (){
+    //Note that REform.bucket has been separated from REform.root.  Make sure to REform.root.items.push(bucketJSON) before updating on the server
+    //This will ensure the bucket range is always last in sequencing ranges for manifests out of REform. 
     
 }
 
@@ -391,42 +436,6 @@ REform.changeLabel = function(rangeID, bool, event){
     
 }
 
-REform.unhandled = function(error){
-    console.log("There was an unhandled error when using fetch");
-    console.log(error);
-    throw Error(error);
-    return error;
-}
-
-REform.handleHTTPerror = function(response){
-    if (!response.ok){
-        let status = response.status;
-        switch(status){
-            case 400:
-                console.log("Bad Request")
-            break;
-            case 401:
-                console.log("Request was unauthorized")
-            break;
-            case 403:
-                console.log("Forbidden to make request")
-            break;
-            case 404:
-                console.log("Not found")
-            break;
-            case 500:
-                console.log("Internal server error")
-            break;
-            case 503:
-                console.log("Server down time")
-            break;
-            default:
-                console.log("unahndled HTTP ERROR")
-        }
-        throw Error("HTTP Error: "+response.statusText);
-    }
-    return response;
-}
 
 REform.showTopRangeCreation = function(){
     document.getElementById("orderedRangesContainer").style.display = "none";
@@ -443,69 +452,164 @@ REform.createTopRange = function(){
     }
 }
 
+
 /**
- * 
+ * For now, let's default to the first.  Eventually, we need to offer choice
+ * @param {type} topRanges
+ * @return {undefined}
+ */
+REform.generateSequenceChoiceHTML = function (topRanges){
+    let sequenceChoicesHTML = ""
+    document.getElementById("sequenceChoices").innerHTML = "";
+    for(let i=0; i<topRanges.length; i++){
+        let choiceLabel = (topRanges[i].label && topRanges[i].label.en) ? topRanges[i].label.en[0] : "Unlabeled"
+        let choiceHTML = 
+            `
+                <input type="button" class="sequenceChoice" onclick="REform.assignRoot(${i}, true)"
+                    value="${choiceLabel}"
+                />
+            `
+        sequenceChoicesHTML += choiceHTML
+    }
+    document.getElementById("sequenceChoices").innerHTML = sequenceChoicesHTML
+    REform.showSequenceChoices();
+    return sequenceChoicesHTML
+}
+
+/**
+ * Assign the root sequencer from the top level ranges for the interface
+ * @param {type} index
+ * @return {undefined}
+ */
+REform.assignRoot = function(index, hide){
+    REform.root = REform.top[index];
+    if(hide){
+        document.getElementById("mainBlockCover").style.display = "none";
+        document.getElementById("sequenceChoiceNotice").style.display = "none";
+        REform.drawSequence() //A new root has been assigned, let's draw the top level.
+    }
+}
+
+/**
+ * Assign the top level sequencing ranges to REform.top
+ * @param {type} index
+ * @return {undefined}
+ */
+REform.assignTop = function(topRanges){
+    REform.top = topRanges
+}
+
+
+/**
+ * There may be more than one top range.  Find them and assign them to REform.top
  * @param {type} manifestObj
  * @return {Array, REform.findTopRange.manifestStructures, REform.findTopRange.rangeObj}
  */
-REform.findTopRange = function(manifestObj){
-    let manifestStructures = (manifestObj.structures) ? manifestObj.structures : [];
-    let topRange = {};
-    let topFound = false;
+REform.findSequencingRanges = function(manifestObj){
+    let manifestStructures = (manifestObj.structures) ? manifestObj.structures : []
+    let topRanges = [];
+    let topFound = false
     if(manifestStructures.length > 0){
         REform.noStructure = false;
         for(entry in manifestStructures){
             let rangeObj = {};
             if(typeof manifestStructures[entry] === "string"){
-                rangeObj = resolveForJSON(manifestStructures[entry])
+                rangeObj = REform.resolveForJSON(manifestStructures[entry])
             }
             else if(typeof manifestStructures[entry] === "object" ){
-                rangeObj = manifestStructures[entry];
+                rangeObj = manifestStructures[entry]
             }
-            if(rangeObj.viewingHint && rangeObj.viewingHint === "top"){
+            if(rangeObj.viewingHint && rangeObj.viewingHint === "top" || rangeObj.behavior && rangeObj.behavior === "sequence"){
                 REform.noTop = false;
                 if(topFound){
-                    console.log("Error in manifest, found 2 top ranges.  What should i do?");
+                    console.log("There are multiple top ranges")
                 }
                 else{
-                    //dont break or return, lets check if there happens to be more than one in the manifest structures.
-                    topFound = true;
-                    topRange = rangeObj;
+                    //dont break or return, we want to be able to add in multiple
+                    topFound = true
                 }
+                topRanges.push(rangeObj)
             }
         }
     }
     else{
-        REform.noStructure = true;
+        REform.noStructure = true
     }
-    return topRange;
+    REform.assignTop(topRanges);
+    return topRanges
 }
 
 /**
- * 
+ * UI to give the user a choice over which sequencing range in their manifest they want to edit.  
+ * @return {undefined}
+ */
+REform.showSequenceChoices = function(){
+    document.getElementById("mainBlockCover").style.display = "block";
+    document.getElementById("sequenceChoiceNotice").style.display = "block";
+}
+
+/**
+ * Check if there is more than one sequencing range in the top level of the manifest.
+ * If so, make sure the user can pick one. 
+ * @return {undefined}
+ */
+REform.offerSequenceChoice = function(){
+    if(REform.top.length > 1){
+        REform.generateSequenceChoiceHTML(REform.top);
+        REform.showSequenceChoices();
+    }
+}
+
+/**
+ * Once a sequence has been chosen, draw the bucket and the top level.  
+ * @return {undefined}
+ */
+REform.drawSequence = async function(){
+    let tocRangesHTML = ""
+    if(Object.keys(REform.root).length === 0 && REform.root.constructor === Object){
+        //There is no root object, so we can't begin to structure anything
+        //Everything goes in the bucket of unstructuresd ranges
+        REform.structureAlert()
+        REform.showTopRangeCreation()
+    }
+    else{
+        //We found ranges and most importantly the TOP range, let's draw the TOC.
+        document.getElementById("bucket").innerHTML = ""
+        document.getElementById("toc").innerHTML = ""
+        let bucketStuff = await REform.drawBucketRange(REform.findBucketRange());
+        let bucketRangesHTML = "<span>UNASSIGNED</span>"+bucketStuff //Note this will take the bucket out of REform.root so we can handle it special.
+        document.getElementById("bucket").innerHTML = bucketRangesHTML
+        
+        tocRangesHTML = await REform.drawChildRanges("1", REform.root)
+        document.getElementById("toc").innerHTML = tocRangesHTML
+        //Generate the bucket
+        
+    }
+    
+}
+
+/**
+ * Get the manifest object and the top level sequencing objects from the manifest URL. 
  * @param {type} manifestID
  * @return {undefined}
  */
 REform.gatherTOC = async function(){
-    let manifestID = getURLVariable("manifest");
-    let manifest = await resolveForJSON(manifestID);
-    REform.manifest = manifest;
-    REform.top = REform.findTopRange(manifest);
-    let tocRangesHTML = "";
-    if(Object.keys(REform.top).length === 0 && REform.top.constructor === Object){
-        //There is no top object, so we can't begin to structure anything
-        //Everything goes in the bucket of unstructuresd ranges
-        REform.structureAlert();
-        REform.showTopRangeCreation();
+    let manifestID = REform.getURLVariable("manifest")
+    let manifest = {}
+    if(manifestID){
+        manifest = await REform.resolveForJSON(manifestID)
     }
     else{
-        //We found ranges and most importantly the TOP range, let's draw it.
-        tocRangesHTML = REform.drawChildRanges("1", REform.top);
-        document.getElementById("toc").innerHTML = tocRangesHTML
+        REform.error("you must provide manifest={your manifest URL} in the address bar")
     }
-    //Now we need to trace the ranges map to figure out what does and does not belong in the bucket
-    let bucketRangesHTML = "<span>UNASSIGNED</span>"+REform.generateBucket();
-    document.getElementById("bucket").innerHTML = bucketRangesHTML
+    REform.manifest = manifest
+    REform.findSequencingRanges(manifest)
+    if(REform.top.length > 1){
+        REform.offerSequenceChoice();
+    }
+    else{
+        REform.drawSequence();
+    }
 }
 
 /**
@@ -515,10 +619,15 @@ REform.gatherTOC = async function(){
  */
 REform.resolveForJSON = async function(id){
     let j = {}
-    await fetch(id)
-        .then(REform.handleHTTPError)
-        .then(resp => j = resp.json())
-        .catch(error => REform.unhandled(error))
+    if(id){
+        await fetch(id)
+            .then(REform.handleHTTPError)
+            .then(resp => j = resp.json())
+            .catch(error => REform.unhandled(error))
+    }
+    else{
+        REform.error("No id provided to resolve for JSON.  Make sure you have an id.")
+    }
     return j
 }
 
@@ -536,8 +645,85 @@ REform.toggleChildren = function(event, rangeID){
         REform.collapseTo(event, depthToCollapseTo)
     }
     else{
-        REform.drawParentRange(event, rangeObj)
+        childClicked.classList.add("selectedSection")
+        REform.drawParentRange(event, rangeID)
     }
+}
+
+/**
+ * By now we have our top range in REform.root
+ * Use REform.root.
+ * @return {undefined}
+ */
+REform.findBucketRange = function(){
+    let bucketRange = {}
+    for(range in REform.root.items){
+        let innerRange = REform.root.items[range];
+        let labelToCheck = (innerRange.label && innerRange.label.en) ? innerRange.label.en[0] : "label_not_found"
+        if(labelToCheck === "Manifest Bucket"){
+            bucketRange = innerRange
+            REform.bucket = bucketRange
+            REform.root.items.splice(range, 1); //Take the bucket out of the root so we can handle is special.
+            return bucketRange
+        }
+    }
+    REform.error("Error in manifest: could not find bucket object.  Contact the RERUM admin.")
+    return bucketRange
+}
+
+REform.drawBucketRange = async function(bucketJSON){
+    //The container for the bucket is already drawn on sort.html.  Just populate the bucket area with the children. 
+    let bucketRangeItems = (bucketJSON.items) ? bucketJSON.items : [];
+    let bucketChildren = bucketRangeItems.filter(o=> {
+        //Only consider canvas type objects
+        return (o.type && (o.type === "Canvas" || o.type==="sc:Canvas") || o["@type"] && (o["@type"] === "Canvas" || o["@type"]==="sc:Canvas")) 
+    })
+    let childRangesHTML = "";
+    for(let i=0; i< bucketChildren.length; i++){
+        let childObj = {}
+        let range = bucketChildren[i]
+        if(typeof range === "string"){
+            //Need to resolve to have object and store that to localStorage
+            childObj = await REform.resolveForJSON(range)
+        }
+        else{
+            //presumably, it is an object already, so we don't need to resolve it.
+            childObj = range
+        }
+        let uniqueID = document.querySelectorAll('.child').length + i;
+        let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
+        let tag = "parent"
+        let relation = ""
+        let isLeaf = false
+        let isOrdered = childObj.isOrdered
+        let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="dragHelp(event);" ondragend="dragEnd(event);"`
+        let dropAttribute = `" ondragover="dragOverHelp(event);" ondrop="dropHelp(event);"`
+        let checkbox = " <input onchange='highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
+        let rightClick = " oncontextmenu='breakUpConfirm(event); return false;'"
+        let lockStatusUp = "false"
+        let lockStatusDown = "false"
+        let lockit = (lockStatusDown === "false")
+        let childID = (childObj["@id"]) ? childObj["@id"] : (childObj.id) ? childObj.id : "id_not_found"
+        if(lockStatusDown === "false"){
+            lockit = `<div class='lockUp' onclick="lock("${relation}",event);"> </div>`
+            //console.log("outer with lock status, not draggable");
+        }
+        else if(lockStatusDown === "true"){
+            lockit = `<div class='lockedUp' onclick="unlock("${relation}",event);"> </div>`
+        }
+        let childHTML = 
+        `
+        <div inDepth="bucket" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
+        ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
+        onclick="REform.toggleChildren(event, "${childID}")" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
+            <span>${childLabel}</span> 
+            ${checkbox} 
+            ${lockit}  
+        </div>
+        `
+        childRangesHTML += childHTML;
+    }
+    return childRangesHTML;
 }
 
 /*
@@ -545,18 +731,16 @@ REform.toggleChildren = function(event, rangeID){
  * @param {type} rangeObj
  * @return {undefined}
  */
-REform.drawParentRange = function(event, rangeObj){
-    let childClicked = event.target;  
-      
-    let topBool =(rangeObj.viewingHint && rangeObj.viewHint === "top") ? true : false
+REform.drawParentRange = async function(event, rangeObj){
+    let childClicked = event.target;       
     let thisRangeDepth = document.querySelectorAll('.rangeArrangementArea').length + 1
     let rangeLabel = (rangeObj.label && rangeObj.label !== "top") ? rangeObj.label : "Unlabeled"
-    let childRangesHTML = drawChildRanges(thisRangeDepth, rangeObj);
+    let childRangesHTML = await REform.drawChildRanges(thisRangeDepth, rangeObj);
     let rangeID = (rangeObj["@id"]) ? rangeObj["@id"] : (rangeObj.id) ? rangeObj.id : "id_not_found"
-
+    
     let parentRangeHTML = 
     `
-        <div class="rangeArrangementArea parent" depth="${thisRangeDepth}" rangeID="${rangeID}">
+        <div class="rangeArrangementArea parent" depth="${thisRangeDepth}" url="${rangeID}">
             <div class='columnActions'>
                 <input class="makeGroup" value="merge" type="button" onclick="askForNewTitle("${thisRangeDepth}")"/>
                 <input class="addGroup" value="add" type="button" onclick="newGroupForm("${thisRangeDepth}", false);"/>
@@ -567,7 +751,7 @@ REform.drawParentRange = function(event, rangeObj){
             <div ondragover='dragOverHelp(event);' ondrop='dropHelp(event);' class="notBucket childRangesContainer">${childRangesHTML}</div>
         </div>
     `
-    document.getElementById("rangeContainer").appendChild(parentRangeHTML);
+    document.getElementById("orderedRangesContainer").innerHTML += parentRangeHTML
 }
 
 /*
@@ -577,24 +761,25 @@ REform.drawParentRange = function(event, rangeObj){
  * @return {String}
  */
 REform.drawChildRanges = async function(depth, rangeObj){
-    let childRanges = (rangeObj.ranges) ? rangeObj.ranges : [];
+    let childRanges = (rangeObj.items) ? rangeObj.items : [];
     let childRangesHTML = "";
+    let parentID = (rangeObj["@id"]) ? rangeObj["@id"] : (rangeObj.id) ? rangeObj.id : "id_not_found"
     for(let i=0; i< childRanges.length; i++){
         let childObj = {}
         let range = childRanges[i]
         if(typeof range === "string"){
             //Need to resolve to have object and store that to localStorage
-            childObj = await resolveForJSON(range)
+            childObj = await REform.resolveForJSON(range)
         }
         else{
             //presumably, it is an object already, so we don't need to resolve it.
             childObj = range
         }
+        let childType = (childObj.type) ? childObj.type : (childObj["@type"]) ? childObj["@type"] : "type_not_found"
         let uniqueID = document.querySelectorAll('.child').length + i;
-        let outerRangeLabel = childObj.label+" <br>"
+        let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
         let tag = "parent"
-        let relation = ""
-        let isLeaf = false
+        let isLeaf = (childType !== "Range") //Denote whether this is a Range object or not.  If not, it is most likely a canvas internal to a range.  
         let isOrdered = childObj.isOrdered
         let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="dragHelp(event);" ondragend="dragEnd(event);"`
         let dropAttribute = `" ondragover="dragOverHelp(event);" ondrop="dropHelp(event);"`
@@ -602,21 +787,21 @@ REform.drawChildRanges = async function(depth, rangeObj){
         let rightClick = " oncontextmenu='breakUpConfirm(event); return false;'"
         let lockStatusUp = childObj.lockedup
         let lockStatusDown = childObj.lockeddown
-        let lockit = (lockStatusDown === "false")
-        let childObjID = (childObj["@id"]) ? childObj["@id"] : (childObj.id) ? childObj.id : "id_not_found"
-        if(lockStatusDown === "false"){
-            lockit = `<div class='lockUp' onclick="lock("${relation}",event);"> </div>`
-            //console.log("outer with lock status, not draggable");
-        }
-        else if(lockStatusDown === "true"){
-            lockit = `<div class='lockedUp' onclick="unlock("${relation}",event);"> </div>`
-        }
+        let lockit = ""
+        let childID = (childObj["@id"]) ? childObj["@id"] : (childObj.id) ? childObj.id : "id_not_found"
+//        if(lockStatusDown === "false"){
+//            lockit = `<div class='lockUp' onclick="lock("${childID}",event);"> </div>`
+//            //console.log("outer with lock status, not draggable");
+//        }
+//        else if(lockStatusDown === "true"){
+//            lockit = `<div class='lockedUp' onclick="unlock("${childID}",event);"> </div>`
+//        }
         let childHTML = 
         `
         <div inDepth="${depth}" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
         ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
-        onclick="REform.toggleChildren(event, ${childObjID})" class="arrangeSection ${tag}" rangeID="${relation}">
-            <span>${outerRangeLabel}</span> 
+        onclick="REform.toggleChildren(event, "${childID}")" class="arrangeSection ${tag}" url="${childID}" parenturl="${parentID}">
+            <span>${childLabel}</span> 
             ${checkbox} 
             ${lockit}  
         </div>
@@ -639,7 +824,7 @@ REform.collapseTo= function (event, depth){
    let stopAt = Number(depth);
    for(let i = deepest; i > stopAt; i--){
        //Ex child clicked was in depth 3, there are 5 depths open.  Collapse 5, collapse 4, stop at 3
-       let elemToRemove = document.querySelectorAll('[depth="'+i+'"]')
+       let elemToRemove = document.querySelectorAll('[depth="'+i+'"]')[0]
        elemToRemove.parentNode.removeChild(elemToRemove)
    }
 }
@@ -661,13 +846,13 @@ REform.getURLVariable = function (variable){
 REform.updateURL = function (piece, classic){
     var toAddressBar = document.location.href;
     //If nothing is passed in, just ensure the projectID is there.
-    //console.log("does URL contain projectID?        "+getURLVariable("projectID"));
-    if(!getURLVariable("projectID")){
+    //console.log("does URL contain projectID?        "+REform.getURLVariable("projectID"));
+    if(!REform.getURLVariable("projectID")){
         toAddressBar = "?projectID="+tpen.project.id;
     }
     //Any other variable will need to be replaced with its new value
     if(piece === "p"){
-        if(!getURLVariable("p")){
+        if(!REform.getURLVariable("p")){
             toAddressBar += "&p=" + tpen.project.folios[tpen.screen.currentFolio].folioNumber;
         }
         else{
@@ -677,11 +862,11 @@ REform.updateURL = function (piece, classic){
         $(".editButtons").attr("href", relocator);
     }
     else if (piece === "attempts"){
-        if(!getURLVariable("attempts")){
+        if(!REform.getURLVariable("attempts")){
             toAddressBar += "&attempts=1";
         }
         else{
-            var currentAttempt = getURLVariable("attempts");
+            var currentAttempt = REform.getURLVariable("attempts");
             currentAttempt = parseInt(currentAttempt) + 1;
             toAddressBar = replaceURLVariable("attempts", currentAttempt);
         }
@@ -690,21 +875,21 @@ REform.updateURL = function (piece, classic){
 }
 
 REform.replaceURLVariable = function (variable, value){
-       var query = window.location.search.substring(1);
-       var location = window.location.origin + window.location.pathname;
+       var query = window.location.search.substring(1)
+       var location = window.location.origin + window.location.pathname
        var vars = query.split("&");
-       var variables = "";
+       var variables = ""
        for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=");
+        var pair = vars[i].split("=")
         if(pair[0] == variable){
             var newVar = pair[0]+"="+value;
             vars[i] = newVar;
             break;
         }
        }
-       variables = vars.toString();
-       variables = variables.replace(/,/g, "&");
-       return(location + "?"+variables);
+       variables = vars.toString()
+       variables = variables.replace(/,/g, "&")
+       return(location + "?"+variables)
 }
 
 
@@ -726,7 +911,7 @@ REform.makeSortable = function (columnDepth){
     column.find(".doneSortable").show();
     column.children('.notBucket').sortable({
         helper:function(e, item){
-            if(!item.hasClass('selected'))item.addClass('selected');
+            if(!item.hasClass('selectedSection'))item.addClass('selectedSection');
             var chainedElems = chainTargets(item[0]);
             var helper = $('<div class="sortHelper"></div>');
             var hlpWidth = 0;
@@ -743,14 +928,14 @@ REform.makeSortable = function (columnDepth){
                 clonedElement.find(".lockUp").remove();
                 clonedElement.find(".putInGroup").remove();
                 helper.append(clonedElement);
-                element.addClass("selected");
+                element.addClass("selectedSection");
                 element.addClass("hidden");
             }
             helper.css("width", hlpWidth);
             return helper;
         },
         start: function (e, ui) {
-            var elements =$(".selected.hidden").not(".helper");
+            var elements =$(".selectedSection.hidden").not(".helper");
             //store the selected items to item being dragged
             ui.item.data('items', elements);
         },
@@ -763,15 +948,15 @@ REform.makeSortable = function (columnDepth){
             if(itemAfter.attr("lockedup") === "true" && itemBefore.attr("lockeddown") === "true"){
                 alert("You cannot put this object in the middle of locked items");
                 $('.hidden').removeClass("hidden");
-                $(".selected").removeClass("selected");
+                $(".selectedSection").removeClass("selectedSection");
                 return false;
             }
             var clonedSet = $(ui.item.data('items').clone());
-            clonedSet.removeClass("hidden selected");
+            clonedSet.removeClass("hidden selectedSection");
             // you must clone the set or the original ui.item will not be present after replaceWith()
             $(ui.item).replaceWith(clonedSet);
             $('.hidden').remove();
-            $(".selected").removeClass("selected");
+            $(".selectedSection").removeClass("selectedSection");
             //unselect since the operation is complete
 
         },
@@ -1175,8 +1360,8 @@ function orderSeqFromStruct(){
       var children = [];
       var canvas_uris = [];
       parent = typeof parent !== 'undefined' ? parent : getParentest(flatRanges);
-      if(typeof parent.ranges !== 'undefined'){ 
-        children_uris = parent.ranges;
+      if(typeof parent.items !== 'undefined'){ 
+        children_uris = parent.items;
       }
       if(typeof parent.canvases !== 'undefined' && parent.canvases.length!==0){
           //it is a leaf, we found it in its order, push its canvases, there will be 2.
@@ -1208,7 +1393,7 @@ function merge(left, right){
         ir      = 0;
 
     while (il < left.length && ir < right.length){
-        if (left[il].ranges.length < right[ir].ranges.length){
+        if (left[il].items.length < right[ir].items.length){
             result.push(left[il++]);
         } else {
             result.push(right[ir++]);
@@ -1235,3 +1420,4 @@ function mergeSort(items){
     items.splice.apply(items, params);
     return items;
 }
+
