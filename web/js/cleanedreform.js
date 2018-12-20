@@ -20,7 +20,7 @@ REform.incrementUniqueID = function(){
 REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
 REform.noTop = true;
 REform.manifest = {} //keep track of the manifest being used
-REform.manifestID = ""; //  http://devstore.rerum.io/v1/id/5c17dbbbe4b05b14fb531efb
+REform.manifestID = ""; //  http://devstore.rerum.io/v1/id/5c1bf997e4b05b14fb531f1b
 REform.top = [] //keep track of the viewingHint: top range(s)
 REform.root = {} //The selected viewhingHint : top range
 REform.bucket = {} //keep track of the viewingHint: top range's bucket.  
@@ -31,7 +31,6 @@ REform.error = function (msg){
 REform.test = function(){
     
 }
-
 
 /**
  * Call to the REform proxy API into RERUM API to create this object in the data store
@@ -672,11 +671,13 @@ REform.findBucketRange = function(){
 }
 
 REform.drawBucketRange = async function(bucketJSON){
-    //The container for the bucket is already drawn on sort.html.  Just populate the bucket area with the children. 
+    //The container for the bucket is already drawn on sort.html.  Just populate the bucket area with the children.
+    console.log("Draw bucket range");
+    console.log(bucketJSON)
     let bucketRangeItems = (bucketJSON.items) ? bucketJSON.items : [];
     let bucketChildren = bucketRangeItems.filter(o=> {
         //Only consider canvas type objects
-        return (o.type && (o.type === "Canvas" || o.type==="sc:Canvas") || o["@type"] && (o["@type"] === "Canvas" || o["@type"]==="sc:Canvas")) 
+        return (o.type && (o.type === "Canvas" || o.type==="sc:Canvas")) || (o["@type"] && (o["@type"] === "Canvas" || o["@type"]==="sc:Canvas")) 
     })
     let childRangesHTML = "";
     for(let i=0; i< bucketChildren.length; i++){
@@ -690,6 +691,8 @@ REform.drawBucketRange = async function(bucketJSON){
             //presumably, it is an object already, so we don't need to resolve it.
             childObj = range
         }
+        console.log("Bucket child "+i)
+        console.log(childObj)
         let uniqueID = document.querySelectorAll('.child').length + i;
         let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
         let tag = "parent"
@@ -702,7 +705,7 @@ REform.drawBucketRange = async function(bucketJSON){
         let rightClick = " oncontextmenu='breakUpConfirm(event); return false;'"
         let lockStatusUp = "false"
         let lockStatusDown = "false"
-        let lockit = (lockStatusDown === "false")
+        let lockit = ""
         let childID = (childObj["@id"]) ? childObj["@id"] : (childObj.id) ? childObj.id : "id_not_found"
         if(lockStatusDown === "false"){
             lockit = `<div class='lockUp' onclick="lock("${relation}",event);"> </div>`
@@ -715,14 +718,17 @@ REform.drawBucketRange = async function(bucketJSON){
         `
         <div inDepth="bucket" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
         ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
-        onclick="REform.toggleChildren(event, "${childID}")" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
+        onclick="REform.toggleChildren(event, '${childID}')" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
             <span>${childLabel}</span> 
             ${checkbox} 
             ${lockit}  
         </div>
         `
+        console.log("Child range HTML")
+        console.log(childHTML)
         childRangesHTML += childHTML;
     }
+ 
     return childRangesHTML;
 }
 
@@ -732,6 +738,8 @@ REform.drawBucketRange = async function(bucketJSON){
  * @return {undefined}
  */
 REform.drawParentRange = async function(event, rangeObj){
+    console.log("Draw parent range")
+    console.log(rangeObj);
     let childClicked = event.target;       
     let thisRangeDepth = document.querySelectorAll('.rangeArrangementArea').length + 1
     let rangeLabel = (rangeObj.label && rangeObj.label !== "top") ? rangeObj.label : "Unlabeled"
@@ -761,6 +769,7 @@ REform.drawParentRange = async function(event, rangeObj){
  * @return {String}
  */
 REform.drawChildRanges = async function(depth, rangeObj){
+    console.log("Drawing child ranges");
     let childRanges = (rangeObj.items) ? rangeObj.items : [];
     let childRangesHTML = "";
     let parentID = (rangeObj["@id"]) ? rangeObj["@id"] : (rangeObj.id) ? rangeObj.id : "id_not_found"
@@ -775,6 +784,8 @@ REform.drawChildRanges = async function(depth, rangeObj){
             //presumably, it is an object already, so we don't need to resolve it.
             childObj = range
         }
+        console.log("Child obj "+i);
+        console.log(childObj);
         let childType = (childObj.type) ? childObj.type : (childObj["@type"]) ? childObj["@type"] : "type_not_found"
         let uniqueID = document.querySelectorAll('.child').length + i;
         let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
@@ -800,7 +811,7 @@ REform.drawChildRanges = async function(depth, rangeObj){
         `
         <div inDepth="${depth}" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
         ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
-        onclick="REform.toggleChildren(event, "${childID}")" class="arrangeSection ${tag}" url="${childID}" parenturl="${parentID}">
+        onclick="REform.toggleChildren(event, '${childID}')" class="arrangeSection ${tag}" url="${childID}" parenturl="${parentID}">
             <span>${childLabel}</span> 
             ${checkbox} 
             ${lockit}  
