@@ -812,6 +812,7 @@ REform.drawChildRanges = async function(depth, rangeObj){
 }
 
 
+
 /*
  * Close all depths down to the depth a child was toggle closed. 
  * @param {type} parentRange
