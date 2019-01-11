@@ -169,7 +169,7 @@ REform.local.create = function (obj, parent){
             }
             else{
                 //This goes straight into the bucket level
-                REform.putInBucket(obj)
+                REform.putInRootBucket(obj)
             }
         break
         case "Range":
@@ -185,7 +185,7 @@ REform.local.create = function (obj, parent){
             }
             else{
              // The object is a top level range in REform.root, no need to dig
-                REform.putInTopLevel(obj)
+                REform.putInRootLevel(obj)
             }
         break
         default:
@@ -395,9 +395,8 @@ REform.handleHTTPerror = function(response){
  * @param {type} obj
  * @return {JSON representing the new state of the bucket}
  */
-REform.placeInBucket = function(obj){
-    REform.bucket.items.push(obj);
-    return REform.local.update(REform.root, REform.bucket)
+REform.putInRootBucket = function(obj){
+    REform.bucket.items.push(obj)
 }
 
 /**
@@ -407,9 +406,8 @@ REform.placeInBucket = function(obj){
  * @param {type} obj
  * @return {JSON representing the new state of the bucket}
  */
-REform.putInTopLevel = function(obj){
-    REform.top.items.push(obj)
-    return REform.local.update(REform.root, obj)
+REform.putInRootLevel = function(obj){
+    REform.root.items.push(obj)
 }
 
 /**
@@ -437,9 +435,15 @@ REform.createLacunaCanvas = async function(){
  * Then update the REform.top object in the data store. 
  * @return {undefined}
  */
-REform.local.commitStrcturalChanges = function (){
+REform.local.commitStrcturalChanges = function (offerManifestUpdate){
     //Note that REform.bucket has been separated from REform.root.  Make sure to REform.root.items.push(bucketJSON) before updating on the server
     //This will ensure the bucket range is always last in sequencing ranges for manifests out of REform. 
+    //Note that changes bubble up, meaning if an obj.items[] child was deleted/updated, then obj needs to be updated to show that new change as well
+    //That will have to bubble all the way up to the root.  The root belongs to the top, which will also have to be updated to contain
+    //The new root changes to update the manifest if we are offering an actual manifest update
+    if(offerManifestUpdate){
+        //Then update the manifest.sequence with the root changes, update the sequence obj to get new id, update manifest with new sequence.
+    }
     
 }
 
@@ -655,7 +659,7 @@ REform.gatherTOC = async function(){
         REform.error("you must provide manifest={your manifest URL} in the address bar")
     }
     REform.manifest = manifest
-    REform.findSequencingRanges(manifest)
+    REform.findSequencingRanges(manifest) //This will set REform.root , REform.root_bakcup, and REform.top
     if(REform.top.length > 1){
         //We need to know which one tbe user wants us to draw
         REform.offerSequenceChoice()
