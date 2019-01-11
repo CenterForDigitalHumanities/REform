@@ -711,11 +711,13 @@ REform.findBucketRange = function(){
 }
 
 REform.drawBucketRange = async function(bucketJSON){
-    //The container for the bucket is already drawn on sort.html.  Just populate the bucket area with the children. 
+    //The container for the bucket is already drawn on sort.html.  Just populate the bucket area with the children.
+    console.log("Draw bucket range");
+    console.log(bucketJSON)
     let bucketRangeItems = (bucketJSON.items) ? bucketJSON.items : [];
     let bucketChildren = bucketRangeItems.filter(o=> {
         //Only consider canvas type objects
-        return (o.type && (o.type === "Canvas" || o.type==="sc:Canvas") || o["@type"] && (o["@type"] === "Canvas" || o["@type"]==="sc:Canvas")) 
+        return (o.type && (o.type === "Canvas" || o.type==="sc:Canvas")) || (o["@type"] && (o["@type"] === "Canvas" || o["@type"]==="sc:Canvas")) 
     })
     let childRangesHTML = "";
     for(let i=0; i< bucketChildren.length; i++){
@@ -729,6 +731,8 @@ REform.drawBucketRange = async function(bucketJSON){
             //presumably, it is an object already, so we don't need to resolve it.
             childObj = range
         }
+        console.log("Bucket child "+i)
+        console.log(childObj)
         let uniqueID = document.querySelectorAll('.child').length + i;
         let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
         let tag = "parent"
@@ -741,7 +745,7 @@ REform.drawBucketRange = async function(bucketJSON){
         let rightClick = " oncontextmenu='breakUpConfirm(event); return false;'"
         let lockStatusUp = "false"
         let lockStatusDown = "false"
-        let lockit = (lockStatusDown === "false")
+        let lockit = ""
         let childID = (childObj["@id"]) ? childObj["@id"] : (childObj.id) ? childObj.id : "id_not_found"
         if(lockStatusDown === "false"){
             lockit = `<div class='lockUp' onclick="lock("${relation}",event);"> </div>`
@@ -760,8 +764,11 @@ REform.drawBucketRange = async function(bucketJSON){
             ${lockit}  
         </div>
         `
+        console.log("Child range HTML")
+        console.log(childHTML)
         childRangesHTML += childHTML;
     }
+ 
     return childRangesHTML;
 }
 
@@ -815,6 +822,8 @@ REform.drawChildRanges = async function(depth, rangeObj){
             //presumably, it is an object already, so we don't need to resolve it.
             childObj = range
         }
+        console.log("Child obj "+i);
+        console.log(childObj);
         let childType = (childObj.type) ? childObj.type : (childObj["@type"]) ? childObj["@type"] : "type_not_found"
         let uniqueID = document.querySelectorAll('.child').length + i
         let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
