@@ -690,14 +690,12 @@ and open the template in the editor.
                 position: relative;
                 cursor: pointer;
                 text-align: center;
-                padding: 8px 8px 8px 8px;
                 border: 2px solid black;
                 font-size: 15px;
                 font-family: serif;
-                padding: 13px 72px 13px 21px;  
                 margin-bottom: 30px;
-                min-width: 112px;
-                left: 12px;
+                left: 20px;
+                padding: .65em .4em;
                 /* user cannot select text */
                 -webkit-touch-callout: none;
                 -webkit-user-select: none;
@@ -726,10 +724,13 @@ and open the template in the editor.
                 margin-bottom: 0px;
             }
             
-            .arrangeSection span{
-                display: inline-block;
+            .innerTitle{
+                display: block;
                 margin: 0 auto;
                 position: relative;
+                max-width: 200px;
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
             
             .arrangeSection[leaf="true"]{
@@ -867,8 +868,12 @@ and open the template in the editor.
                 border: 1px solid gray;
                 padding: 5px;
                 margin-bottom: 9px;
+                margin-right: 7px;
                 color: gray;
                 font-size: 17px;
+                max-width: 310px; /* Make sure .arrangeSection matches this */
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
             .leafPopClose{
                 right:0;
@@ -1329,7 +1334,7 @@ and open the template in the editor.
                 display: none;
             }
             .parent .child{
-                display: none;
+                display: block;
             }
             .unassigned .child{ /* This will hide leaves sitting in the unassigned areas. */
                 display: none 

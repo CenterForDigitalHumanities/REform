@@ -59,7 +59,7 @@ and open the template in the editor.
                         <input class="doneSortable" value="done" type="button" onclick="stopSorting('1');"/><br>
                     </div>
                    <div class="rAreaLabel">Table of Contents</div>
-                   <div id="toc" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' class="notBucket"></div>
+                   <div id="toc" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' class="notBucket childRangesContainer" depth="1"></div>
                    <div id="bucket" style="display:block;" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' url="bucket"
                     onclick='REform.toggleChildren(event, "bucket");' class="arrangeSection parent bucket unassigned sortOrder" inDepth="1">
                        

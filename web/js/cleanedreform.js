@@ -11,27 +11,27 @@ if (typeof(Storage) !== "undefined") {
 else {
   alert("Your browser must support local storage to use this application!");
 }
-REform.uniqueID = (REform.localData.getItem("uniqueID")) ? parseInt(REform.localData.getItem("uniqueID")) : 0;
+REform.uniqueID = (REform.localData.getItem("uniqueID")) ? parseInt(REform.localData.getItem("uniqueID")) : 0
 REform.incrementUniqueID = function(){
     REform.uniqueID++;
     REform.localData.setItem("uniqueID", ""+REform.uniqueID);
     return REform.uniqueID;
 }
-REform.noStructure = true;  //There needs to be a structure to work with, or we are in initiate mode.
-REform.noTop = true;
+REform.noStructure = true  //There needs to be a structure to work with, or we are in initiate mode.
+REform.noTop = true
 REform.manifest = {} //keep track of the manifest being used
-REform.manifestID = ""; //  http://devstore.rerum.io/v1/id/5c17dbbbe4b05b14fb531efb
-REform.top = [] //keep track of the viewingHint: top range(s)
-REform.root = {} //The selected viewhingHint : top range
-REform.bucket = {} //keep track of the viewingHint: top range's bucket.  
+REform.manifestID = "" //  http://devstore.rerum.io/v1/id/5c17dbbbe4b05b14fb531efb
+REform.top = [] //All ranges from manifest.structures that are sequencing ranges
+REform.root = {} //The chosen sequencing range to REform from REform.top
+REform.bucket = {} //The bucket item from REform.root
+REform.topChosenIndex = -1 //The index of the chosen root from REform.top
 REform.error = function (msg){
-    alert(msg);
+    alert(msg)
 }
 
 REform.test = function(){
     
 }
-
 
 /**
  * Call to the REform proxy API into RERUM API to create this object in the data store
@@ -129,7 +129,7 @@ REform.crud.delete = async function (obj){
  */
 REform.crud.query = async function (obj){
     let url = "query"
-    let jsonReturn = {};
+    let jsonReturn = {}
     await fetch(url, {
         method: "POST", 
         headers: {
@@ -145,40 +145,53 @@ REform.crud.query = async function (obj){
 
 /**
  * Create an object for localStorage without creating it in the database.
- * This is either a lacuna canvas or a new range in the in the REform.top.items object. 
  * It will be created upon committing the structure
  * @param {object} obj the object being created
- * @param {object} parent the object recieving the created object (Some member of the REform.top structure)
+ * @param {object} parent the object recieving the created object (Some member of the REform.root structure)
  * @return {JSON representation of the object created in localStorage}
  */
 REform.local.create = function (obj, parent){
     obj["@id"] = "/reform/create/"+REform.incrementUniqueID()
     let objType = (obj["@type"]) ? obj["@type"] : (obj.type) ? obj.type : ""
-    if(objType === "Canvas"){
-        if(parent){
-           //Some non-top level object is recieving this object
-            REform.local.update(parent, obj);
-        }
-        else{
-            //This goes straight into the bucket level
-            REform.putInBucket(obj)
-        }
+    //Will most likely need to treat different types of objects a little differently and flag unknown object types
+    switch(objType){
+        case "Canvas":
+            if(parent){
+                //Some known object in REform.root is recieving the obj.  Add the obj into the intended parent, then let REform.root know about it.  
+                if("items" in parent){
+                    parent.items.push(obj)
+                }
+                else{
+                    parent.items = [obj]
+                }
+                REform.local.update(REform.root, parent)
+            }
+            else{
+                //This goes straight into the bucket level
+                REform.putInBucket(obj)
+            }
+        break
+        case "Range":
+            if(parent){
+                //Some known object in REform.root is recieving the obj.  Add the obj into the intended parent, then let REform.root know about it.  
+                if("items" in parent){
+                    parent.items.push(obj)
+                }
+                else{
+                    parent.items = [obj]
+                }
+                REform.local.update(REform.root, parent)
+            }
+            else{
+             // The object is a top level range in REform.root, no need to dig
+                REform.putInTopLevel(obj)
+            }
+        break
+        default:
+            //This object type is not supported and will be ignored.
         
     }
-    else if(objType === "Range"){
-        if(parent){
-          // Need to dig through REform.top.items children to find the obj to update  
-            REform.local.update(parent, obj)
-        }
-        else{
-         // The object is a top level range in REform.top, no need to dig
-            REform.putInTopLevel(obj)
-
-        }
-    }
-    else{
-        //This object type is not supported and will be ignored.
-    }
+    return obj
 }
 
 /**
@@ -196,30 +209,35 @@ REform.local.update = function (parent, obj){
      * @param {object} searchID - the id of a REform.top.items[] tree to find
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
-    function traceMap(topLevelRange, searchID){
+    function localUpdateRecursion(topLevelRange, searchID){
         let objForReturn = {}
+        let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
         for(item in topLevelRange.items){
-            let recurse = topLevelRange.items[item]
+            let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
-                recurse.push(obj)
-                objForReturn = recurse
-                return recurse;
+                obj["@id"] = checkID+"/reform/update" //queue this object for a server update
+                topLevelRange.items[item] = obj
+                topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
+                objForReturn = obj
+                return objForReturn
             }
-            traceMap(recurse, searchID)
+            else{
+                objForReturn = localUpdateRecursion(recurse, searchID)
+            }
         }
         return objForReturn
-    }  
-    let matchedObj = {};
-    let searchID = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
-    matchedObj = traceMap(REform.root, searchID)    
-    //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
+    }
+    let matchedObj = {}
+    let searchFor = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
+    matchedObj = localUpdateRecursion(REform.root, searchFor)    
+    //We found an object when diggin through the REform.root tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
-        REform.localData.setItem("top", JSON.stringify(REform.root))
-        return matchedObj
+        REform.error("Could not find the item in local storage to update...")
     }
     else{
-        REform.error("Could not find the item in local storage to update...")
+        REform.localData.setItem("root", JSON.stringify(REform.root))
+        return matchedObj
     }
 }
 
@@ -235,32 +253,35 @@ REform.local.delete = function (obj){
      * @param {object} searchID - the id of a REform.top.items[] tree to find
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
-    function traceMap(topLevelRange, searchID){
+    function localDeleteRecursion(topLevelRange, searchID){
         let objForReturn = {}
         for(item in topLevelRange.items){
-            let recurse = topLevelRange.items[item]
+            let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the one we want to delete
                 topLevelRange.items.splice(item, 1)
-                objForReturn = topLevelRange;
-                return topLevelRange;
+                objForReturn = recurse
+                return objForReturn
             }
-            traceMap(recurse, searchID)
+            else{
+                objForReturn =localDeleteRecursion(recurse, searchID)
+            }
+            
         }
         return objForReturn
     }
     
-    let matchedObj = {};
+    let matchedObj = {}
     let searchID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
-    matchedObj = traceMap(REform.root, searchID)    
+    matchedObj = localDeleteRecursion(REform.root, searchID)    
     //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
-        REform.localData.setItem("top", JSON.stringify(REform.root))
-        return matchedObj
+        REform.error("Could not find the item in local storage to delete...")
     }
     else{
-        REform.error("Could not find the item in local storage to delete...")
+        REform.localData.setItem("root", JSON.stringify(REform.root))
+        return matchedObj
     }
 }
 
@@ -277,7 +298,7 @@ REform.local.getByID = function (id){
      * @param {object} searchID - the id of a REform.top.items[] tree to find
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
-    function traceMap(topLevelRange, searchID){
+    function localGetRecursion(topLevelRange, searchID){
         let objForReturn = {}
         for(item in topLevelRange.items){
             let recurse = topLevelRange.items[item]
@@ -285,22 +306,28 @@ REform.local.getByID = function (id){
             if(searchID === checkID){
                 //This is the item we want to return
                 objForReturn = recurse
-                return recurse;
+                return objForReturn
             }
-            traceMap(recurse, searchID)
+            else{
+                localGetRecursion(recurse, searchID)
+            }
         }
         return objForReturn
     }
     
-    let matchedObj = {};
-    matchedObj = traceMap(REform.root, id)    
-    //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
-    if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
-        REform.localData.setItem("top", JSON.stringify(REform.root));
-        return matchedObj
+    let matchedObj = {}
+    if(id === "bucket"){
+        matchedObj = REform.bucket
     }
     else{
+        matchedObj = localGetRecursion(REform.root, id) 
+    }
+       
+    if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
         REform.error("Could not find the item in local storage to get...")
+    }
+    else{
+        return matchedObj
     }
 }
 
@@ -361,7 +388,7 @@ REform.placeInBucket = function(obj){
  * @return {JSON representing the new state of the bucket}
  */
 REform.putInTopLevel = function(obj){
-    REform.top.items.push(obj);
+    REform.top.items.push(obj)
     return REform.local.update(REform.root, obj)
 }
 
@@ -383,7 +410,6 @@ REform.createLacunaCanvas = async function(){
      let localCanv = REform.crud.create(canv)  
      REform.placeInBucket(localCanv)
 }
-
 
 
 /*
@@ -472,20 +498,21 @@ REform.generateSequenceChoiceHTML = function (topRanges){
         sequenceChoicesHTML += choiceHTML
     }
     document.getElementById("sequenceChoices").innerHTML = sequenceChoicesHTML
-    REform.showSequenceChoices();
+    REform.showSequenceChoices()
     return sequenceChoicesHTML
 }
 
 /**
  * Assign the root sequencer from the top level ranges for the interface
- * @param {type} index
+ * @param {int} index The index of the chosen top range to use from the manifest (there may be more than one)
  * @return {undefined}
  */
 REform.assignRoot = function(index, hide){
-    REform.root = REform.top[index];
+    REform.root = REform.top[index]
+    REform.topChosenIndex = index
     if(hide){
-        document.getElementById("mainBlockCover").style.display = "none";
-        document.getElementById("sequenceChoiceNotice").style.display = "none";
+        document.getElementById("mainBlockCover").style.display = "none"
+        document.getElementById("sequenceChoiceNotice").style.display = "none"
         REform.drawSequence() //A new root has been assigned, let's draw the top level.
     }
 }
@@ -507,7 +534,7 @@ REform.assignTop = function(topRanges){
  */
 REform.findSequencingRanges = function(manifestObj){
     let manifestStructures = (manifestObj.structures) ? manifestObj.structures : []
-    let topRanges = [];
+    let topRanges = []
     let topFound = false
     if(manifestStructures.length > 0){
         REform.noStructure = false;
@@ -535,7 +562,11 @@ REform.findSequencingRanges = function(manifestObj){
     else{
         REform.noStructure = true
     }
-    REform.assignTop(topRanges);
+    REform.assignTop(topRanges)
+    if(topRanges.length === 1){
+        //If there is the only one, then
+        REform.assignRoot(0, false) // or 0, true here?
+    }
     return topRanges
 }
 
@@ -555,8 +586,8 @@ REform.showSequenceChoices = function(){
  */
 REform.offerSequenceChoice = function(){
     if(REform.top.length > 1){
-        REform.generateSequenceChoiceHTML(REform.top);
-        REform.showSequenceChoices();
+        REform.generateSequenceChoiceHTML(REform.top)
+        REform.showSequenceChoices()
     }
 }
 
@@ -577,7 +608,7 @@ REform.drawSequence = async function(){
         document.getElementById("bucket").innerHTML = ""
         document.getElementById("toc").innerHTML = ""
         let bucketStuff = await REform.drawBucketRange(REform.findBucketRange());
-        let bucketRangesHTML = "<span>UNASSIGNED</span>"+bucketStuff //Note this will take the bucket out of REform.root so we can handle it special.
+        let bucketRangesHTML = "<span class='innerTitle'>UNASSIGNED</span>"+bucketStuff //Note this will take the bucket out of REform.root so we can handle it special.
         document.getElementById("bucket").innerHTML = bucketRangesHTML
         
         tocRangesHTML = await REform.drawChildRanges("1", REform.root)
@@ -605,10 +636,12 @@ REform.gatherTOC = async function(){
     REform.manifest = manifest
     REform.findSequencingRanges(manifest)
     if(REform.top.length > 1){
-        REform.offerSequenceChoice();
+        //We need to know which one tbe user wants us to draw
+        REform.offerSequenceChoice()
     }
     else{
-        REform.drawSequence();
+        //There is only one, so there is no choice, the root is assigned to the first index laredy.  Draw it.  
+        REform.drawSequence()
     }
 }
 
@@ -639,12 +672,18 @@ REform.resolveForJSON = async function(id){
  * @return {undefined}
  */
 REform.toggleChildren = function(event, rangeID){
-    let childClicked = event.target
+    let childClicked = event.currentTarget //Not event.target as this could end up being one of the child elements inside the section (like its label)
+    let depthToCollapseTo = childClicked.getAttribute("inDepth")
+
     if(childClicked.classList.contains("selectedSection")){
-        let depthToCollapseTo = childClicked.getAttribute("inDepth")
         REform.collapseTo(event, depthToCollapseTo)
     }
     else{
+        let othersSelected = document.querySelectorAll('.selectedSection[inDepth="'+depthToCollapseTo+'"]')
+        //If there is another selected section in this area, we must unselect and collapse to draw the newly selected one
+        if(othersSelected.length > 0){
+            REform.collapseTo(event, depthToCollapseTo)
+        }
         childClicked.classList.add("selectedSection")
         REform.drawParentRange(event, rangeID)
     }
@@ -658,12 +697,12 @@ REform.toggleChildren = function(event, rangeID){
 REform.findBucketRange = function(){
     let bucketRange = {}
     for(range in REform.root.items){
-        let innerRange = REform.root.items[range];
+        let innerRange = REform.root.items[range]
         let labelToCheck = (innerRange.label && innerRange.label.en) ? innerRange.label.en[0] : "label_not_found"
         if(labelToCheck === "Manifest Bucket"){
             bucketRange = innerRange
             REform.bucket = bucketRange
-            REform.root.items.splice(range, 1); //Take the bucket out of the root so we can handle is special.
+            REform.root.items.splice(range, 1) //Take the bucket out of the root so we can handle it special.  It will always be at the root level.
             return bucketRange
         }
     }
@@ -715,8 +754,8 @@ REform.drawBucketRange = async function(bucketJSON){
         `
         <div inDepth="bucket" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
         ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
-        onclick="REform.toggleChildren(event, "${childID}")" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
-            <span>${childLabel}</span> 
+        onclick="REform.toggleChildren(event, '${childID}')" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
+            <span class="innerTitle">${childLabel}</span> 
             ${checkbox} 
             ${lockit}  
         </div>
@@ -731,13 +770,13 @@ REform.drawBucketRange = async function(bucketJSON){
  * @param {type} rangeObj
  * @return {undefined}
  */
-REform.drawParentRange = async function(event, rangeObj){
-    let childClicked = event.target;       
+REform.drawParentRange = async function(event, rangeID){
+    let rangeObj = REform.local.getByID(rangeID)
+    let childClicked = event.currentTarget  //Not event.target as this could end up being one of the child elements inside the section (like its label)    
     let thisRangeDepth = document.querySelectorAll('.rangeArrangementArea').length + 1
-    let rangeLabel = (rangeObj.label && rangeObj.label !== "top") ? rangeObj.label : "Unlabeled"
-    let childRangesHTML = await REform.drawChildRanges(thisRangeDepth, rangeObj);
-    let rangeID = (rangeObj["@id"]) ? rangeObj["@id"] : (rangeObj.id) ? rangeObj.id : "id_not_found"
-    
+    let rangeLabel = (rangeObj.label && rangeObj.label.en) ? rangeObj.label.en[0] : "Unlabeled"
+    let childRangesHTML = await REform.drawChildRanges(thisRangeDepth, rangeObj)
+    //let rangeID = (rangeObj["@id"]) ? rangeObj["@id"] : (rangeObj.id) ? rangeObj.id : "id_not_found"   
     let parentRangeHTML = 
     `
         <div class="rangeArrangementArea parent" depth="${thisRangeDepth}" url="${rangeID}">
@@ -747,8 +786,8 @@ REform.drawParentRange = async function(event, rangeObj){
                 <input class="makeSortable" value="sort" type="button" onclick="makeSortable("${thisRangeDepth}");"/>
                 <input class="doneSortable" value="done" type="button" onclick="stopSorting("${thisRangeDepth}");"/><br>
             </div>
-            <div class="rAreaLabel">${rangeLabel}</div>
-            <div ondragover='dragOverHelp(event);' ondrop='dropHelp(event);' class="notBucket childRangesContainer">${childRangesHTML}</div>
+            <div title="${rangeLabel}" class="rAreaLabel">${rangeLabel}</div>
+            <div ondragover='dragOverHelp(event);' ondrop='dropHelp(event);' class="notBucket childRangesContainer" depth="${thisRangeDepth}">${childRangesHTML}</div>
         </div>
     `
     document.getElementById("orderedRangesContainer").innerHTML += parentRangeHTML
@@ -761,8 +800,9 @@ REform.drawParentRange = async function(event, rangeObj){
  * @return {String}
  */
 REform.drawChildRanges = async function(depth, rangeObj){
-    let childRanges = (rangeObj.items) ? rangeObj.items : [];
-    let childRangesHTML = "";
+    //let rangeObj = REform.local.getByID(rangeID)
+    let childRanges = (rangeObj.items) ? rangeObj.items : []
+    let childRangesHTML = ""
     let parentID = (rangeObj["@id"]) ? rangeObj["@id"] : (rangeObj.id) ? rangeObj.id : "id_not_found"
     for(let i=0; i< childRanges.length; i++){
         let childObj = {}
@@ -776,7 +816,7 @@ REform.drawChildRanges = async function(depth, rangeObj){
             childObj = range
         }
         let childType = (childObj.type) ? childObj.type : (childObj["@type"]) ? childObj["@type"] : "type_not_found"
-        let uniqueID = document.querySelectorAll('.child').length + i;
+        let uniqueID = document.querySelectorAll('.child').length + i
         let childLabel = (childObj.label && childObj.label.en) ? childObj.label.en[0] : "Unlabeled"
         let tag = "parent"
         let isLeaf = (childType !== "Range") //Denote whether this is a Range object or not.  If not, it is most likely a canvas internal to a range.  
@@ -800,15 +840,15 @@ REform.drawChildRanges = async function(depth, rangeObj){
         `
         <div inDepth="${depth}" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
         ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
-        onclick="REform.toggleChildren(event, "${childID}")" class="arrangeSection ${tag}" url="${childID}" parenturl="${parentID}">
-            <span>${childLabel}</span> 
+        onclick="REform.toggleChildren(event, '${childID}')" class="arrangeSection ${tag}" url="${childID}" parenturl="${parentID}">
+            <span title="${childLabel}" class="innerTitle">${childLabel}</span> 
             ${checkbox} 
             ${lockit}  
         </div>
         `
-        childRangesHTML += childHTML;
+        childRangesHTML += childHTML
     }
-    return childRangesHTML;
+    return childRangesHTML
 }
 
 
@@ -822,16 +862,13 @@ REform.drawChildRanges = async function(depth, rangeObj){
  */
 REform.collapseTo= function (event, depth){
    let deepest =  document.querySelectorAll('.rangeArrangementArea').length
-   let stopAt = Number(depth);
+   let stopAt = Number(depth)
    for(let i = deepest; i > stopAt; i--){
        //Ex child clicked was in depth 3, there are 5 depths open.  Collapse 5, collapse 4, stop at 3
        let elemToRemove = document.querySelectorAll('[depth="'+i+'"]')[0]
        elemToRemove.parentNode.removeChild(elemToRemove)
    }
-}
-
-REform.designateTop = function (rangeObj){
-    //designate range as viewingHint: top
+   document.querySelectorAll(".selectedSection[inDepth='"+stopAt+"']")[0].classList.remove("selectedSection")
 }
 
 REform.getURLVariable = function (variable){
@@ -844,11 +881,11 @@ REform.getURLVariable = function (variable){
     return(false);
 }
 
-REform.updateURL = function (piece, classic){
+REform.updateURL = function (variable, value){
     var toAddressBar = document.location.href;
     //If nothing is passed in, just ensure the projectID is there.
     //console.log("does URL contain projectID?        "+REform.getURLVariable("projectID"));
-    if(!REform.getURLVariable("projectID")){
+    if(REform.getURLVariable(variable)){
         toAddressBar = "?projectID="+tpen.project.id;
     }
     //Any other variable will need to be replaced with its new value
@@ -996,7 +1033,6 @@ REform.stopSorting = function stopSorting(depth){
     }
 
 }
-
 
 function chainLockedRanges(currentObj){
     var text = "";
@@ -1318,8 +1354,8 @@ function dragOverHelp(event){
  * actions of this page, but has been kept up to date so updating off of it should be safe.
  */
 function orderSeqFromStruct(){
-    var parent;
-    var canvases = [];
+    var parent
+    var canvases = []
 
     function pushToOrderedSequence(canvas_uri, ordered_canvases){
         $.each(manifestCanvases,function(){
