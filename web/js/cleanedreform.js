@@ -20,7 +20,7 @@ REform.incrementUniqueID = function(){
 REform.noStructure = true  //There needs to be a structure to work with, or we are in initiate mode.
 REform.noTop = true
 REform.manifest = {} //keep track of the manifest being used
-REform.manifestID = "" //  http://devstore.rerum.io/v1/id/5c17dbbbe4b05b14fb531efb
+REform.manifestID = "" //  http://devstore.rerum.io/v1/id/5c191794e4b05b14fb531f03
 REform.top = [] //All ranges from manifest.structures that are sequencing ranges
 REform.root = {} //The chosen sequencing range to REform from REform.top
 REform.bucket = {} //The bucket item from REform.root
@@ -223,11 +223,11 @@ REform.local.update = function (parent, obj){
                 return objForReturn
             }
             else{
-                objForReturn = localUpdateRecursion(recurse, searchID)
+                return localUpdateRecursion(recurse, searchID)
             }
         }
-        return objForReturn
     }
+    
     let matchedObj = {}
     let searchFor = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
     matchedObj = localUpdateRecursion(REform.root, searchFor)    
@@ -254,7 +254,6 @@ REform.local.delete = function (obj){
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
     function localDeleteRecursion(topLevelRange, searchID){
-        let objForReturn = {}
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
@@ -265,11 +264,9 @@ REform.local.delete = function (obj){
                 return objForReturn
             }
             else{
-                objForReturn =localDeleteRecursion(recurse, searchID)
-            }
-            
+                return localDeleteRecursion(recurse, searchID)
+            }         
         }
-        return objForReturn
     }
     
     let matchedObj = {}
@@ -299,7 +296,6 @@ REform.local.getByID = function (id){
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
     function localGetRecursion(topLevelRange, searchID){
-        let objForReturn = {}
         for(item in topLevelRange.items){
             let recurse = topLevelRange.items[item]
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
@@ -309,10 +305,9 @@ REform.local.getByID = function (id){
                 return objForReturn
             }
             else{
-                localGetRecursion(recurse, searchID)
+                return localGetRecursion(recurse, searchID)
             }
         }
-        return objForReturn
     }
     
     let matchedObj = {}
