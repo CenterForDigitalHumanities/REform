@@ -23,6 +23,7 @@ REform.manifest = {} //keep track of the manifest being used
 REform.manifestID = "" //  http://devstore.rerum.io/v1/id/5c191794e4b05b14fb531f03
 REform.top = [] //All ranges from manifest.structures that are sequencing ranges
 REform.root = {} //The chosen sequencing range to REform from REform.top
+REform.root_backup = {} //A backup of the root to allow an easy "undo all changes" button
 REform.bucket = {} //The bucket item from REform.root
 REform.topChosenIndex = -1 //The index of the chosen root from REform.top
 REform.error = function (msg){
@@ -205,32 +206,45 @@ REform.local.update = function (parent, obj){
     /**
      * Helper function for recursion.  Check down the range.items[range.items[...], range.items[...]] tree
      * for a matching @id or id.  return false if none found.  
+     * The goal is to actually manipulate whatever param 'parent' was, which is most cases will be REform.root
      * @param {object} topLevelRange - a range object with .items[] that need to all be checked and recursed
      * @param {object} searchID - the id of a REform.top.items[] tree to find
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
-    function localUpdateRecursion(topLevelRange, searchID){
-        let objForReturn = {}
+    function localUpdateRecursion(topLevelRange, objWithAnUpdate){
         let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
+        let searchID = (objWithAnUpdate["@id"]) ? objWithAnUpdate["@id"] : (objWithAnUpdate.id) ? objWithAnUpdate.id : "id_not_found"
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
-                obj["@id"] = checkID+"/reform/update" //queue this object for a server update
-                topLevelRange.items[item] = obj
-                topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
+                if(checkID.indexOf("/reform/update") === -1){
+                    objWithAnUpdate["@id"] = checkID+"/reform/update" //queue this object for a server update
+                }
+                if(checkID.indexOf("/reform/delete") === -1){
+                    //Probably shouldn't be updating an object that was already marked for deletion.
+                    //THe user shouldn't be able to see it once they have removed it in the UI unless
+                    //THey decided to "undo changes"
+                    topLevelRange.items[item] = objWithAnUpdate
+                }
+                //topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
                 objForReturn = obj
                 return objForReturn
             }
             else{
-                return localUpdateRecursion(recurse, searchID)
+                return localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
             }
         }
     }
-    
     let matchedObj = {}
-    let searchFor = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
-    matchedObj = localUpdateRecursion(REform.root, searchFor)    
+    let searchID = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
+    if(id === "bucket"){
+        matchedObj = REform.bucket
+    }
+    else{
+        matchedObj = localUpdateRecursion(REform.root, obj)    
+    }
+    
     //We found an object when diggin through the REform.root tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
         REform.error("Could not find the item in local storage to update...")
@@ -242,7 +256,10 @@ REform.local.update = function (parent, obj){
 }
 
 /**
- * Remove an object from localStorage
+ * Remove an object from localStorage.  Remember this is like an update because you are actually removing a child
+ * from a parent's .items[] property, so make sure to queue that parent for update but also mark the object as
+ * deleted in RERUM
+ * Make sure not to delete the Table of Contets top range or any bucket range.  
  * @param {type} obj
  */
 REform.local.delete = function (obj){
@@ -254,24 +271,31 @@ REform.local.delete = function (obj){
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
     function localDeleteRecursion(topLevelRange, searchID){
+        let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the one we want to delete
-                topLevelRange.items.splice(item, 1)
-                objForReturn = recurse
-                return objForReturn
+                //topLevelRange.items.splice(item, 1)
+                //topLevelRange["@id"] = parentID+"/reform/update"
+                topLevelRange.items[item]["@id"] = checkID+"/reform/delete"
+                objForReturn = recurse //object queued for removal
             }
             else{
-                return localDeleteRecursion(recurse, searchID)
+                return localDeleteRecursion(topLevelRange.items[item], searchID)
             }         
         }
     }
     
     let matchedObj = {}
     let searchID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
-    matchedObj = localDeleteRecursion(REform.root, searchID)    
+    if(searchID.indexOf("/reform/delete")===-1){
+        matchedObj = localDeleteRecursion(REform.root, searchID) 
+    }
+    else{
+        return REform.error("Cannot delete already deleted items...something went wrong")
+    }
     //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
     if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
         REform.error("Could not find the item in local storage to delete...")
@@ -297,7 +321,7 @@ REform.local.getByID = function (id){
      */
     function localGetRecursion(topLevelRange, searchID){
         for(item in topLevelRange.items){
-            let recurse = topLevelRange.items[item]
+            let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the item we want to return
@@ -305,7 +329,8 @@ REform.local.getByID = function (id){
                 return objForReturn
             }
             else{
-                return localGetRecursion(recurse, searchID)
+                //Can i return a copy of the thing requested or do I need to return a reference to the real one?
+                return localGetRecursion(topLevelRange.items[item], searchID)
             }
         }
     }
@@ -503,7 +528,8 @@ REform.generateSequenceChoiceHTML = function (topRanges){
  * @return {undefined}
  */
 REform.assignRoot = function(index, hide){
-    REform.root = REform.top[index]
+    REform.root = JSON.parse(JSON.stringify(REform.top[index]))
+    Reform.root_bckup = JSON.parse(JSON.stringify(REform.root))
     REform.topChosenIndex = index
     if(hide){
         document.getElementById("mainBlockCover").style.display = "none"
@@ -534,12 +560,12 @@ REform.findSequencingRanges = function(manifestObj){
     if(manifestStructures.length > 0){
         REform.noStructure = false;
         for(entry in manifestStructures){
-            let rangeObj = {};
+            let rangeObj = {}
             if(typeof manifestStructures[entry] === "string"){
                 rangeObj = REform.resolveForJSON(manifestStructures[entry])
             }
             else if(typeof manifestStructures[entry] === "object" ){
-                rangeObj = manifestStructures[entry]
+                rangeObj = JSON.parse(JSON.stringify(manifestStructures[entry]))
             }
             if(rangeObj.viewingHint && rangeObj.viewingHint === "top" || rangeObj.behavior && rangeObj.behavior === "sequence"){
                 REform.noTop = false;
@@ -560,7 +586,7 @@ REform.findSequencingRanges = function(manifestObj){
     REform.assignTop(topRanges)
     if(topRanges.length === 1){
         //If there is the only one, then
-        REform.assignRoot(0, false) // or 0, true here?
+        REform.assignRoot(0, true) // or 0, false here?
     }
     return topRanges
 }
