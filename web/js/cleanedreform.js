@@ -533,7 +533,7 @@ REform.generateSequenceChoiceHTML = function (topRanges){
  */
 REform.assignRoot = function(index, hide){
     REform.root = JSON.parse(JSON.stringify(REform.top[index]))
-    Reform.root_bckup = JSON.parse(JSON.stringify(REform.root))
+    REform.root_bckup = JSON.parse(JSON.stringify(REform.root))
     REform.topChosenIndex = index
     if(hide){
         document.getElementById("mainBlockCover").style.display = "none"
