@@ -9,18 +9,19 @@ and open the template in the editor.
         <title>REFORM</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="css/reformstyle.css">
+        <script src="js/cleanedreform.js"></script>  
     </head>
     <body>
-        <div> 
+        <div href="index.html" id="hdrLogo">
+            <img id="BBlogo" src="images/reflogo.png" />
+        </div>
+        <div id="reformManifest"> 
             Enter a manifest URL to create a table of contents for the canvases contained within it. 
             <input type="text" id="manifestURL" />
             <input type="button" value="Let's Go Reform" onclick="goREform(event);" />
         </div>
-        <div> If there are existing table of contents for the manifest, we will offer the chance to load them for editing. </div>
-        <div> In general, this will create a new Range for your Manifest, but the Manifest will not be updated with the range.  Have it check RERUM inbox. </div>
+        If there are existing table of contents for the manifest, we will offer the chance to load them for editing.
     </body>
     <script>
         /**

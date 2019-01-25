@@ -23,11 +23,11 @@ and open the template in the editor.
         <div id="actionMsg">
             
         </div>
-        <div href="../brokenBooks/home.html" id="hdrLogo">
-            <img id="BBlogo" src="../brokenBooks/images/bblogo.png" />
+        <div href="index.html" id="hdrLogo">
+            <img id="BBlogo" src="images/reflogo.png" />
         </div>
         <img style='left: 45px; top: -30px;' onclick="$('#mainBlockHelp').show(); $('.mainBlockCover').show();"
-        class="helperIcon" src="http://brokenbooks.org/brokenBooks/images/redInfo1.png" />
+        class="helperIcon" src="images/redInfo1.png" />
         <input disabled id="publishBtn" class="helperIcon" value="Save Manifest" onclick="publish();"/>
         <input id="gotoMirador" class="helperIcon" onclick="" value="View In Mirador" />
         <span class='sortTitle'>Manifest Structure</span>
@@ -45,7 +45,7 @@ and open the template in the editor.
             <div id="mainBlockCover" class="mainBlockCover"></div>
             <div id="makeTopRange">
                  <input type="text" id="topRangeLabel"/>
-                 <input type="button" onclick="REform.createTopRange()"/>
+                 <input type="button" onclick="REform.local.createTopRange()"/>
             </div>
             <div id="orderedRangesContainer" class="arrangeTrail adminTrail">
                 <!-- The top level Table of Contents container, pre-drawn because it is constant -->
@@ -57,9 +57,9 @@ and open the template in the editor.
                         <input class="doneSortable" value="done" type="button" onclick="stopSorting('1');"/><br>
                     </div>
                    <div class="rAreaLabel">Table of Contents</div>
-                   <div id="toc" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' class="notBucket childRangesContainer" depth="1"></div>
-                   <div id="bucket" style="display:block;" ondragover='REform.dragOverHelp(event);' ondrop='REform.dropHelp(event);' url="bucket"
-                    onclick='REform.toggleChildren(event, "bucket");' class="arrangeSection parent bucket unassigned sortOrder" inDepth="1">
+                   <div id="toc" ondragover='REform.ui.dragOverHelp(event);' ondrop='REform.ui.dropHelp(event);' class="notBucket childRangesContainer" depth="1"></div>
+                   <div id="bucket" style="display:block;" ondragover='REform.ui.dragOverHelp(event);' ondrop='REform.ui.dropHelp(event);' url="bucket"
+                    onclick='REform.ui.toggleChildren(event, "bucket");' class="arrangeSection parent bucket unassigned sortOrder" inDepth="1">
                        
                    </div>
                 </div>
@@ -248,7 +248,7 @@ and open the template in the editor.
         <div id="syncNotice" class="helPop" style="">
             <div style="left:22px;" class="popHdr">Data Sync</div>
             <div class="syncText" style="background-color:white;">Please wait while we sync your manifest data...</div>
-            <img style="margin: 0 auto;" src="../brokenBooks/images/sync.gif"/>
+            <img style="margin: 0 auto;" src="images/sync.gif"/>
         </div>
         <!--Maybe combine these two into the same and name the text syncConfirm so it isn't a new box-->
         <div id="syncNotice_load" class="helPop" style="">
@@ -260,13 +260,13 @@ and open the template in the editor.
                 Save Manifest.  <br>
                 <span id="syncConfirm">Please wait while we sync your manifest data...</span>
             </div>
-            <img id="syncImg" style="margin: 0 auto; display: block;" src="../brokenBooks/images/sync.gif"/>
+            <img id="syncImg" style="margin: 0 auto; display: block;" src="images/sync.gif"/>
             <div>
                 <input id="gotIT" style="position: relative; left: 235px;" type="button" value="Got It!" onclick="syncConfirmed();"/>
             </div>
         </div>   
     </body>
     <script>
-        REform.gatherTOC()
+        REform.tricks.gatherTOC()
     </script>
 </html>

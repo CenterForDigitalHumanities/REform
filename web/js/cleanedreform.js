@@ -4,11 +4,15 @@
 const REform = {}
 REform.local = {}
 REform.crud = {}
+REform.err = {}
+REform.tricks = {}
+REform.ui = {}
+REform.ui2 = {}
 if (typeof(Storage) !== "undefined") {
   REform.localData = window.localStorage
 } 
 else {
-  alert("Your browser must support local storage to use this application!");
+  REform.err.generic_error("Your browser must support local storage to use this application!");
 }
 REform.uniqueID = (REform.localData.getItem("uniqueID")) ? parseInt(REform.localData.getItem("uniqueID")) : 0
 REform.noStructure = true  //There needs to be a structure to work with, or we are in initiate mode.
@@ -27,7 +31,6 @@ REform.topChosenIndex = -1 //The index of the chosen root from REform.top
 
 
 /** Various REform error handlers */
-
 REform.err.generic_error = function (msg){
     alert(msg)
 }
@@ -78,7 +81,6 @@ REform.err.handleHTTPError = function(response){
     }
     return response
 }
-
 /** END Error handlers */
 
 
@@ -88,6 +90,7 @@ REform.err.handleHTTPError = function(response){
 
 /**
  * Get the manifest object and the top level sequencing objects from the manifest URL. 
+ * This is fired on page load of sort.html
  * @param {type} manifestID
  * @return {undefined}
  */
@@ -863,7 +866,7 @@ REform.ui.drawBucketRange = async function(bucketJSON){
         `
         <div inDepth="bucket" class="arrangeSection child sortOrder" isOrdered="${isOrdered}" lockedup="${lockStatusUp}" lockeddown="${lockStatusDown}"
         ${dropAttribute} ${dragAttribute} ${rightClick} leaf=${isLeaf} 
-        onclick="REform.toggleChildren(event, '${childID}')" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
+        onclick="REform.ui.toggleChildren(event, '${childID}')" class="arrangeSection ${tag}" url="${childID}" parenturl="bucket">
             <span class="innerTitle">${childLabel}</span> 
             ${checkbox} 
             ${lockit}  
@@ -1296,7 +1299,7 @@ REform.ui.dropHelp = function(event){
             }
             else if($(this).attr("leaf") === "true"){
                 var leafIsInURL = $(this).parents(".rangeArrangementArea").attr("rangeID");
-                var new_folioCountHtml = $("<span onclick=\"existing('"+leafURL+"','"+leafIsInURL+"')\" class='folioCount'><img class='leafIcon' src='http://brokenbooks.org/brokenBooks/images/leaf.png'/></span>");
+                var new_folioCountHtml = $("<span onclick=\"existing('"+leafURL+"','"+leafIsInURL+"')\" class='folioCount'><img class='leafIcon' src='images/leaf.png'/></span>");
                 folioCountHtml.replaceWith(new_folioCountHtml);
             }
 
@@ -1429,7 +1432,7 @@ REform.ui.stopSorting = function stopSorting(depth){
             childrenArray.push($(this).attr("rangeID"));
         });
     //need to update this column range id with the new order of ranges
-        var updateURL ="http://brokenbooks.org/brokenBooks/updateRange"; //update list with the range removed
+        var updateURL ="updateRange"; //update list with the range removed
         var paramObj1 = {"@id" : column.attr("rangeID"), "ranges" : childrenArray};
         var params1 = {"content" : JSON.stringify(paramObj1)};
         $.post(updateURL, params1, function(){
@@ -1536,7 +1539,7 @@ REform.ui2.stopSorting = function stopSorting(depth){
             childrenArray.push($(this).attr("rangeID"));
         });
     //need to update this column range id with the new order of ranges
-        var updateURL ="http://brokenbooks.org/brokenBooks/updateRange"; //update list with the range removed
+        var updateURL ="updateRange"; //update list with the range removed
         var paramObj1 = {"@id" : column.attr("rangeID"), "ranges" : childrenArray};
         var params1 = {"content" : JSON.stringify(paramObj1)};
         $.post(updateURL, params1, function(){
@@ -1562,7 +1565,7 @@ REform.ui2.resetCounts = function(areaTakenFromDepth, areaDroppedToDepth, target
         }
         else if(ns.getAttribute("leaf") === "true"){
             let leafIsInURL = ns.closest(".rangeArrangementArea").getAttribute("rangeID");
-            let new_folioCountHtml = "<span onclick=\"existing('"+leafURL+"','"+leafIsInURL+"')\" class='folioCount'><img class='leafIcon' src='http://brokenbooks.org/brokenBooks/images/leaf.png'/></span>"
+            let new_folioCountHtml = "<span onclick=\"existing('"+leafURL+"','"+leafIsInURL+"')\" class='folioCount'><img class='leafIcon' src='images/leaf.png'/></span>"
             folioCountHtml.replaceWith(new_folioCountHtml);
         }
     }
