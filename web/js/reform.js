@@ -3835,60 +3835,7 @@ function populateMessage(msg){
     $("#publishBtn").removeAttr("disabled");
 }
 
-function highlighLocks(where, why){
-    var lockedUp = false;
-    var lockedDown = false;
-    console.log("highlight locks");
-    console.log($(where).attr("lockedup"), $(where).attr("lockeddown"));
-    if(why === "merge"){
-        if($(where).attr("lockedup") === "true")lockedUp=true;
-        if($(where).attr("lockeddown") === "true")lockedDown=true;
-        if(lockedUp || lockedDown){
-            $(where).find(".putInGroup").attr("checked", false);
-            if(lockedUp){
-                $(where).prev().find(".lockedUp").css("background-color","red");
-            }
-            else if(lockedDown){
-                $(where).find(".lockedUp").css("background-color","red");
-            }
-            if(lockedUp){
-                window.setTimeout(function(){
-                    $(where).prev().find(".lockedUp").css("background-color","white");
-                }, 2000);
-            }
-            else if(lockedDown){
-                window.setTimeout(function(){
-                    $(where).find(".lockedUp").css("background-color","white");
-                }, 2000);
-            }
-            //alert("You cannot merge locked objects.  If you would like them to be in their own sections, create an empty section then drag and drop the objects into the new empty section. The locked object has been unchecked.");
-        }
-    }
-    else if(why === "break"){
-        if($(where).attr("lockedup") === "true")lockedUp=true;
-        if($(where).attr("lockeddown") === "true")lockedDown=true;
-        if(lockedUp || lockedDown){
-            $(where).find(".putInGroup").attr("checked", false);
-            if(lockedUp){
-                $(where).prev().find(".lockedUp").css("background-color","red");
-            }
-            else if(lockedDown){
-                $(where).find(".lockedUp").css("background-color","red");
-            }
 
-            if(lockedUp){
-                window.setTimeout(function(){
-                    $(where).prev().find(".lockedUp").css("background-color","white");
-                }, 2000);
-            }
-            else if(lockedDown){
-                window.setTimeout(function(){
-                    $(where).find(".lockedUp").css("background-color","white");
-                }, 2000);
-            }
-        }
-    }
-}
 
 function getURLVariable(variable){
     var query = window.location.search.substring(1);

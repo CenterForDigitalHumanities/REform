@@ -6,7 +6,7 @@ const REform = {}
 REform.local = {}
 REform.crud = {}
 if (typeof(Storage) !== "undefined") {
-  REform.localData = window.localStorage;  
+  REform.localData = window.localStorage
 } 
 else {
   alert("Your browser must support local storage to use this application!");
@@ -30,9 +30,6 @@ REform.error = function (msg){
     alert(msg)
 }
 
-REform.test = function(){
-    
-}
 
 /**
  * Call to the REform proxy API into RERUM API to create this object in the data store
@@ -41,7 +38,7 @@ REform.test = function(){
  */
 REform.crud.create = async function (obj){
     let url = "create"
-    let jsonReturn = {};
+    let jsonReturn = {}
     await fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         headers: {
@@ -52,7 +49,7 @@ REform.crud.create = async function (obj){
     .then(REform.handleHTTPError)
     .then(resp => jsonReturn = resp.json().new_obj_state)
     .catch(error => REform.unhandled(error))
-    return jsonReturn;
+    return jsonReturn
 }
 
 /**
@@ -86,7 +83,7 @@ REform.crud.putUpdate = async function (obj){
  */
 REform.crud.patchUpdate = async function (obj){
     let url = "patch"
-    let jsonReturn = {};
+    let jsonReturn = {}
     await fetch(url, {
         method: "PATCH", 
         headers: {
@@ -153,7 +150,7 @@ REform.crud.query = async function (obj){
  */
 REform.local.create = function (obj, parent){
     obj["@id"] = "/reform/create/"+REform.incrementUniqueID()
-    let objType = (obj["@type"]) ? obj["@type"] : (obj.type) ? obj.type : ""
+    let objType = (obj["@type"]) ? obj["@type"] : (obj.type) ? obj.type : "type_not_found"
     //Will most likely need to treat different types of objects a little differently and flag unknown object types
     switch(objType){
         case "Canvas":
@@ -190,7 +187,6 @@ REform.local.create = function (obj, parent){
         break
         default:
             //This object type is not supported and will be ignored.
-        
     }
     return obj
 }
@@ -218,18 +214,17 @@ REform.local.update = function (parent, obj){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
-                if(checkID.indexOf("/reform/update") === -1){
-                    objWithAnUpdate["@id"] = checkID+"/reform/update" //queue this object for a server update
-                }
                 if(checkID.indexOf("/reform/delete") === -1){
                     //Probably shouldn't be updating an object that was already marked for deletion.
                     //THe user shouldn't be able to see it once they have removed it in the UI unless
                     //THey decided to "undo changes"
                     topLevelRange.items[item] = objWithAnUpdate
                 }
+                if(checkID.indexOf("/reform/update") === -1){
+                    objWithAnUpdate["@id"] = checkID+"/reform/update" //queue this object for a server update
+                }
                 //topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
-                objForReturn = obj
-                return objForReturn
+                return objWithAnUpdate
             }
             else{
                 return localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
@@ -238,7 +233,7 @@ REform.local.update = function (parent, obj){
     }
     let matchedObj = {}
     let searchID = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
-    if(id === "bucket"){
+    if(searchID === "bucket"){
         matchedObj = REform.bucket
     }
     else{
@@ -325,8 +320,7 @@ REform.local.getByID = function (id){
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the item we want to return
-                objForReturn = recurse
-                return objForReturn
+                return recurse
             }
             else{
                 //Can i return a copy of the thing requested or do I need to return a reference to the real one?
@@ -334,7 +328,7 @@ REform.local.getByID = function (id){
             }
         }
     }
-    
+   
     let matchedObj = {}
     if(id === "bucket"){
         matchedObj = REform.bucket
@@ -395,8 +389,24 @@ REform.handleHTTPerror = function(response){
  * @param {type} obj
  * @return {JSON representing the new state of the bucket}
  */
-REform.putInRootBucket = function(obj){
+REform.local.putInRootBucket = function(obj){
     REform.bucket.items.push(obj)
+}
+
+/**
+ * The action of removing Canvas objects from the bucket range of the Table of Contents.
+ * The bucket range is for Canvases not yet placed into any part of the Table of Content
+ * top level ranges.  
+ * @param {type} obj
+ * @return {JSON representing the new state of the bucket}
+ */
+REform.local.removeFromRootBucket = function(obj){
+    let objID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
+    let newBucket = REform.bucket.items.filter(item => {
+        let itemID = (item["@id"]) ? item["@id"] : (item.id) ? item.id : "id_not_found"
+        return itemID !== objID
+    })
+    return newBucket
 }
 
 /**
@@ -406,8 +416,24 @@ REform.putInRootBucket = function(obj){
  * @param {type} obj
  * @return {JSON representing the new state of the bucket}
  */
-REform.putInRootLevel = function(obj){
+REform.local.putInRootLevel = function(obj){
     REform.root.items.push(obj)
+}
+
+/**
+ * The action of placing new Range objects into the top level of the Table of Contents.
+ * The bucket range is for Canvases not yet placed into any part of the Table of Content
+ * top level ranges.  
+ * @param {type} obj
+ * @return {JSON representing the new state of the bucket}
+ */
+REform.local.removeFromRootLevel = function(obj){
+    let objID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
+    let newRoot = REform.root.items.filter(item => {
+        let itemID = (item["@id"]) ? item["@id"] : (item.id) ? item.id : "id_not_found"
+        return itemID !== objID
+    })
+    return newRoot
 }
 
 /**
@@ -415,7 +441,7 @@ REform.putInRootLevel = function(obj){
  * object elsewhere.  
  * @return {JSON representing the Lacuna canvas created}
  */
-REform.createLacunaCanvas = async function(){
+REform.local.createLacunaCanvas = async function(){
     let canv =  
     {  
         "type":"Canvas",
@@ -464,14 +490,6 @@ REform.updateManifest = function(){
 REform.announceUpdatesToManifest = function(){
     
 }
-REform.dragOverHelp = function(e){
-    
-}
-
-REform.dropHelp = function(e){
-    
-}
-
 
 REform.askForNewTitle = function(depth){
     //Be careful here, this object may have a toggleChildren() method on it that references the id.  If you update, the id changes.  
@@ -500,6 +518,7 @@ REform.createTopRange = function(){
         "items":[],
         "behavior" : "sequence"
     }
+    //Put it as REform.root and into Manifest.structures?
 }
 
 
@@ -764,10 +783,10 @@ REform.drawBucketRange = async function(bucketJSON){
         let relation = ""
         let isLeaf = false
         let isOrdered = childObj.isOrdered
-        let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="dragHelp(event);" ondragend="dragEnd(event);"`
-        let dropAttribute = `" ondragover="dragOverHelp(event);" ondrop="dropHelp(event);"`
-        let checkbox = " <input onchange='highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
-        let rightClick = " oncontextmenu='breakUpConfirm(event); return false;'"
+        let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="REform.ui.dragHelp(event);" ondragend="dragEnd(event);"`
+        let dropAttribute = `" ondragover="dragOverHelp(event);" ondrop="REform.ui.dropHelp(event);"`
+        let checkbox = " <input onchange='REform.ui.highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
+        let rightClick = " oncontextmenu='REform.ui.breakUpConfirm(event); return false;'"
         let lockStatusUp = "false"
         let lockStatusDown = "false"
         let lockit = ""
@@ -792,8 +811,7 @@ REform.drawBucketRange = async function(bucketJSON){
         console.log("Child range HTML")
         console.log(childHTML)
         childRangesHTML += childHTML;
-    }
- 
+    } 
     return childRangesHTML;
 }
 
@@ -855,10 +873,10 @@ REform.drawChildRanges = async function(depth, rangeObj){
         let tag = "parent"
         let isLeaf = (childType !== "Range") //Denote whether this is a Range object or not.  If not, it is most likely a canvas internal to a range.  
         let isOrdered = childObj.isOrdered
-        let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="dragHelp(event);" ondragend="dragEnd(event);"`
-        let dropAttribute = `" ondragover="dragOverHelp(event);" ondrop="dropHelp(event);"`
-        let checkbox = " <input onchange='highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
-        let rightClick = " oncontextmenu='breakUpConfirm(event); return false;'"
+        let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="REform.ui.dragHelp(event);" ondragend="dragEnd(event);"`
+        let dropAttribute = `" ondragover="REform.ui.dragOverHelp(event);" ondrop="REform.ui.dropHelp(event);"`
+        let checkbox = " <input onchange='REform.ui.highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
+        let rightClick = " oncontextmenu='REform.ui.breakUpConfirm(event); return false;'"
         let lockStatusUp = childObj.lockedup
         let lockStatusDown = childObj.lockeddown
         let lockit = ""
@@ -915,37 +933,6 @@ REform.getURLVariable = function (variable){
     return(false);
 }
 
-REform.updateURL = function (variable, value){
-    var toAddressBar = document.location.href;
-    //If nothing is passed in, just ensure the projectID is there.
-    //console.log("does URL contain projectID?        "+REform.getURLVariable("projectID"));
-    if(REform.getURLVariable(variable)){
-        toAddressBar = "?projectID="+tpen.project.id;
-    }
-    //Any other variable will need to be replaced with its new value
-    if(piece === "p"){
-        if(!REform.getURLVariable("p")){
-            toAddressBar += "&p=" + tpen.project.folios[tpen.screen.currentFolio].folioNumber;
-        }
-        else{
-            toAddressBar = replaceURLVariable("p", tpen.project.folios[tpen.screen.currentFolio].folioNumber);
-        }
-        var relocator = "buttons.jsp?p="+tpen.project.folios[tpen.screen.currentFolio].folioNumber+"&projectID="+tpen.project.id;
-        $(".editButtons").attr("href", relocator);
-    }
-    else if (piece === "attempts"){
-        if(!REform.getURLVariable("attempts")){
-            toAddressBar += "&attempts=1";
-        }
-        else{
-            var currentAttempt = REform.getURLVariable("attempts");
-            currentAttempt = parseInt(currentAttempt) + 1;
-            toAddressBar = replaceURLVariable("attempts", currentAttempt);
-        }
-    }
-    window.history.pushState("", "T&#8209;PEN 2.8 Transcription", toAddressBar);
-}
-
 REform.replaceURLVariable = function (variable, value){
        var query = window.location.search.substring(1)
        var location = window.location.origin + window.location.pathname
@@ -964,27 +951,24 @@ REform.replaceURLVariable = function (variable, value){
        return(location + "?"+variables)
 }
 
-
-
-/* TODO */
-
 /** 
 * It could be a group locked together that we are sorting, so we need to account for making a clone helper for the group
 * of elements and making the move actually move all the elements together. 
 */
 REform.makeSortable = function (columnDepth){
-    var column = column.attr("depth"); //set this properly!!
+    let column = document.querySelectorAll('[depth="'+columnDepth+'"]')[0]
+    //var column = column.attr("depth"); //set this properly!!
     $.each($(".adminTrail").find(".rangeArrangementArea").not(".rangeArrangementArea[depth='"+columnDepth+"']"), function(){
         var overDiv = $("<div class='areaCover'></div>");
         $(this).append(overDiv);
     });
 
-    column.find(".makeSortable").hide();
-    column.find(".doneSortable").show();
+    column.querySelectorAll(".makeSortable").style.display = "none"
+    column.querySelectorAll(".doneSortable").style.display = "block"
     column.children('.notBucket').sortable({
         helper:function(e, item){
             if(!item.hasClass('selectedSection'))item.addClass('selectedSection');
-            var chainedElems = chainTargets(item[0]);
+            var chainedElems = REform.ui2.chainTargets(item[0]);
             var helper = $('<div class="sortHelper"></div>');
             var hlpWidth = 0;
             // grab all the chained elements and add the selected class
@@ -1041,6 +1025,7 @@ REform.makeSortable = function (columnDepth){
 
 REform.stopSorting = function stopSorting(depth){
     var windowurl = document.location.href;
+    let column = document.querySelectorAll('[depth="'+depth+'"]')[0]
     var children = column.children(".notBucket").children(".arrangeSection");
     var childrenArray = [];
     if(windowurl.indexOf("demo=1") >-1){
@@ -1068,7 +1053,9 @@ REform.stopSorting = function stopSorting(depth){
 
 }
 
-function chainLockedRanges(currentObj){
+
+ /** TODO factor JQuery out of these (current work in REform.ui2 */
+REform.ui.chainLockedRanges = function(currentObj){
     var text = "";
     text = currentObj.attr("id");
     var nextObj = currentObj.next();
@@ -1084,7 +1071,7 @@ function chainLockedRanges(currentObj){
     return text;
 }
 
-function chainTargets(currentTarget){
+REform.ui.chainTargets = function(currentTarget){
     var targetArray = [currentTarget];
     var nextObj = currentTarget.nextElementSibling;
     var prevObj = currentTarget.previousElementSibling;
@@ -1099,7 +1086,7 @@ function chainTargets(currentTarget){
     return targetArray;
 }
 
-function dragHelp(event){
+REform.ui.dragHelp = function(event){
     //http://www.kryogenix.org/code/browser/custom-drag-image.html
     var currentObj = $(event.target);
     var textArray = chainLockedRanges(currentObj);
@@ -1122,7 +1109,7 @@ function dragHelp(event){
 }
 
 
-function dragEnd(event){
+REform.ui.dragEnd = function(event){
     $( event.dragProxy ).remove();
 //    $(".dragThis").animate({
 //            top: event.offsetY,
@@ -1140,7 +1127,7 @@ function dragEnd(event){
  * @return {Boolean}
  * When a user 
  */
-function dropHelp(event){
+REform.ui.dropHelp = function(event){
     //console.log("Drop help");
     var windowURL = document.location.href;
     var targetTag = event.target.tagName;
@@ -1363,7 +1350,7 @@ function dropHelp(event){
     //do not call dropEvent on other children being dropped.
 }
 
-function dropFlash($elem){
+REform.ui.dropFlash = function($elem){
     if($elem.attr("class").indexOf("notBucket") === -1){
         $elem.addClass("dropColor");
     }
@@ -1372,10 +1359,321 @@ function dropFlash($elem){
         $elem.removeClass("dropColor");
     }, 400);
 }
+ /** TODO factor JQuery out of these (current work in REform.ui2 */
 
-function dragOverHelp(event){
-    event.preventDefault();
+
+
+/** REFACTOR FOR THESE */
+REform.ui2.resetCounts = function(areaTakenFromDepth, areaDroppedToDepth, targetCount){
+    let notSelected = document.querySelectorAll(".arrangeSection :not(.selectedSection)")
+    for(let i=0; i<notSelected.length; i++){
+        let ns = notSelected[i]
+        let folioCount = ns.querySelectorAll("div[leaf='true']").length
+        let folioCountHtml = ns.querySelectorAll(".folioCount")
+        let leafURL = ns.getAttribute("rangeID")
+        if(ns.getAttribute("leaf") !== "true" ){ //&& $(this).attr("isOrdered") !== "true"
+            folioCountHtml.querySelectorAll(".countInt").innherHTML = folioCount
+        }
+        else if(ns.getAttribute("leaf") === "true"){
+            let leafIsInURL = ns.closest(".rangeArrangementArea").getAttribute("rangeID");
+            let new_folioCountHtml = "<span onclick=\"existing('"+leafURL+"','"+leafIsInURL+"')\" class='folioCount'><img class='leafIcon' src='http://brokenbooks.org/brokenBooks/images/leaf.png'/></span>"
+            folioCountHtml.replaceWith(new_folioCountHtml);
+        }
+    }
+    let selected = document.querySelectorAll(".selectedSection")
+    if(areaDroppedToDepth < areaTakenFromDepth){
+        for(let i=0; i<selected.length; i++){
+            let s = selected[i]
+            if(parseInt(s.closest("div[depth]").getAttribute("depth")) >= areaDroppedToDepth 
+            && parseInt(s.closest("div[depth]").getAttribute("depth")) < areaTakenFromDepth
+            && s.getAttribute("leaf")!=="true"){//&& $(this).attr("isOrdered") !== "true"
+                let folioCount = s.querySelectorAll(".folioCount").querySelectorAll(".countInt").textContent
+                folioCount = parseInt(folioCount) - targetCount;
+                let folioCountHTML = s.querySelectorAll(".folioCount");
+                folioCountHTML.querySelectorAll(".countInt").innerHTML = folioCount
+            }
+        }
+    }
 }
+
+REform.ui2.chainLockedRanges = function(currentObj){
+    let text = ""
+    text = currentObj.getAttribute("id")
+    let nextObj = currentObj.nextSibling // currentObj.next()
+    let prevObj = currentObj.previousSibling //currentObj.prev()
+    while(nextObj.getAttribute("lockedup") === "true"){
+        text += (","+nextObj.getAttribute('id'))
+        nextObj = nextObj.next()
+    }
+    while(prevObj.getAttribute("lockeddown") === "true"){
+        text = prevObj.getAtrribute("id")+","+text
+        prevObj = prevObj.previousSibling
+    }
+    return text
+}
+
+REform.ui2.chainTargets = function(currentTarget){
+    let targetArray = [currentTarget];
+    let nextObj = currentTarget.nextSibling
+    let prevObj = currentTarget.previousSibling
+    while(nextObj && nextObj.getAttribute("lockedup") === "true"){
+        targetArray.push(nextObj);
+        nextObj = nextObj.nextSibling
+    }
+    while(prevObj && prevObj.getAttribute("lockeddown") === "true"){
+        targetArray.unshift(prevObj)
+        prevObj = prevObj.previousSibling
+    }
+    return targetArray;
+}
+
+REform.ui2.dragHelp = function(event){
+    //http://www.kryogenix.org/code/browser/custom-drag-image.html
+    let currentObj = event.target
+    let textArray = REform.ui2.chainLockedRanges(currentObj)
+    let targets = REform.ui2.chainTargets(currentObj)
+    var crt = document.createElement("div")
+    crt.setAttribute("id", "dragClone")
+    for(var i = 0; i < targets.length; i++) {
+        var targetClone = targets[i].cloneNode(true)
+        crt.appendChild(targetClone) // Note that this does NOT go to the DOM
+    }
+    crt.style.position = "absolute"; 
+    crt.style.top = "0px"; 
+    crt.style.right = "200px";
+    crt.style["z-index"] = "0";
+    document.body.appendChild(crt)
+    console.log(crt)
+    event.dataTransfer.setData("text", textArray);
+    event.dataTransfer.setDragImage(crt, 0, 0);
+}
+
+REform.ui2.dragEnd = function(event){
+    let element = event.dragProxy
+    element.parentNode.removeChild(element)
+    let elements1 = document.getElementsByClassName("dragCover");
+    for(let i=0; i<elements1.length; i++){
+        let innerElem1 = elements1[i]
+        innerElem1.parentNode.removeChild(innerElem1)
+    }
+    let elements2 = document.getElementsByClassName("drageHelper");
+    for(let j=0; j<elements2.length; j++){
+        let innerElem2 = elements1[j]
+        innerElem2.parentNode.removeChild(innerElem2)
+    }
+    let element1 = document.getElementById("dragClone");
+    element1.parentNode.removeChild(element1)
+    
+}
+
+REform.ui2.dropHelp = function(event){
+        //console.log("Drop help");
+    let windowURL = document.location.href
+    let targetTag = event.target.tagName
+    let targetClass = event.target.className
+    let target = undefined;
+    let dropIntoBucket = false;
+    if(targetTag == "SPAN" || targetTag.indexOf("INPUT")>-1){
+        let eventParent = ""
+        if(targetClass.indexOf("countInt")>-1){
+            eventParent = event.target.parentNode.parentNode
+        }
+        else{
+            eventParent = event.target.parentNode
+        }
+        target = eventParent
+    }
+    else{
+        target = event.target
+    }
+  
+    let outer = target.closest(".arrangeTrail");
+    //console.log("Drop target");
+    //console.log(target);
+    event.preventDefault()
+    let relation = target.getAttribute('rangeid')
+    let targetClass = target.className
+    let areaDroppedTo = $(target).parents(".rangeArrangementArea").getAttribute("rangeID")
+    let areaDroppedToDepth = parseInt($(target).parents(".rangeArrangementArea").getAttribute("depth"))
+    //TODO do this in a loop for all the ids and grab all the children in a locked situation.  
+    let data = ""
+    data = event.dataTransfer.getData("text")
+    let data_array = data.split(",")
+    let childArray = []
+    let childIDArray = []
+    let leafIncluded = false
+    let selfTarget = false
+    let targetCount = 0
+    for(let l=0;l<data_array.length;l++){
+        let data_range = data_array[l]
+        let child = document.getElementById(data_range)
+        if(child.getAttribute("leaf") === "true"){
+            leafIncluded = true
+            targetCount += 1
+        }
+        else{            
+            targetCount += parseInt(child.querySelectorAll(".folioCount").querySelectorAll(".countInt").html())
+        }
+        if(target.id+"_tmp" == data_range || target.id == data_range){
+            selfTarget = true
+        }
+        if(child === null || child === undefined) {
+            
+        } //prolly dont do this in the loop.
+        else{
+            childArray.push(child)
+            childIDArray.push(child.getAttribute("rangeid"))
+        }
+//        if(l == data_array.length -1 ){
+//           childArray = $(childArray)
+//        }
+    }
+    let areaTakenFrom = outer.querySelectorAll($("#"+data_array[0])).closest(".rangeArrangementArea").getAttribute("rangeID")
+    let areaTakenFromDepth = parseInt(outer.querySelectorAll($("#"+data_array[0])).closest(".rangeArrangementArea").getAttribute("depth"))
+    
+    //TODO end loop
+    if(target.getAttribute("leaf") === "true"){
+        alert("You cannot drop into a leaf");
+        return false;
+    }
+    if(target.parentNode.className.indexOf("ordered") > -1){
+        //cannot drop into locked leaves
+        //console.log("cannot drop into locked leaves");
+        alert("You cannot drop into a set of locked leaves");
+        return false;
+    }
+    if(targetClass.indexOf("selectedSection") > -1){ //|| droppedClass.indexOf("selectedSection") > -1
+        //cannot drop into a selected section, cannot drop a selected section
+        alert("You cannot drag and drop or drop into opened sections.");
+        return false;
+    } 
+    if(targetClass.indexOf("ordered")>-1){
+        //cannot drop into locked leaves parent range
+        alert("You cannot drop into a set of locked leaves");
+        return false;
+    }
+    if(targetClass.indexOf('notBucket') > -1){
+      if(target.closest(".rangeArrangementArea").getAttribute("depth") === "1" && leafIncluded){
+          //cannot drop leaves into the top level structure. 
+          alert("You cannot drop leaves into the top level");
+          return false;
+      }
+      for(let c=0; c<childArray.length; c++){
+          let show = childArray[c]
+          show.style.display = "block"
+      }
+    }
+    else{
+        for(let c=0; c<childArray.length; c++){
+          let show = childArray[c]
+          show.setAttribute("id", show.getAttribute("id")+"_tmp")
+          show.style.display = "none"
+        }
+        if(targetClass.indexOf('unassigned') > -1){
+            areaDroppedTo = "unassigned";
+        }
+    }
+    let append = true;
+
+    if(areaDroppedTo === areaTakenFrom){//dont append to self or same section
+      if(target.className.indexOf("notBucket") > -1){
+        append = false;
+      }
+    }
+    else{
+        if(selfTarget) { //prevent dropping into same column or on self
+            append = false;
+            for(let c=0; c<childArray.length; c++){
+              let show = childArray[c]
+              show.setAttribute("id", show.getAttribute("id").replace("_tmp", ""))
+              show.style.display = "block"
+            }
+        }    
+    }
+//    console.log("Append?");
+//    console.log(append);
+    if(append){
+        for(let c=0; c<childArray.length; c++){
+            let show = childArray[c]
+            show.setAttribute("relation", relation)
+            show.classList.remove("parent")
+            if(!show.classList.contains("child")){
+                show.classList.add("child")
+            }
+        }
+        target.appendChild(childArray)
+        //make the target flash
+        dropFlash(target)
+        let targetID= "";
+        if(target.className.indexOf("notBucket") > -1){
+              targetID = target.parentNode.getAttribute("rangeid");
+          }
+          else{
+              targetID = target.getAttribute("rangeid");
+          }
+        updateRange(targetID, childIDArray, ""); //do not put the append flag, the following code handles that.
+      
+      if(windowURL.indexOf("demo=1") === -1){
+//          console.log("move "+child.getAttribute("rangeid"));
+//          console.log("from "+areaTakenFrom);
+//          console.log("to "+target.getAttribute("rangeid"));
+          let toTarget = "";
+          if(target.className.indexOf("notBucket") > -1){
+//              console.log("class name is notBucket.  Get parent");
+//              console.log(target.parentNode.getAttribute("rangeid"));
+              toTarget = target.parentNode.getAttribute("rangeid");
+          }
+          else{
+//              console.log("dropped in an actual section.");
+//              console.log(target.getAttribute("rangeid"));
+              toTarget = target.getAttribute("rangeid");
+              if(target.className.indexOf("bucket")>-1){
+                  dropIntoBucket = true;
+                  console.log("Drop into bucket");
+              }
+          }
+          moveAndUpdate(childIDArray, areaTakenFrom, toTarget, dropIntoBucket);
+      }
+      else{
+          populateMessage("Object moved!");
+          //$("#"+data).remove();
+      }      
+
+        REform.ui2.resetCounts(areaDroppedToDepth, areaTakenFromDepth, targetCount)
+       //console.log("area taken from depth: "+areaTakenFromDepth);
+       if(outer.querySelectorAll("div[depth='"+areaTakenFromDepth+"']").querySelectorAll(".notBucket").querySelectorAll(".arrangeSection").length === 0){
+        outer.querySelectorAll("div[depth='"+areaTakenFromDepth+"']").querySelectorAll(".makeSortable").style.display = "none"
+        outer.querySelectorAll("div[depth='"+areaTakenFromDepth+"']").querySelectorAll(".doneSortable").style.display = "none"
+         //newArea.children(".addGroup").hide();
+      }
+      else{
+        outer.querySelectorAll("div[depth='"+areaTakenFromDepth+"']").querySelectorAll(".makeSortable").style.display = "block"
+        //$("div[depth='"+areaTakenFromDepth+"']").children(".doneSortable").show();
+         //newArea.children(".addGroup").show();
+      }
+    }
+    else{
+
+    }
+    event.stopPropagation();
+    //do not call dropEvent on other children being dropped.
+}
+
+REform.ui2.dropFlash = function(elem){
+    if(!elem.classList.contains("notBucket")){
+        elem.classList.add("dropColor")
+    }
+    elem.effect("bounce", {}, 400) //will this work?
+    setTimeout(function(){
+        elem.classList.remove("dropColor");
+    }, 400)
+}
+
+REform.ui2.dragOverHelp = function (event){
+    event.preventDefault()
+}
+
+/** Make sure to refactor for these ^^*/
 
 /* 
  * The goal here is to have a 'Publish' function, from which the sequence of the structure will produce
@@ -1490,5 +1788,60 @@ function mergeSort(items){
     params.unshift(0, items.length);
     items.splice.apply(items, params);
     return items;
+}
+
+function highlighLocks(where, why){
+    var lockedUp = false;
+    var lockedDown = false;
+    console.log("highlight locks");
+    console.log($(where).attr("lockedup"), $(where).attr("lockeddown"));
+    if(why === "merge"){
+        if($(where).attr("lockedup") === "true")lockedUp=true;
+        if($(where).attr("lockeddown") === "true")lockedDown=true;
+        if(lockedUp || lockedDown){
+            $(where).find(".putInGroup").attr("checked", false);
+            if(lockedUp){
+                $(where).prev().find(".lockedUp").css("background-color","red");
+            }
+            else if(lockedDown){
+                $(where).find(".lockedUp").css("background-color","red");
+            }
+            if(lockedUp){
+                window.setTimeout(function(){
+                    $(where).prev().find(".lockedUp").css("background-color","white");
+                }, 2000);
+            }
+            else if(lockedDown){
+                window.setTimeout(function(){
+                    $(where).find(".lockedUp").css("background-color","white");
+                }, 2000);
+            }
+            //alert("You cannot merge locked objects.  If you would like them to be in their own sections, create an empty section then drag and drop the objects into the new empty section. The locked object has been unchecked.");
+        }
+    }
+    else if(why === "break"){
+        if($(where).attr("lockedup") === "true")lockedUp=true;
+        if($(where).attr("lockeddown") === "true")lockedDown=true;
+        if(lockedUp || lockedDown){
+            $(where).find(".putInGroup").attr("checked", false);
+            if(lockedUp){
+                $(where).prev().find(".lockedUp").css("background-color","red");
+            }
+            else if(lockedDown){
+                $(where).find(".lockedUp").css("background-color","red");
+            }
+
+            if(lockedUp){
+                window.setTimeout(function(){
+                    $(where).prev().find(".lockedUp").css("background-color","white");
+                }, 2000);
+            }
+            else if(lockedDown){
+                window.setTimeout(function(){
+                    $(where).find(".lockedUp").css("background-color","white");
+                }, 2000);
+            }
+        }
+    }
 }
 
