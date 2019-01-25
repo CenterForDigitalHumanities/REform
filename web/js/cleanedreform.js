@@ -505,7 +505,7 @@ REform.changeLabel = function(rangeID, bool, event){
 }
 
 
-REform.showTopRangeCreation = function(){
+REform.ui.showTopRangeCreation = function(){
     document.getElementById("orderedRangesContainer").style.display = "none";
     document.getElementById("makeTopRange").style.display = "block";
 }
@@ -527,7 +527,7 @@ REform.createTopRange = function(){
  * @param {type} topRanges
  * @return {undefined}
  */
-REform.generateSequenceChoiceHTML = function (topRanges){
+REform.ui.generateSequenceChoiceHTML = function (topRanges){
     let sequenceChoicesHTML = ""
     document.getElementById("sequenceChoices").innerHTML = "";
     for(let i=0; i<topRanges.length; i++){
@@ -618,7 +618,7 @@ REform.findSequencingRanges = function(manifestObj){
  * UI to give the user a choice over which sequencing range in their manifest they want to edit.  
  * @return {undefined}
  */
-REform.showSequenceChoices = function(){
+REform.ui.showSequenceChoices = function(){
     document.getElementById("mainBlockCover").style.display = "block";
     document.getElementById("sequenceChoiceNotice").style.display = "block";
 }
@@ -628,7 +628,7 @@ REform.showSequenceChoices = function(){
  * If so, make sure the user can pick one. 
  * @return {undefined}
  */
-REform.offerSequenceChoice = function(){
+REform.ui.offerSequenceChoice = function(){
     if(REform.top.length > 1){
         REform.generateSequenceChoiceHTML(REform.top)
         REform.showSequenceChoices()
@@ -639,7 +639,7 @@ REform.offerSequenceChoice = function(){
  * Once a sequence has been chosen, draw the bucket and the top level.  
  * @return {undefined}
  */
-REform.drawSequence = async function(){
+REform.ui.drawSequence = async function(){
     let tocRangesHTML = ""
     if(Object.keys(REform.root).length === 0 && REform.root.constructor === Object){
         //There is no root object, so we can't begin to structure anything
@@ -708,30 +708,6 @@ REform.resolveForJSON = async function(id){
     return j
 }
 
-/*
- * Show the children internal to the range you just clicked by expanding it into a parent range
- * or close all expansions down to the level of an already selected child you clicked. 
- * @param {type} event
- * @param {type} rangeObj
- * @return {undefined}
- */
-REform.toggleChildren = function(event, rangeID){
-    let childClicked = event.currentTarget //Not event.target as this could end up being one of the child elements inside the section (like its label)
-    let depthToCollapseTo = childClicked.getAttribute("inDepth")
-
-    if(childClicked.classList.contains("selectedSection")){
-        REform.collapseTo(event, depthToCollapseTo)
-    }
-    else{
-        let othersSelected = document.querySelectorAll('.selectedSection[inDepth="'+depthToCollapseTo+'"]')
-        //If there is another selected section in this area, we must unselect and collapse to draw the newly selected one
-        if(othersSelected.length > 0){
-            REform.collapseTo(event, depthToCollapseTo)
-        }
-        childClicked.classList.add("selectedSection")
-        REform.drawParentRange(event, rangeID)
-    }
-}
 
 /**
  * By now we have our top range in REform.root
@@ -754,7 +730,60 @@ REform.findBucketRange = function(){
     return bucketRange
 }
 
-REform.drawBucketRange = async function(bucketJSON){
+REform.getURLVariable = function (variable){
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+
+REform.replaceURLVariable = function (variable, value){
+       var query = window.location.search.substring(1)
+       var location = window.location.origin + window.location.pathname
+       var vars = query.split("&");
+       var variables = ""
+       for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=")
+        if(pair[0] == variable){
+            var newVar = pair[0]+"="+value;
+            vars[i] = newVar;
+            break;
+        }
+       }
+       variables = vars.toString()
+       variables = variables.replace(/,/g, "&")
+       return(location + "?"+variables)
+}
+
+/*
+ * Show the children internal to the range you just clicked by expanding it into a parent range
+ * or close all expansions down to the level of an already selected child you clicked. 
+ * @param {type} event
+ * @param {type} rangeObj
+ * @return {undefined}
+ */
+REform.ui.toggleChildren = function(event, rangeID){
+    let childClicked = event.currentTarget //Not event.target as this could end up being one of the child elements inside the section (like its label)
+    let depthToCollapseTo = childClicked.getAttribute("inDepth")
+
+    if(childClicked.classList.contains("selectedSection")){
+        REform.collapseTo(event, depthToCollapseTo)
+    }
+    else{
+        let othersSelected = document.querySelectorAll('.selectedSection[inDepth="'+depthToCollapseTo+'"]')
+        //If there is another selected section in this area, we must unselect and collapse to draw the newly selected one
+        if(othersSelected.length > 0){
+            REform.collapseTo(event, depthToCollapseTo)
+        }
+        childClicked.classList.add("selectedSection")
+        REform.drawParentRange(event, rangeID)
+    }
+}
+
+REform.ui.drawBucketRange = async function(bucketJSON){
     //The container for the bucket is already drawn on sort.html.  Just populate the bucket area with the children.
     console.log("Draw bucket range");
     console.log(bucketJSON)
@@ -820,7 +849,7 @@ REform.drawBucketRange = async function(bucketJSON){
  * @param {type} rangeObj
  * @return {undefined}
  */
-REform.drawParentRange = async function(event, rangeID){
+REform.ui.drawParentRange = async function(event, rangeID){
     let rangeObj = REform.local.getByID(rangeID)
     let childClicked = event.currentTarget  //Not event.target as this could end up being one of the child elements inside the section (like its label)    
     let thisRangeDepth = document.querySelectorAll('.rangeArrangementArea').length + 1
@@ -849,7 +878,7 @@ REform.drawParentRange = async function(event, rangeID){
  * @param {type} rangeObj
  * @return {String}
  */
-REform.drawChildRanges = async function(depth, rangeObj){
+REform.ui.drawChildRanges = async function(depth, rangeObj){
     //let rangeObj = REform.local.getByID(rangeID)
     let childRanges = (rangeObj.items) ? rangeObj.items : []
     let childRangesHTML = ""
@@ -904,7 +933,6 @@ REform.drawChildRanges = async function(depth, rangeObj){
 }
 
 
-
 /*
  * Close all depths down to the depth a child was toggle closed. 
  * @param {type} parentRange
@@ -912,7 +940,7 @@ REform.drawChildRanges = async function(depth, rangeObj){
  * @param {type} event
  * @return {Boolean}
  */
-REform.collapseTo= function (event, depth){
+REform.ui.collapseTo= function (event, depth){
    let deepest =  document.querySelectorAll('.rangeArrangementArea').length
    let stopAt = Number(depth)
    for(let i = deepest; i > stopAt; i--){
@@ -923,39 +951,11 @@ REform.collapseTo= function (event, depth){
    document.querySelectorAll(".selectedSection[inDepth='"+stopAt+"']")[0].classList.remove("selectedSection")
 }
 
-REform.getURLVariable = function (variable){
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
-            var pair = vars[i].split("=");
-            if(pair[0] == variable){return pair[1];}
-    }
-    return(false);
-}
-
-REform.replaceURLVariable = function (variable, value){
-       var query = window.location.search.substring(1)
-       var location = window.location.origin + window.location.pathname
-       var vars = query.split("&");
-       var variables = ""
-       for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=")
-        if(pair[0] == variable){
-            var newVar = pair[0]+"="+value;
-            vars[i] = newVar;
-            break;
-        }
-       }
-       variables = vars.toString()
-       variables = variables.replace(/,/g, "&")
-       return(location + "?"+variables)
-}
-
 /** 
 * It could be a group locked together that we are sorting, so we need to account for making a clone helper for the group
 * of elements and making the move actually move all the elements together. 
 */
-REform.makeSortable = function (columnDepth){
+REform.ui.makeSortable = function (columnDepth){
     let column = document.querySelectorAll('[depth="'+columnDepth+'"]')[0]
     //var column = column.attr("depth"); //set this properly!!
     $.each($(".adminTrail").find(".rangeArrangementArea").not(".rangeArrangementArea[depth='"+columnDepth+"']"), function(){
@@ -1023,7 +1023,7 @@ REform.makeSortable = function (columnDepth){
     });
 }
 
-REform.stopSorting = function stopSorting(depth){
+REform.ui.stopSorting = function stopSorting(depth){
     var windowurl = document.location.href;
     let column = document.querySelectorAll('[depth="'+depth+'"]')[0]
     var children = column.children(".notBucket").children(".arrangeSection");
@@ -1053,8 +1053,6 @@ REform.stopSorting = function stopSorting(depth){
 
 }
 
-
- /** TODO factor JQuery out of these (current work in REform.ui2 */
 REform.ui.chainLockedRanges = function(currentObj){
     var text = "";
     text = currentObj.attr("id");
@@ -1359,11 +1357,111 @@ REform.ui.dropFlash = function($elem){
         $elem.removeClass("dropColor");
     }, 400);
 }
- /** TODO factor JQuery out of these (current work in REform.ui2 */
 
 
+/** REFACTOR JQuery out of REform.ui FOR THESE */
+/** 
+* It could be a group locked together that we are sorting, so we need to account for making a clone helper for the group
+* of elements and making the move actually move all the elements together. 
+*/
+REform.ui2.makeSortable = function (columnDepth){
+    let column = document.querySelectorAll('[depth="'+columnDepth+'"]')[0]
+    //var column = column.attr("depth"); //set this properly!!
+    $.each($(".adminTrail").find(".rangeArrangementArea").not(".rangeArrangementArea[depth='"+columnDepth+"']"), function(){
+        var overDiv = $("<div class='areaCover'></div>");
+        $(this).append(overDiv);
+    });
 
-/** REFACTOR FOR THESE */
+    column.querySelectorAll(".makeSortable").style.display = "none"
+    column.querySelectorAll(".doneSortable").style.display = "block"
+    column.children('.notBucket').sortable({
+        helper:function(e, item){
+            if(!item.hasClass('selectedSection'))item.addClass('selectedSection');
+            var chainedElems = REform.ui2.chainTargets(item[0]);
+            var helper = $('<div class="sortHelper"></div>');
+            var hlpWidth = 0;
+            // grab all the chained elements and add the selected class
+            // clone selected items before hiding
+            for(var i=0; i<chainedElems.length; i++){
+                var element = $(chainedElems[i]);
+                if(i===0){
+                    hlpWidth = element.parent().width() + 50;
+                }
+                var clonedElement = element.clone();
+                clonedElement.addClass("helper");
+                clonedElement.find(".lockedUp").remove();
+                clonedElement.find(".lockUp").remove();
+                clonedElement.find(".putInGroup").remove();
+                helper.append(clonedElement);
+                element.addClass("selectedSection");
+                element.addClass("hidden");
+            }
+            helper.css("width", hlpWidth);
+            return helper;
+        },
+        start: function (e, ui) {
+            var elements =$(".selectedSection.hidden").not(".helper");
+            //store the selected items to item being dragged
+            ui.item.data('items', elements);
+        },
+        stop: function (e, ui) {
+            //This will always take the selected item and place it in the drop spot.  It will then bring the other items,
+            //and you have to tell the other items whether they go after or before the item that was just sorted.  
+            var itemAfter = $(ui.item).next();
+            var itemBefore = $(ui.item).prev();
+            //item being sorted cannot be placed inbetween locked items.
+            if(itemAfter.attr("lockedup") === "true" && itemBefore.attr("lockeddown") === "true"){
+                alert("You cannot put this object in the middle of locked items");
+                $('.hidden').removeClass("hidden");
+                $(".selectedSection").removeClass("selectedSection");
+                return false;
+            }
+            var clonedSet = $(ui.item.data('items').clone());
+            clonedSet.removeClass("hidden selectedSection");
+            // you must clone the set or the original ui.item will not be present after replaceWith()
+            $(ui.item).replaceWith(clonedSet);
+            $('.hidden').remove();
+            $(".selectedSection").removeClass("selectedSection");
+            //unselect since the operation is complete
+
+        },
+        placeholder: "customPlaceholder",
+        forcePlaceholderSize: true,
+        axis:"y",
+        cursorAt: { top: 0, left: 0 }
+    });
+}
+
+REform.ui2.stopSorting = function stopSorting(depth){
+    var windowurl = document.location.href;
+    let column = document.querySelectorAll('[depth="'+depth+'"]')[0]
+    var children = column.children(".notBucket").children(".arrangeSection");
+    var childrenArray = [];
+    if(windowurl.indexOf("demo=1") >-1){
+        column.children(".notBucket").sortable("destroy");
+        $(".areaCover").remove();
+        column.find(".makeSortable").show();
+        column.find(".doneSortable").hide();
+    }
+    else{
+        $.each(children, function(){
+            childrenArray.push($(this).attr("rangeID"));
+        });
+    //need to update this column range id with the new order of ranges
+        var updateURL ="http://brokenbooks.org/brokenBooks/updateRange"; //update list with the range removed
+        var paramObj1 = {"@id" : column.attr("rangeID"), "ranges" : childrenArray};
+        var params1 = {"content" : JSON.stringify(paramObj1)};
+        $.post(updateURL, params1, function(){
+           column.children(".notBucket").sortable("destroy");
+           $(".areaCover").remove();
+           column.find(".makeSortable").show();
+           column.find(".doneSortable").hide();
+           populateMessage("new order saved!");
+        });
+    }
+
+}
+
 REform.ui2.resetCounts = function(areaTakenFromDepth, areaDroppedToDepth, targetCount){
     let notSelected = document.querySelectorAll(".arrangeSection :not(.selectedSection)")
     for(let i=0; i<notSelected.length; i++){
