@@ -473,6 +473,7 @@ REform.local.update = function (parent, obj){
     function localUpdateRecursion(topLevelRange, objWithAnUpdate){
         let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
         let searchID = (objWithAnUpdate["@id"]) ? objWithAnUpdate["@id"] : (objWithAnUpdate.id) ? objWithAnUpdate.id : "id_not_found"
+        let foundObj = {}
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
@@ -481,19 +482,22 @@ REform.local.update = function (parent, obj){
                     //Probably shouldn't be updating an object that was already marked for deletion.
                     //THe user shouldn't be able to see it once they have removed it in the UI unless
                     //THey decided to "undo changes"
-                    topLevelRange.items[item] = objWithAnUpdate
                 }
                 if(checkID.indexOf("/reform/update") === -1){
                     objWithAnUpdate["@id"] = checkID+"/reform/update" //queue this object for a server update
                 }
+                topLevelRange.items[item] = objWithAnUpdate
                 //topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
-                return objWithAnUpdate
+                foundObj = objWithAnUpdate
+                break
             }
             else{
-                return localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
+                foundObj = localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
             }
         }
+        return foundObj
     }
+
     let matchedObj = {}
     let searchID = (parent["@id"]) ? parent["@id"] : (parent.id) ? parent.id : "id_not_found"
     if(searchID === "bucket"){
@@ -504,7 +508,7 @@ REform.local.update = function (parent, obj){
     }
     
     //We found an object when diggin through the REform.root tree.  Now localStorage needs the REform.top change.
-    if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
+    if(matchedObj ===null || matchedObj ===undefined ||(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object)){
         REform.err.generic_error("Could not find the item in local storage to update...")
     }
     else{
@@ -530,20 +534,33 @@ REform.local.delete = function (obj){
      */
     function localDeleteRecursion(topLevelRange, searchID){
         let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
+        let foundObj = {}
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
-                //This is the one we want to delete
-                //topLevelRange.items.splice(item, 1)
-                //topLevelRange["@id"] = parentID+"/reform/update"
-                topLevelRange.items[item]["@id"] = checkID+"/reform/delete"
-                objForReturn = recurse //object queued for removal
+                //This is the one we want to delete.  See if it is already marked for delete or update
+                if(checkID.indexOf("/reform/update") === -1){
+                    if(checkID.indexOf("/reform/delete") === -1){
+                        checkID = checkID+"/reform/delete"
+                    }
+                    else{
+                        //already marked for delete...
+                    }
+                }
+                else{
+                    //It was marked for update.  Mark if for delete instead
+                    checkID = checkID.replace("/reform/update", "/reform/delete")
+                }
+                topLevelRange.items[item]["@id"] = checkID
+                foundObj = topLevelRange.items[item] //object queued for removal
+                break
             }
             else{
-                return localDeleteRecursion(topLevelRange.items[item], searchID)
+                foundObj = localDeleteRecursion(topLevelRange.items[item], searchID)
             }         
         }
+        return foundObj
     }
     
     let matchedObj = {}
@@ -555,7 +572,7 @@ REform.local.delete = function (obj){
         return REform.err.generic_error("Cannot delete already deleted items...something went wrong")
     }
     //We found an object when diggin through the REform.top tree.  Now localStorage needs the REform.top change.
-    if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
+    if(matchedObj ===null || matchedObj ===undefined ||(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object)){
         REform.err.generic_error("Could not find the item in local storage to delete...")
     }
     else{
@@ -578,18 +595,21 @@ REform.local.getByID = function (id){
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
     function localGetRecursion(topLevelRange, searchID){
+        let foundObj = {}
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the item we want to return
-                return recurse
+                foundObj = recurse
+                break
             }
             else{
-                //Can i return a copy of the thing requested or do I need to return a reference to the real one?
-                return localGetRecursion(topLevelRange.items[item], searchID)
+                //I feel like recursion should let me do return localGetRecursion here, but it breaks the for loop.  
+                foundObj = localGetRecursion(topLevelRange.items[item], searchID)
             }
         }
+        return foundObj
     }
    
     let matchedObj = {}
@@ -600,7 +620,7 @@ REform.local.getByID = function (id){
         matchedObj = localGetRecursion(REform.root, id) 
     }
        
-    if(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object){
+    if(matchedObj ===null || matchedObj ===undefined ||(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object)){
         REform.err.generic_error("Could not find the item in local storage to get...")
     }
     else{
