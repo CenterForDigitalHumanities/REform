@@ -1460,3 +1460,50 @@ and open the template in the editor.
             #makeTopRange{
                 display: none; 
             }
+            
+            
+            /* Taken from RERUM, for the index page */
+            header{
+                background: #222;
+                padding: 1rem;
+                position: relative;
+                box-shadow: 0 0 3rem #001e3c;
+                margin-bottom: 2rem;
+            }
+            
+            #main{
+                margin: .5rem;
+            }
+            
+            footer {
+                position: fixed;
+                bottom: 0;
+                width: 100vw;
+                overflow: hidden;
+                padding: 1rem 0;
+                background-color: #dfdfdf;
+            }
+            
+            *:before, *:after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                color: #001e3c;
+            }
+            
+            reform {
+                position: absolute;
+                top: 3.5rem;
+                color: #a3d1ff;
+                letter-spacing: .75rem;
+                font-size: 2rem;
+                line-height: 1.2;
+                font-weight: 300;
+                font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                margin-left: 5rem;
+            }
+            
+            #headerLogo{
+                width: 17rem;
+            }
+

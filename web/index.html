@@ -11,17 +11,53 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/reformstyle.css">
         <script src="js/cleanedreform.js"></script>  
+        <style>
+            body {
+                margin: 0;
+                /*font-size: 1.5em;*/
+                /*line-height: 1.6;*/
+                /*font-weight: 400;*/
+                /*font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+                /*color: #222;*/
+            }
+        </style>
     </head>
     <body>
-        <div href="index.html" id="hdrLogo">
-            <img id="BBlogo" src="images/reflogo.png" />
+        <header>
+            <a href="index.html">
+                <img id="headerLogo" src="images/rerum_logo.png" alt="logo" class="u-full-width">
+            </a>
+            <reform>
+                REform
+            </reform>
+        </header>
+        <div id="main">
+            <h1>reform by rerum</h1>
+            <p> 
+                Welcome to REform, a tool powered by RERUM.  REform seeks to allow users to structure data linked open data.  
+                RERUM works with <a target="_blank" href="https://iiif.io/api/presentation/3.0/">manifests</a> to achieve this goal.
+                By providing a manifest URL below, you can begin to structure the data in scope of the manifests.  If it a RERUM
+                manifest that you own, you will be able to update the manifest directly.  If not, RERUM will offer you the chance to
+                save a copy under your name.  
+            </p>
+            <p>
+                REform also works with the <a target="_blank" href="http://inbox-docs.rerum.io">RERUM Inbox</a>.  If you do not wish to alter the manifest you are working with, you can choose
+                to have RERUM inbox announce to the manifest that there are changes.  The new structure will be preserved and can be taken from
+                RERUM inbox at any time.  The owner of the manifest can choose whether or not to absorb the announcement. 
+            </p>
+            <div id="reformManifest"> 
+                Enter a manifest URL to create a table of contents for the canvases contained within it. 
+                If there are existing table of contents for the manifest, we will offer the chance to load them for editing.
+                <br>
+                Manifest URL: <input type="text" id="manifestURL" />
+                <input type="button" value="Let's Go Reform" onclick="goREform(event);" />
+                
+            </div>
+        
         </div>
-        <div id="reformManifest"> 
-            Enter a manifest URL to create a table of contents for the canvases contained within it. 
-            <input type="text" id="manifestURL" />
-            <input type="button" value="Let's Go Reform" onclick="goREform(event);" />
+        <div id="footer">
+            
         </div>
-        If there are existing table of contents for the manifest, we will offer the chance to load them for editing.
     </body>
     <script>
         /**
