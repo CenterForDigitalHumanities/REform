@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+            integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+            crossorigin=""/>
+         <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+            integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+            crossorigin="">
+         </script>
+         <script src="js/leafletHelper.js"></script>  
+         <style>
+             #cemeteryOverview { height: 50rem; }
+         </style>
+    </head>
+    <body>
+        <div id="main">
+            <h3>
+                Cemetery Overview
+            </h3>
+            <div id="cemeteryOverview">
+                
+            </div>
+        </div>
+    </body>
+    <script>
+        let mymap = L.map('cemeteryOverview').setView([39.406347, -91.145024], 14)    
+        initializeMap()
+
+    </script>
+</html>
