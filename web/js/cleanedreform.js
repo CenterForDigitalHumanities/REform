@@ -868,7 +868,7 @@ REform.ui.drawBucketRange = async function(bucketJSON){
         let isLeaf = false
         let isOrdered = childObj.isOrdered
         let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="REform.ui.dragHelp(event);" ondragend="REform.ui.dragEnd(event);"`
-        let dropAttribute = `" ondragover="dragOverHelp(event);" ondrop="REform.ui.dropHelp(event);"`
+        let dropAttribute = `" ondragover="REform.ui.dragOverHelp(event);" ondrop="REform.ui.dropHelp(event);"`
         let checkbox = " <input onchange='REform.ui.highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
         let rightClick = " oncontextmenu='REform.ui.breakUpConfirm(event); return false;'"
         let lockStatusUp = "false"
@@ -1465,6 +1465,10 @@ REform.ui.stopSorting = function stopSorting(depth){
     }
 
 }
+
+REform.ui.dragOverHelp = function (event){
+    event.preventDefault()
+}
 /** END REform UI interactions */
 
 
@@ -1878,9 +1882,7 @@ REform.ui2.dropFlash = function(elem){
     }, 400)
 }
 
-REform.ui2.dragOverHelp = function (event){
-    event.preventDefault()
-}
+
 /** END JQuery UI refactoring */
 
 

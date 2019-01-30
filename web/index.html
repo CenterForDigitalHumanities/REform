@@ -20,6 +20,22 @@ and open the template in the editor.
                 /*font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
                 /*color: #222;*/
             }
+            #main{
+                margin: 0 auto;
+                width: 45rem;
+            }
+            #reformLogo{
+                height: 100px;
+                position: relative;
+                display: inline-block;
+            }
+            #reformCopy{
+                position: relative;
+                display: inline-block;
+                font-size: 18pt;
+                font-weight: bold;
+                top: -40px;
+            }
         </style>
     </head>
     <body>
@@ -32,27 +48,31 @@ and open the template in the editor.
             </reform>
         </header>
         <div id="main">
-            <h1>reform by rerum</h1>
+            <div id="reformTitle">
+                <img id="reformLogo" src="images/reflogo.png">
+                <span id="reformCopy">REform by RERUM</span>
+            </div>
+            
             <p> 
-                Welcome to REform, a tool powered by RERUM.  REform seeks to allow users to structure data linked open data.  
+                Welcome to REform, a tool powered by RERUM.  REform seeks to structure linked open data.  
                 RERUM works with <a target="_blank" href="https://iiif.io/api/presentation/3.0/">manifests</a> to achieve this goal.
-                By providing a manifest URL below, you can begin to structure the data in scope of the manifests.  If it a RERUM
+                By providing a manifest URL, you can begin to structure the data of a manifests.  If the manifest provided is a RERUM
                 manifest that you own, you will be able to update the manifest directly.  If not, RERUM will offer you the chance to
-                save a copy under your name.  
+                save a copy under your name in RERUM that references the original.  
             </p>
             <p>
                 REform also works with the <a target="_blank" href="http://inbox-docs.rerum.io">RERUM Inbox</a>.  If you do not wish to alter the manifest you are working with, you can choose
                 to have RERUM inbox announce to the manifest that there are changes.  The new structure will be preserved and can be taken from
                 RERUM inbox at any time.  The owner of the manifest can choose whether or not to absorb the announcement. 
             </p>
-            <div id="reformManifest"> 
+            <p> 
                 Enter a manifest URL to create a table of contents for the canvases contained within it. 
-                If there are existing table of contents for the manifest, we will offer the chance to load them for editing.
-                <br>
+                If there are existing table of contents for the manifest, we will offer the chance to load them for editing.                
+            </p>
+            <p>
                 Manifest URL: <input type="text" id="manifestURL" />
                 <input type="button" value="Let's Go Reform" onclick="goREform(event);" />
-                
-            </div>
+            </p>
         
         </div>
         <div id="footer">
@@ -66,8 +86,8 @@ and open the template in the editor.
          *
          */
         function goREform(e){
-            var manifest = $("#manifestURL").val();
-            document.location.href = "/sort.html?manifest="+manifest;
+            let manifest = document.getElementById("manifestURL").value
+            document.location.href = "/sort.html?manifest="+manifest
         }
 
     </script>
