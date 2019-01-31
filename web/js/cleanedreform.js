@@ -489,13 +489,16 @@ REform.local.update = function (parent, obj){
                 topLevelRange.items[item] = objWithAnUpdate
                 //topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
                 foundObj = objWithAnUpdate
-                break
-            }
-            else{
-                foundObj = localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
+                return foundObj
             }
         }
-        return foundObj
+
+        //The contains checked failed, so run it down each child
+        if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
+            for(item in topLevelRange.items){
+                return localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
+            }
+        }
     }
 
     let matchedObj = {}
@@ -554,13 +557,16 @@ REform.local.delete = function (obj){
                 }
                 topLevelRange.items[item]["@id"] = checkID
                 foundObj = topLevelRange.items[item] //object queued for removal
-                break
+                return foundObj
             }
-            else{
-                foundObj = localDeleteRecursion(topLevelRange.items[item], searchID)
-            }         
+     
         }
-        return foundObj
+        //The contains checked failed, so run it down each child
+        if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
+            for(item in topLevelRange.items){
+                return localDeleteRecursion(topLevelRange.items[item], searchID)
+            }
+        }
     }
     
     let matchedObj = {}
@@ -596,20 +602,23 @@ REform.local.getByID = function (id){
      */
     function localGetRecursion(topLevelRange, searchID){
         let foundObj = {}
+        //Basically, a contains check and take it if so
         for(item in topLevelRange.items){
             let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
             let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
             if(searchID === checkID){
                 //This is the item we want to return
                 foundObj = recurse
-                break
-            }
-            else{
-                //I feel like recursion should let me do return localGetRecursion here, but it breaks the for loop.  
-                foundObj = localGetRecursion(topLevelRange.items[item], searchID)
+                return foundObj
             }
         }
-        return foundObj
+        //The contains checked failed, so run it down each child
+        if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
+            for(item in topLevelRange.items){
+                return localGetRecursion(topLevelRange.items[item], searchID)
+            }
+        }
+
     }
    
     let matchedObj = {}
@@ -821,20 +830,27 @@ REform.ui.drawSequence = async function(){
  * @return {undefined}
  */
 REform.ui.toggleChildren = function(event, rangeID){
-    let childClicked = event.currentTarget //Not event.target as this could end up being one of the child elements inside the section (like its label)
+    let childClicked = event.target //Not event.target as this could end up being one of the child elements inside the section (like its label)
+    
+    if(childClicked.classList.contains("putInGroup")){ //add more to ignore here, like the locks.  
+        //Then they clicked in the check box or clicked a lock, ignore it
+    }
+    if(childClicked.classList.contains("innerTitle")){ //They clicked the span representing the title inside the object
+        //The target should be the parent.  
+        childClicked = event.target.parentNode
+    }
     let depthToCollapseTo = childClicked.getAttribute("inDepth")
-
     if(childClicked.classList.contains("selectedSection")){
-        REform.ui.collapseTo(event, depthToCollapseTo)
+        REform.ui.collapseTo(event, depthToCollapseTo, childClicked)
     }
     else{
         let othersSelected = document.querySelectorAll('.selectedSection[inDepth="'+depthToCollapseTo+'"]')
         //If there is another selected section in this area, we must unselect and collapse to draw the newly selected one
         if(othersSelected.length > 0){
-            REform.ui.collapseTo(event, depthToCollapseTo)
+            REform.ui.collapseTo(event, depthToCollapseTo, childClicked)
         }
         childClicked.classList.add("selectedSection")
-        REform.ui.drawParentRange(event, rangeID)
+        REform.ui.drawParentRange(event, rangeID, childClicked)
     }
 }
 
@@ -869,7 +885,7 @@ REform.ui.drawBucketRange = async function(bucketJSON){
         let isOrdered = childObj.isOrdered
         let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="REform.ui.dragHelp(event);" ondragend="REform.ui.dragEnd(event);"`
         let dropAttribute = `" ondragover="REform.ui.dragOverHelp(event);" ondrop="REform.ui.dropHelp(event);"`
-        let checkbox = " <input onchange='REform.ui.highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
+        let checkbox = " <input onchange='REform.ui.highlighLocks(event, $(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
         let rightClick = " oncontextmenu='REform.ui.breakUpConfirm(event); return false;'"
         let lockStatusUp = "false"
         let lockStatusDown = "false"
@@ -959,7 +975,7 @@ REform.ui.drawChildRanges = async function(depth, rangeObj){
         let isOrdered = childObj.isOrdered
         let dragAttribute = `" id="drag_${uniqueID}_tmp" draggable="true" ondragstart="REform.ui.dragHelp(event);" ondragend="REform.ui.dragEnd(event);"`
         let dropAttribute = `" ondragover="REform.ui.dragOverHelp(event);" ondrop="REform.ui.dropHelp(event);"`
-        let checkbox = " <input onchange='REform.ui.highlighLocks($(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
+        let checkbox = " <input onchange='REform.ui.highlighLocks(event, $(this).parent(), \"merge\");' class='putInGroup' type='checkbox' />"
         let rightClick = " oncontextmenu='REform.ui.breakUpConfirm(event); return false;'"
         let lockStatusUp = childObj.lockedup
         let lockStatusDown = childObj.lockeddown
@@ -1038,7 +1054,9 @@ REform.ui.chainTargets = function(currentTarget){
     return targetArray;
 }
 
-REform.ui.highlighLocks = function(where, why){
+REform.ui.highlighLocks = function(event, where, why){
+    let target = event.currentTarget
+    where = target.parentNode
     var lockedUp = false;
     var lockedDown = false;
     console.log("highlight locks");
