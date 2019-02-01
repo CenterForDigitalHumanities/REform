@@ -464,40 +464,44 @@ REform.local.update = function (parent, obj){
     
     /**
      * Helper function for recursion.  Check down the range.items[range.items[...], range.items[...]] tree
-     * for a matching @id or id.  return false if none found.  
-     * The goal is to actually manipulate whatever param 'parent' was, which is most cases will be REform.root
+     * for a matching @id or id and mark it for update if it isn't already
+     * 
      * @param {object} topLevelRange - a range object with .items[] that need to all be checked and recursed
      * @param {object} searchID - the id of a REform.top.items[] tree to find
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
     function localUpdateRecursion(topLevelRange, objWithAnUpdate){
-        let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
         let searchID = (objWithAnUpdate["@id"]) ? objWithAnUpdate["@id"] : (objWithAnUpdate.id) ? objWithAnUpdate.id : "id_not_found"
-        let foundObj = {}
-        for(item in topLevelRange.items){
-            let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
-            let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
-            if(searchID === checkID){
+        let foundObj = REform.local.itemsArrContains(topLevelRange, searchID)
+        if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
+            for(item in topLevelRange.items){
+                let obj = topLevelRange.items[item]
+                foundObj = localUpdateRecursion(obj, searchID)
+                let checkID = (foundObj["@id"]) ? foundObj["@id"] : (foundObj.id) ? foundObj.id : "id_not_found"
                 if(checkID.indexOf("/reform/delete") === -1){
                     //Probably shouldn't be updating an object that was already marked for deletion.
                     //THe user shouldn't be able to see it once they have removed it in the UI unless
                     //THey decided to "undo changes"
                 }
                 if(checkID.indexOf("/reform/update") === -1){
-                    objWithAnUpdate["@id"] = checkID+"/reform/update" //queue this object for a server update
+                    foundObj["@id"] = checkID+"/reform/update" //queue this object for a server update
                 }
-                topLevelRange.items[item] = objWithAnUpdate
-                //topLevelRange["@id"] = parentID+"/reform/update" //queue this object for a server update
-                foundObj = objWithAnUpdate
-                return foundObj
+                topLevelRange = REform.local.itemsArrReplaceObj(topLevelRange, foundObj)
+                return foundObj //The object marked for update
             }
         }
-
-        //The contains checked failed, so run it down each child
-        if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
-            for(item in topLevelRange.items){
-                return localUpdateRecursion(topLevelRange.items[item], objWithAnUpdate)
+        else{
+            let checkID = (foundObj["@id"]) ? foundObj["@id"] : (foundObj.id) ? foundObj.id : "id_not_found"
+            if(checkID.indexOf("/reform/delete") === -1){
+                //Probably shouldn't be updating an object that was already marked for deletion.
+                //THe user shouldn't be able to see it once they have removed it in the UI unless
+                //THey decided to "undo changes"
             }
+            if(checkID.indexOf("/reform/update") === -1){
+                foundObj["@id"] = checkID+"/reform/update" //queue this object for a server update
+            }
+            topLevelRange = REform.local.itemsArrReplaceObj(topLevelRange, foundObj)
+            return foundObj //The object marked for update
         }
     }
 
@@ -528,6 +532,7 @@ REform.local.update = function (parent, obj){
  * @param {type} obj
  */
 REform.local.delete = function (obj){
+    
     /**
      * Helper function for recursion.  Check down the range.items[range.items[...], range.items[...]] tree
      * for a matching @id or id.  return false if none found.  
@@ -537,38 +542,57 @@ REform.local.delete = function (obj){
      */
     function localDeleteRecursion(topLevelRange, searchID){
         let parentID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
-        let foundObj = {}
-        for(item in topLevelRange.items){
-            let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
-            let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
-            if(searchID === checkID){
-                //This is the one we want to delete.  See if it is already marked for delete or update
-                if(checkID.indexOf("/reform/update") === -1){
-                    if(checkID.indexOf("/reform/delete") === -1){
-                        checkID = checkID+"/reform/delete"
-                    }
-                    else{
-                        //already marked for delete...
-                    }
-                }
-                else{
-                    //It was marked for update.  Mark if for delete instead
-                    checkID = checkID.replace("/reform/update", "/reform/delete")
-                }
-                topLevelRange.items[item]["@id"] = checkID
-                foundObj = topLevelRange.items[item] //object queued for removal
-                return foundObj
-            }
-     
-        }
-        //The contains checked failed, so run it down each child
+        let foundObj = REform.local.itemsArrContains(topLevelRange, searchID)
         if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
             for(item in topLevelRange.items){
-                return localDeleteRecursion(topLevelRange.items[item], searchID)
+                let obj = topLevelRange.items[item]
+                //let logID2 = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
+                //console.log("RECURSING WITH "+logID2)
+                foundObj = localDeleteRecursion(obj, searchID)
+                if((foundObj.constructor === Object && Object.keys(foundObj).length > 0)){
+                    //console.log("RECURSING MATCHED.  FOUND "+foundObj["@id"])
+                    let checkID = (foundObj["@id"]) ? foundObj["@id"] : (foundObj.id) ? foundObj.id : "id_not_found"
+                    if(checkID.indexOf("/reform/update") === -1){
+                        if(checkID.indexOf("/reform/delete") === -1){
+                            checkID = checkID+"/reform/delete"
+                        }
+                        else{
+                            //already marked for delete...
+                        }
+                    }
+                    else{
+                        //It was marked for update.  Mark if for delete instead
+                        checkID = checkID.replace("/reform/update", "/reform/delete")
+                    }
+                    foundObj["@id"] = checkID
+                    topLevelRange = REform.local.itemsArrReplaceObj(topLevelRange, foundObj)
+                    return foundObj
+                }
             }
+            //let logID3 = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
+            //console.log("DID NOT CONTAIN.  CHECKING EACH ITEM IN "+logID3)
         }
+        else{
+            //console.log("RECURSING MATCHED.  FOUND "+foundObj["@id"])
+            let checkID = (foundObj["@id"]) ? foundObj["@id"] : (foundObj.id) ? foundObj.id : "id_not_found"
+            if(checkID.indexOf("/reform/update") === -1){
+                if(checkID.indexOf("/reform/delete") === -1){
+                    checkID = checkID+"/reform/delete"
+                }
+                else{
+                    //already marked for delete...
+                }
+            }
+            else{
+                //It was marked for update.  Mark if for delete instead
+                checkID = checkID.replace("/reform/update", "/reform/delete")
+            }
+            foundObj["@id"] = checkID
+            topLevelRange = REform.local.itemsArrReplaceObj(topLevelRange, foundObj)
+            return foundObj //The object marked for delete
+        }
+
     }
-    
     let matchedObj = {}
     let searchID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
     if(searchID.indexOf("/reform/delete")===-1){
@@ -593,6 +617,7 @@ REform.local.delete = function (obj){
  * @return {JSON of the object found}
  */
 REform.local.getByID = function (id){
+    
     /**
      * Helper function for recursion.  Check down the range.items[range.items[...], range.items[...]] tree
      * for a matching @id or id.  return false if none found.  
@@ -601,24 +626,30 @@ REform.local.getByID = function (id){
      * @return {JSON representing the matched obj from local storage that recieved the update}
      */
     function localGetRecursion(topLevelRange, searchID){
-        let foundObj = {}
         //Basically, a contains check and take it if so
-        for(item in topLevelRange.items){
-            let recurse = JSON.parse(JSON.stringify(topLevelRange.items[item]))
-            let checkID = (recurse["@id"]) ? recurse["@id"] : (recurse.id) ? recurse.id : "id_not_found"
-            if(searchID === checkID){
-                //This is the item we want to return
-                foundObj = recurse
-                return foundObj
-            }
-        }
-        //The contains checked failed, so run it down each child
+        let foundObj = REform.local.itemsArrContains(topLevelRange, searchID)
         if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
+            //It was not contained in this top level range: let's check recursively down its children
             for(item in topLevelRange.items){
-                return localGetRecursion(topLevelRange.items[item], searchID)
+                let obj = topLevelRange.items[item]
+                //let logID2 = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
+                //console.log("RECURSING WITH "+logID2)
+                foundObj = localGetRecursion(obj, searchID)
+                if((foundObj.constructor === Object && Object.keys(foundObj).length > 0)){
+                    //Recursion found it contained at some leve, we can return it
+                    //console.log("RECURSING MATCHED.  FOUND "+foundObj["@id"])
+                    return foundObj
+                }
             }
+            //let logID3 = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
+            //console.log("DID NOT CONTAIN.  CHECKING EACH ITEM IN "+logID3)
         }
-
+        else{
+            //The object we were looking for was contained in this top level range.  Return it
+            return foundObj
+        }
+        //let logID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
+        //console.log("RECURSED AND END CHECKING EACH ITEM IN "+logID)
     }
    
     let matchedObj = {}
@@ -628,7 +659,7 @@ REform.local.getByID = function (id){
     else{
         matchedObj = localGetRecursion(REform.root, id) 
     }
-       
+    //Check for null and empty object, we go back and forth on the return here trying to figure out the best recursion.   
     if(matchedObj ===null || matchedObj ===undefined ||(Object.keys(matchedObj).length === 0 && matchedObj.constructor === Object)){
         REform.err.generic_error("Could not find the item in local storage to get...")
     }
@@ -720,6 +751,60 @@ REform.local.createTopRange = function(){
         "behavior" : "sequence"
     }
     //Put it as REform.root and into Manifest.structures?
+}
+
+/*
+ * Check if a JSON array contains an object with @id == searchID
+ * Account for if the items entry is just the @id.
+ * @param {type} topLevelRange
+ * @param {type} searchID
+ * @return {Boolean}
+ */
+REform.local.itemsArrContains = function(json, id){
+        let containedObj = {}
+        if(json.items){
+            for(item in json.items){
+                let entry = json.items[item]
+                let obj = {}
+                if(typeof entry === "string"){
+                    obj = REform.tricks.resolveForJSON(entry)
+                }
+                else if(typeof entry === "object" ){
+                    obj = JSON.parse(JSON.stringify(entry))
+                }
+                let checkID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
+                if(id === checkID){
+                    //This is the item we want to return
+                    containedObj = entry
+                    break
+                }
+            }
+        }
+        return containedObj
+}
+
+/*
+ * Check if a JSON array contains an object with @id == searchID
+ * Account for if the items entry is just the @id.
+ * @param {type} topLevelRange
+ * @param {type} replacer
+ * @return {Boolean}
+ */
+REform.local.itemsArrReplaceObj = function(json, replacer){
+        let replacerID = (replacer["@id"]) ? replacer["@id"] : (replacer.id) ? replacer.id : "id_not_found"
+        if(json.items){
+            for(item in json.items){
+                let entry = json.items[item]
+                let checkID = (entry["@id"]) ? entry["@id"] : (entry.id) ? entry.id : "id_not_found"
+                if(replacerID === checkID){
+                    //This is the item we want to replace
+                    json.items[item] = entry
+                    break
+                }
+            }
+        }
+        //The the item was not found, the original json object is returned without its json.items manipulated 
+        return json
 }
 /** END REform local CRUD operations */
 
