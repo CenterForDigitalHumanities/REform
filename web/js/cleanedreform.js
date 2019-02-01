@@ -636,8 +636,7 @@ REform.local.getByID = function (id){
                 //console.log("RECURSING WITH "+logID2)
                 foundObj = localGetRecursion(obj, searchID)
                 if((foundObj.constructor === Object && Object.keys(foundObj).length > 0)){
-                    //Recursion found it contained at some leve, we can return it
-                    //console.log("RECURSING MATCHED.  FOUND "+foundObj["@id"])
+                    //Recursion found hit the base case, we can return
                     return foundObj
                 }
             }
@@ -645,10 +644,10 @@ REform.local.getByID = function (id){
             //console.log("DID NOT CONTAIN.  CHECKING EACH ITEM IN "+logID3)
         }
         else{
-            //The object we were looking for was contained in this top level range.  Return it
+            //The object we were looking for was contained in this top level range.  This is our base case.  We can return
             return foundObj
         }
-        //let logID = (topLevelRange["@id"]) ? topLevelRange["@id"] : (topLevelRange.id) ? topLevelRange.id : "id_not_found"
+        //May return null if the object was never found
         //console.log("RECURSED AND END CHECKING EACH ITEM IN "+logID)
     }
    
