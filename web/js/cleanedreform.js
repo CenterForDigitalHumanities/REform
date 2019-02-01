@@ -636,7 +636,7 @@ REform.local.getByID = function (id){
                 //console.log("RECURSING WITH "+logID2)
                 foundObj = localGetRecursion(obj, searchID)
                 if((foundObj.constructor === Object && Object.keys(foundObj).length > 0)){
-                    //Recursion found hit the base case, we can return
+                    //Recursion hit the base case, we can return
                     return foundObj
                 }
             }
@@ -778,6 +778,9 @@ REform.local.itemsArrContains = function(json, id){
                     break
                 }
             }
+        }
+        else{
+            //Malformed, there should be an json.items property.  Maybe it is wrong prezi?
         }
         return containedObj
 }
