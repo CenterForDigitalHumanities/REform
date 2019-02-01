@@ -774,7 +774,7 @@ REform.local.itemsArrContains = function(json, id){
                 let checkID = (obj["@id"]) ? obj["@id"] : (obj.id) ? obj.id : "id_not_found"
                 if(id === checkID){
                     //This is the item we want to return
-                    containedObj = entry
+                    containedObj = obj
                     break
                 }
             }
