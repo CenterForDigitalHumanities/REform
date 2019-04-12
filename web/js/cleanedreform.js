@@ -472,22 +472,24 @@ REform.local.update = function (parent, obj){
      */
     function localUpdateRecursion(topLevelRange, objWithAnUpdate){
         let searchID = (objWithAnUpdate["@id"]) ? objWithAnUpdate["@id"] : (objWithAnUpdate.id) ? objWithAnUpdate.id : "id_not_found"
-        let foundObj = REform.local.itemsArrContains(topLevelRange, searchID)
+        let foundObj = REform.local.itemsArrContains(topLevelRange, searchID) //This is the base ca
         if((Object.keys(foundObj).length === 0 && foundObj.constructor === Object)){
             for(item in topLevelRange.items){
                 let obj = topLevelRange.items[item]
                 foundObj = localUpdateRecursion(obj, searchID)
-                let checkID = (foundObj["@id"]) ? foundObj["@id"] : (foundObj.id) ? foundObj.id : "id_not_found"
-                if(checkID.indexOf("/reform/delete") === -1){
-                    //Probably shouldn't be updating an object that was already marked for deletion.
-                    //THe user shouldn't be able to see it once they have removed it in the UI unless
-                    //THey decided to "undo changes"
+                if((foundObj.constructor === Object && Object.keys(foundObj).length > 0)){
+                    let checkID = (foundObj["@id"]) ? foundObj["@id"] : (foundObj.id) ? foundObj.id : "id_not_found"
+                    if(checkID.indexOf("/reform/delete") === -1){
+                        //Probably shouldn't be updating an object that was already marked for deletion.
+                        //THe user shouldn't be able to see it once they have removed it in the UI unless
+                        //THey decided to "undo changes"
+                    }
+                    if(checkID.indexOf("/reform/update") === -1){
+                        foundObj["@id"] = checkID+"/reform/update" //queue this object for a server update
+                    }
+                    topLevelRange = REform.local.itemsArrReplaceObj(topLevelRange, foundObj)
+                    return foundObj //The object marked for update
                 }
-                if(checkID.indexOf("/reform/update") === -1){
-                    foundObj["@id"] = checkID+"/reform/update" //queue this object for a server update
-                }
-                topLevelRange = REform.local.itemsArrReplaceObj(topLevelRange, foundObj)
-                return foundObj //The object marked for update
             }
         }
         else{
@@ -1810,7 +1812,7 @@ REform.ui2.dropHelp = function(event){
     //console.log(target);
     event.preventDefault()
     let relation = target.getAttribute('rangeid')
-    let targetClass = target.className
+    targetClass = target.className
     let areaDroppedTo = $(target).parents(".rangeArrangementArea").getAttribute("rangeID")
     let areaDroppedToDepth = parseInt($(target).parents(".rangeArrangementArea").getAttribute("depth"))
     //TODO do this in a loop for all the ids and grab all the children in a locked situation.  
